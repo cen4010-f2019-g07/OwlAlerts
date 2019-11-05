@@ -1,0 +1,19 @@
+{
+  "name": "owl_alerts",
+  "version": "1.0.0",
+  "description": "Owl Alerts app for Principle of Software Engineering (Fall 2019 - Group 7)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cen4010-f2019-g07/OwlAlerts.git"
+  },
+  "author": "CEN4010 Fall 2019 - Group 7",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cen4010-f2019-g07/OwlAlerts/issues"
+  },
+  "homepage": "https://github.com/cen4010-f2019-g07/OwlAlerts#readme"
+}
