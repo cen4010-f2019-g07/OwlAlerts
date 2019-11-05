@@ -15,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/cen4010-f2019-g07/OwlAlerts/issues"
   },
-  "homepage": "https://github.com/cen4010-f2019-g07/OwlAlerts#readme"
+  "homepage": "https://github.com/cen4010-f2019-g07/OwlAlerts#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.3.1",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "faker": "^4.1.0",
+    "http": "0.0.0",
+    "jquery": "^3.4.1",
+    "mysql": "^2.17.1"
+  }
 }
