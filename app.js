@@ -3,6 +3,11 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const http = require('http');
+const indexRouter = require('./routes/index'); //Default page
+const userRouter = require('./routes/users');
+const eventRouter = require('./routes/events');
+const garageRouter = require('./routes/garages');
+const issueRouter = require('./routes/issues');
 
 const app = express();
 const router = express.Router();
@@ -12,6 +17,11 @@ var pool;
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/', indexRouter);
+app.use('/users', userRouter);
+app.use('/garages', garageRouter);
+app.use('/events', eventRouter);
+app.use('/issues', issueRouter);
 app.set('view engine', 'ejs');
 
 if(production){
