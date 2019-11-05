@@ -4,10 +4,10 @@ const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const http = require('http');
 
+const app = express();
 const router = express.Router();
 const production = process.env.production;
 var pool;
-var http;
 
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
@@ -26,7 +26,7 @@ if(production){
 	http.createServer(app, function(req, res){
 		res.writeHead(200, {'Content-Type': 'text/plain'});
 		res.end("Hello Node.js\n");
-	}).listen(14250) () => console.log('Listening on port 14250...');
+	}).listen(14250), () => console.log('Listening on port 14250...');
 }
 else{
 	pool = mysql.createPool({
