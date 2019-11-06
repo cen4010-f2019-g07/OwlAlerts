@@ -1,6 +1,4 @@
 // Home page for Index
-exports.index = function(err, req, res, next) {
-	if(err)
-		next(err);
+exports.index = function(req, res) {
 	res.render('pages/index');
 };

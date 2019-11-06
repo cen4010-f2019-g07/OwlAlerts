@@ -1,64 +1,46 @@
 var user = require('../models/user');
 
-// Home Page for Issues.
-exports.index = function(err, req, res, next){
-	if(err)
-		next(err);
+// Home Page for Users.
+exports.index = function(req, res){
 	res.send('NOT IMPLEMENTED: User index');
 };
 
-// Display list of all Issues.
+// Display list of all Users.
 exports.user_list = function(req, res) {
-	if(err)
-		next(err);
-	res.send('NOT IMPLEMENTED: Issue list');
+	res.send('NOT IMPLEMENTED: User list');
 };
 
-// Display detail page for a specific Issue.
+// Display detail page for a specific User.
 exports.user_detail = function(req, res) {
-	if(err)
-		next(err);
-  res.send('NOT IMPLEMENTED: Issue detail: ' + req.params.id);
+  res.send('NOT IMPLEMENTED: User detail: ' + req.params.id);
 };
 
-// Display Issue create form on GET.
-exports.user_create_get = function(err, req, res, next) {
-	if(err)
-		next(err);
-  res.send('NOT IMPLEMENTED: Issue create GET');
+// Display User create form on GET.
+exports.user_create_get = function(req, res) {
+  res.send('NOT IMPLEMENTED: User create GET');
 };
 
-// Handle Issue create on POST.
-exports.user_create_post = function(err, req, res, next) {
-	if(err)
-		next(err);
-  res.send('NOT IMPLEMENTED: Issue create POST');
+// Handle User create on POST.
+exports.user_create_post = function(req, res) {
+  res.send('NOT IMPLEMENTED: User create POST');
 };
 
-// Display Issue delete form on GET.
-exports.user_delete_get = function(err, req, res, next) {
-	if(err)
-		next(err);
-  res.send('NOT IMPLEMENTED: Issue delete GET');
+// Display User delete form on GET.
+exports.user_delete_get = function(req, res) {
+  res.send('NOT IMPLEMENTED: User delete GET');
 };
 
-// Handle Issue delete on POST.
-exports.user_delete_post = function(err, req, res, next) {
-	if(err)
-		next(err);
-  res.send('NOT IMPLEMENTED: Issue delete POST');
+// Handle User delete on POST.
+exports.user_delete_post = function(req, res) {
+  res.send('NOT IMPLEMENTED: User delete POST');
 };
 
-// Display Issue update form on GET.
-exports.user_update_get = function(err, req, res, next) {
-	if(err)
-		next(err);
-  res.send('NOT IMPLEMENTED: Issue update GET');
+// Display User update form on GET.
+exports.user_update_get = function(req, res) {
+  res.send('NOT IMPLEMENTED: User update GET');
 };
 
-// Handle Issue update on POST.
-exports.user_update_post = function(err, req, res, next) {
-	if(err)
-		next(err);
-  res.send('NOT IMPLEMENTED: Issue update POST');
+// Handle User update on POST.
+exports.user_update_post = function(req, res) {
+  res.send('NOT IMPLEMENTED: User update POST');
 };
