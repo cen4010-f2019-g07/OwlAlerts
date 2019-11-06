@@ -1,7 +1,8 @@
 var issue = require('../models/issue');
 
 exports.index = function(err, req, res, next) {
-	console.error(err);
+	if(err)
+		next(err);
 	res.send('NOT IMPLEMENTED: Issue index');
 };
 

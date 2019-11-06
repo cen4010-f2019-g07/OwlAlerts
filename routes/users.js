@@ -4,7 +4,7 @@ var router = express.Router();
 var users_controller = require('../controllers/users_controller');
 
 // GET User home page.
-//router.get('/', users_controller.index);
+router.get('/', users_controller.index);
 
 // GET request for creating an User.
 router.get('/create', users_controller.user_create_get);

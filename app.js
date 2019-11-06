@@ -17,16 +17,14 @@ app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', indexRouter);
-
-/*
 app.use('/users', userRouter);
 app.use('/garages', garageRouter);
 app.use('/events', eventRouter);
 app.use('/issues', issueRouter);
-app.set('view engine', 'ejs');
-*/
 
-if(production){
+app.set('view engine', 'ejs');
+
+if(production == true){
 	pool = mysql.createPool({
 		connectionLimit: 100,
 		host: 'localhost',
