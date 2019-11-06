@@ -10,7 +10,6 @@ const garageRouter = require('./routes/garages');
 const issueRouter = require('./routes/issues');
 
 const app = express();
-const router = express.Router();
 const production = process.env.production;
 var pool;
 
