@@ -1,4 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-console.log("Index router works");
+var index_controller = require('../controllers/index_controller');
+
+// GET home page.
+router.get('/', index_controller.index);
+
+module.exports = router;

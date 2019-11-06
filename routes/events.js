@@ -13,19 +13,19 @@ router.get('/create', events_controller.event_create_get);
 router.post('/create', events_controller.event_create_post);
 
 // GET request to delete Event.
-router.get('/book/:id/delete', events_controller.event_delete_get);
+router.get('/event/:id/delete', events_controller.event_delete_get);
 
 // POST request to delete Event.
-router.post('/book/:id/delete', events_controller.event_delete_post);
+router.post('/event/:id/delete', events_controller.event_delete_post);
 
 // GET request to update Event.
-router.get('/book/:id/update', events_controller.event_update_get);
+router.get('/event/:id/update', events_controller.event_update_get);
 
 // POST request to update Event.
-router.post('/book/:id/update', events_controller.event_update_post);
+router.post('/event/:id/update', events_controller.event_update_post);
 
 // GET request for one Event.
-router.get('/book/:id', events_controller.event_detail);
+router.get('/event/:id', events_controller.event_detail);
 
 // GET request for list of all Event items.
 router.get('/events', events_controller.event_list);

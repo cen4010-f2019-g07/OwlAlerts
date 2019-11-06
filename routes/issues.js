@@ -13,21 +13,21 @@ router.get('/create', issues_controller.issue_create_get);
 router.post('/create', issues_controller.issue_create_post);
 
 // GET request to delete Issue.
-router.get('/book/:id/delete', issues_controller.issue_delete_get);
+router.get('/issue/:id/delete', issues_controller.issue_delete_get);
 
 // POST request to delete Issue.
-router.post('/book/:id/delete', issues_controller.issue_delete_post);
+router.post('/issue/:id/delete', issues_controller.issue_delete_post);
 
 // GET request to update Issue.
-router.get('/book/:id/update', issues_controller.issue_update_get);
+router.get('/issue/:id/update', issues_controller.issue_update_get);
 
 // POST request to update Issue.
-router.post('/book/:id/update', issues_controller.issue_update_post);
+router.post('/issue/:id/update', issues_controller.issue_update_post);
 
 // GET request for one Issue.
-router.get('/book/:id', issues_controller.issue_detail);
+router.get('/issue/:id', issues_controller.issue_detail);
 
 // GET request for list of all Issue items.
-router.get('/events', issues_controller.issue_list);
+router.get('/issues', issues_controller.issue_list);
 
 module.exports = router;
