@@ -2,7 +2,7 @@
   "name": "owl_alerts",
   "version": "1.0.0",
   "description": "Owl Alerts app for Principle of Software Engineering (Fall 2019 - Group 7)",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
