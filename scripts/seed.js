@@ -200,7 +200,7 @@ connection.connect(function(error){
 
 	//Seeds the Database with Event Records
 	for(let i = 0; i < eventsCount; i++){
-		let location = `${faker.lorem.words()} Hall, Boca Campus`
+		let location = `${faker.lorem.words()} Hall, Boca Campus`;
 		let dates_values = [faker.date.past(), faker.date.recent(), faker.date.future()];
 		let date = dates_values[Math.round(Math.random()*2)];
 		let start_date = date.toMysqlFormat();
@@ -214,8 +214,8 @@ connection.connect(function(error){
 		
 		connection.query('SELECT * FROM users WHERE faculty=true', function(err1, rows1, fields1){
 			if(err1) throw err1;
-			for(var i in rows1){
-				user_ids[i] = rows1[i].id;
+			for(let j in rows1){
+				user_ids[j] = rows1[j].id;
 			}
 			submitted_user = user_ids[Math.round(Math.random()*(user_ids.length-1))];
 			events = `INSERT INTO events(location, start_date, end_date, description, host, submitted_user) \
@@ -237,10 +237,76 @@ connection.connect(function(error){
 
 	//Seeds the Database with Issue Records
 	for(let i = 0; i < issuesCount; i++){
-		
+		let description = faker.lorem.text();
+		let location_values = ['IVAS', 'IVAN', 'UVA 57', 'UVA 58', 'UVA 59', 'UVA 60', 
+		'UVA 61', 'PAR', 'HPT', 'GPT', 'IRT', `${faker.lorem.words()} Hall, Boca Campus`];
+		let location = location_values[Math.round(Math.random()*11)];
+		let verified_values = [true, false, false, false];
+		let verified = verified_values[Math.round(Math.random()*3)];
+		let resolved_values = [true, false, false];
+		let resolved = false;
+		if(verified){
+			resolved = resolved_values[Math.round(Math.random()*2)];
+		}
+		let submitted_user_values = [];
+		let submitted_user;
+		let verified_faculty_values = [];
+		let verified_faculty = null;
+		let resolved_faculty_values = [];
+		let resolved_faculty = null;
+
+		connection.query('SELECT * FROM users', function(err1, rows1, fields1){
+			if(err1) throw err1;
+			for(let j in rows1){
+				submitted_user_values[j] = rows1[j].id;
+			}
+			submitted_user = submitted_user_values[Math.round(Math.random()*(submitted_user_values.length-1))];
+			if(verified == true){
+				connection.query('SELECT * FROM users WHERE faculty=true', function(err2, rows2, fields2){
+					if(err2) throw err2;
+					for(let k in rows2){
+						verified_faculty_values[k] = rows2[k].id;
+					}
+					verified_faculty = verified_faculty_values[Math.round(Math.random()*(verified_faculty_values.length-1))];
+					if(resolved){
+						connection.query('SELECT * FROM users WHERE faculty=true', function(err3, rows3, fields3){
+							if(err3) throw err3;
+							for(let l in rows3){
+								resolved_faculty_values[l] = rows3[l].id;
+							}
+							resolved_faculty = resolved_faculty_values[Math.round(Math.random()*(resolved_faculty_values.length-1))];
+						});
+					}
+				});
+			}
+			let issues = `INSERT INTO issues(description, location, verified, resolved, submitted_user, verified_faculty \
+			resolved_faculty) VALUE(\"${description}\", \"${location}\", ${verified}, ${resolved}, ${submitted_user}, \
+			${verified_faculty}, ${resolved_faculty})`;
+
+			console.log('---------------------------------------------------');
+			console.log(`Issue Description for Record ${i+1}: ${description}`);
+			console.log(`Issue Location for Record ${i+1}: ${location}`);
+			console.log(`Issue Verified for Record ${i+1}: ${verified}`);
+			console.log(`Issue Resolved for Record ${i+1}: ${resolved}`);
+			console.log(`Issue Submitted User Id for Record ${i+1}: ${submitted_user}`);
+			console.log(`Issue Verified Faculty User Id for Record ${i+1}: ${verified_faculty}`);
+			console.log(`Issue Resolved Faculty User Id for Record ${i+1}: ${resolved_faculty}`);
+			console.log(`Issue Record ${i+1} Created!`);
+			/*
+			connection.query(issues, function(err4, rows4, fields4){
+				if(err4) throw err4;
+				console.log('---------------------------------------------------');
+				console.log(`Issue Description for Record ${i+1}: ${description}`);
+				console.log(`Issue Location for Record ${i+1}: ${location}`);
+				console.log(`Issue Verified for Record ${i+1}: ${verified}`);
+				console.log(`Issue Resolved for Record ${i+1}: ${resolved}`);
+				console.log(`Issue Submitted User Id for Record ${i+1}: ${submitted_user}`);
+				console.log(`Issue Verified Faculty User Id for Record ${i+1}: ${verified_faculty}`);
+				console.log(`Issue Resolved Faculty User Id for Record ${i+1}: ${resolved_faculty}`);
+				console.log(`Issue Record ${i+1} Created!`);
+			});
+			*/
+		});
 	}
-
 });
-
-connection.end();
 return;
