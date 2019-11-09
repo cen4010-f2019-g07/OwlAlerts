@@ -26,9 +26,21 @@ else{
 	console.log('Connected to Development Database!');
 }
 
+function twoDigits(d){
+	if(0 <= d && d < 10) return "0" + d.toString();
+	if(-10 < d ** d < 0) return "-0" + (-1*d).toString();
+	return d.toString();
+}
+
+Date.prototype.toMysqlFormat = function(){
+	return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + 
+	twoDigits(this.getUTCDate()) + " " + twoDigits(this.getHours()) + ":" + twoDigits(this.getUTCMinutes()) + 
+	":" + twoDigits(this.getUTCSeconds());
+}
+
 //Seeds the Database with Records
-connection.connect(function(err){
-	if(err) throw err;
+connection.connect(function(error){
+	if(error) throw error;
 	//Seeds the Database with User Records
 	for(let i = 0; i < usersCount; i++){
 		let residency_values = ['Out-State', 'In-State'];
@@ -182,12 +194,45 @@ connection.connect(function(err){
 			console.log(`Garage Full Status for Record ${i+1}: ${full}`);
 			console.log(`Garage Free Spots for Record ${i+1}: ${free_spots}`);
 			console.log(`Garage Total Spots for Record ${i+1}: ${total_spots}`);
+			console.log(`Garage Record ${i+1} Created!`);
 		});
 	}
 
 	//Seeds the Database with Event Records
 	for(let i = 0; i < eventsCount; i++){
+		let location = `${faker.lorem.words()} Hall, Boca Campus`
+		let dates_values = [faker.date.past(), faker.date.recent(), faker.date.future()];
+		let date = dates_values[Math.round(Math.random()*2)];
+		let start_date = date.toMysqlFormat();
+		date.setHours(date.getHours() + 2);
+		let end_date = date.toMysqlFormat();
+		let description = faker.lorem.text();
+		let host = faker.company.companyName();
+		let user_ids = [];
+		let submitted_user;
+		let events;
 		
+		connection.query('SELECT * FROM users WHERE faculty=true', function(err1, rows1, fields1){
+			if(err1) throw err1;
+			for(var i in rows1){
+				user_ids[i] = rows1[i].id;
+			}
+			submitted_user = user_ids[Math.round(Math.random()*(user_ids.length-1))];
+			events = `INSERT INTO events(location, start_date, end_date, description, host, submitted_user) \
+			VALUE(\"${location}\", \"${start_date}\", \"${end_date}\", \"${description}\", \"${host}\", ${submitted_user})`;
+
+			connection.query(events, function(err2, rows2, fields2){
+				if(err2) throw err2;
+				console.log('---------------------------------------------------');
+				console.log(`Event Location for Record ${i+1}: ${location}`);
+				console.log(`Event Start Date for Record ${i+1}: ${start_date}`);
+				console.log(`Event End Date for Record ${i+1}: ${end_date}`);
+				console.log(`Event Description for Record ${i+1}: ${description}`);
+				console.log(`Event Host for Record ${i+1}: ${host}`);
+				console.log(`Event Submitted User Id for Record ${i+1}: ${submitted_user}`);
+				console.log(`Event Record ${i+1} Created!`);
+			});		
+		});
 	}
 
 	//Seeds the Database with Issue Records
@@ -195,76 +240,7 @@ connection.connect(function(err){
 		
 	}
 
-	connection.end();
-	return;
-});
-/*
-var createIssue1 = "INSERT INTO issues(description, location) VALUE(\'The toilet is clogged\', \
-\'In Parliament 1st Floor Bathroom\')";
-var createIssue2 = "INSERT INTO issues(description, location, verified) VALUE(\
-\'The leftmost elevator cab is not working\', \'IVAS Lobby\', true)";
-var createIssue3 = "INSERT INTO issues(description, location, verified, resolved) \
-VALUE(\'TV in IVAN Lobby displaying Error\', \'IVAN Lobby\', true, true)";
-
-var createEvent1 = "INSERT INTO events(location, start_date, end_date, description, host) \
-VALUE(\'Palmetto Oaks Room\', \'2019-11-01 18:00:00\', \'2019-11-01 19:30:00\', \'Social with free food\', \'Cool Socials\')";
-var createEvent2 = "INSERT INTO events(location, start_date, end_date, description, host) \
-VALUE(\'Live Oak Room\', \'2019-11-04 15:00:00\', \'2019-11-04 16:00:00\', \'Informal Resume Review\', \'Resume Reviews\')";
-
-var createUser1 = "INSERT INTO users(residency, commuter, phone_number, address, email, \
-firstname, lastname) VALUE(\'In-State\', true, \'(987) 123-4567\', \'70 Glades Road, Boca \
-Raton, FL 33302\', \'studentemail1@fau.edu\', \'John\', \'Doe\')";
-var createUser2 = "INSERT INTO users(residency, dormer, phone_number, address, email, \
-firstname, lastname) VALUE(\'Out-State\', true, \'(123) 456-7890\', \'Parliament Room 316, \
-Boca Raton, FL 33302\', \'studentemail2@fau.edu\', \'Jane\', \'Smith\')";
-
-var createGarage1 = "INSERT INTO garages(location, name, free_spots, total_spots) \
-VALUE(\'60 University Road, Boca Raton, FL 33302\', \'Garage 1\', 400, 400)";
-var createGarage2 = "INSERT INTO garages(location, name, free_spots, total_spots) \
-VALUE(\'40 Lucia Ave, Boca Raton, FL 33303\', \'Garage 2\', 400, 400)";
-
-connection.query(createIssue1, function(err, rows, fields){
-	if(err) throw err;
-	console.log("Issue Record 1 has been Created!");
 });
 
-connection.query(createIssue2, function(err, rows, fields){
-	if(err) throw err;
-	console.log("Issue Record 2 has been Created!");
-});
-
-connection.query(createIssue3, function(err, rows, fields){
-	if(err) throw err;
-	console.log("Issue Record 3 has been Created!");
-});
-
-connection.query(createEvent1, function(err, rows, fields){
-	if(err) throw err;
-	console.log("Event Record 1 has been Created!");
-});
-
-connection.query(createEvent2, function(err, rows, fields){
-	if(err) throw err;
-	console.log("Event Record 2 has been Created!");
-});
-
-connection.query(createUser1, function(err, rows, fields){
-	if(err) throw err;
-	console.log("User Record 1 has been Created!");
-});
-
-connection.query(createUser2, function(err, rows, fields){
-	if(err) throw err;
-	console.log("User Record 2 has been Created!");
-});
-
-connection.query(createGarage1, function(err, rows, fields){
-	if(err) throw err;
-	console.log("Garage Record 1 has been Created!");
-});
-
-connection.query(createGarage2, function(err, rows, fields){
-	if(err) throw err;
-	console.log("Garage Record 2 has been Created!");
-});
-*/
+connection.end();
+return;
