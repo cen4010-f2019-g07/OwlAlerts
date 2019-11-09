@@ -15,7 +15,7 @@ description TEXT NOT NULL, submitted_user INT NOT NULL, host VARCHAR(255) NOT NU
 FOREIGN KEY (submitted_user) REFERENCES users(id))';
 const create_issues = 'CREATE TABLE issues( id INT NOT NULL AUTO_INCREMENT, description TEXT NOT NULL, \
 location VARCHAR(255) NOT NULL, verified BOOL NOT NULL DEFAULT false, resolved BOOL NOT NULL DEFAULT false, \
-submitted_user INT NOT NULL, verified_faculty INT NOT NULL, resolved_faculty INT NOT NULL, PRIMARY KEY (id), \
+submitted_user INT NOT NULL, verified_faculty INT, resolved_faculty INT, PRIMARY KEY (id), \
 FOREIGN KEY (submitted_user) REFERENCES users(id), FOREIGN KEY (verified_faculty) REFERENCES users(id), \
 FOREIGN KEY (resolved_faculty) REFERENCES users(id))';
 
