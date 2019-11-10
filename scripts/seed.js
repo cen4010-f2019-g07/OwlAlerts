@@ -1,3 +1,4 @@
+"use strict";
 const mysql = require('mysql');
 const faker = require('faker');
 const production = process.env.production || false;
