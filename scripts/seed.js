@@ -42,7 +42,7 @@ else{
 	console.log('Connected to Development Database!');
 }
 
-getFaculty = function(){
+function getFaculty(){
 	return new Promise(function(resolve, reject){
 		pool.getConnection(function(error, connection){
 				connection.query('SELECT * FROM users WHERE faculty=true', function(err, rows, fields){
@@ -55,7 +55,7 @@ getFaculty = function(){
 	});
 }
 
-getUsers = function(){
+function getUsers(){
 	return new Promise(function(resolve, reject){
 		pool.getConnection(function(error, connection){
 			connection.query('SELECT * FROM users', function(err, rows, fields){
@@ -69,7 +69,7 @@ getUsers = function(){
 }
 
 //Seed the Database with User Records
-seedUsers = function(i){
+function seedUsers(i){
 	return new Promise(function(resolve, reject){
 		let residency_values = ['Out-State', 'In-State'];
 		let residency = residency_values[Math.round(Math.random())];
@@ -80,6 +80,7 @@ seedUsers = function(i){
 		let building = '';
 		let counter = 0;
 		let uva_rooms = [];
+		let format_j;
 		for(let i = 0; i < 2; i++){
 			for(let j = 0; j < 30; j++){
 				format_j = ('0' + j).slice(-2);
@@ -207,7 +208,7 @@ seedUsers = function(i){
 }
 
 //Seed the Database with Garage Records
-seedGarages = function(i){
+function seedGarages(i){
 	return new Promise(function(resolve, reject){
 		let location = `${faker.address.streetAddress()}, Boca Raton, FL 33043`;
 		let name = faker.company.companyName();
@@ -239,7 +240,7 @@ seedGarages = function(i){
 }
 
 //Seed the Database with Event Records
-seedEvents = function(i){
+function seedEvents(i){
 	return new Promise(function(resolve, reject){
 		let location = `${faker.lorem.words()} Hall, Boca Campus`;
 		let dates_values = [faker.date.past(), faker.date.recent(), faker.date.future()];
@@ -284,7 +285,7 @@ seedEvents = function(i){
 }
 
 //Seed the Database with Issue Records
-seedIssues = function(i){
+function seedIssues(i){
 	return new Promise(function(resolve, reject){
 		let description = faker.lorem.text();
 		let location_values = ['IVAS', 'IVAN', 'UVA 57', 'UVA 58', 'UVA 59', 'UVA 60', 
@@ -363,7 +364,7 @@ seedIssues = function(i){
 	});
 }
 
-loopSeedUsers = function(count){
+function loopSeedUsers(count){
 	return new Promise(function(resolve, reject){
 		for(let i = 0; i < count; i++){
 			seedUsers(i).then(function(results){
@@ -376,7 +377,7 @@ loopSeedUsers = function(count){
 	});
 }
 
-loopSeedGarages = function(count){
+function loopSeedGarages(count){
 	return new Promise(function(resolve, reject){
 		for(let i = 0; i < count; i++){
 			seedGarages(i).then(function(results){
@@ -389,7 +390,7 @@ loopSeedGarages = function(count){
 	});
 }
 
-loopSeedEvents = function(count){
+function loopSeedEvents(count){
 	return new Promise(function(resolve, reject){
 		for(let i = 0; i < count; i++){
 			seedEvents(i).then(function(results){
@@ -402,7 +403,7 @@ loopSeedEvents = function(count){
 	});
 }
 
-loopSeedIssues = function(count){
+function loopSeedIssues(count){
 	return new Promise(function(resolve, reject){
 		for(let i = 0; i < count; i++){
 			seedIssues(i).then(function(results){
@@ -415,7 +416,7 @@ loopSeedIssues = function(count){
 	});
 }
 
-seedDatabase = function(){
+function seedDatabase(){
 	return new Promise(function(resolve, reject){
 		loopSeedUsers(usersCount).then(loopSeedGarages(garagesCount)).then(loopSeedEvents(eventsCount))
 		.then(loopSeedIssues(issuesCount)).then(function(){
