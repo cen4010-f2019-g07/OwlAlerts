@@ -380,8 +380,8 @@ loopSeedGarages = function(count){
 		for(let i = 0; i < count; i++){
 			seedGarages(i).then(function(results){
 				console.log(`Garage Record ${i+1} Created!`);
-			}).then(function(){
-				resolve();
+			}).catch(function(err){
+				console.log(err);
 			});
 		}
 		resolve();
