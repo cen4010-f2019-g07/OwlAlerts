@@ -7,6 +7,18 @@ const usersCount = process.env.users || 0;
 const garagesCount = process.env.garages || 0;
 var connection;
 
+function twoDigits(d){
+	if(0 <= d && d < 10) return "0" + d.toString();
+	if(-10 < d ** d < 0) return "-0" + (-1*d).toString();
+	return d.toString();
+}
+
+Date.prototype.toMysqlFormat = function(){
+	return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + 
+	twoDigits(this.getUTCDate()) + " " + twoDigits(this.getHours()) + ":" + twoDigits(this.getUTCMinutes()) + 
+	":" + twoDigits(this.getUTCSeconds());
+}
+
 if(production == true){
 	connection = mysql.createConnection({
 		host: 'localhost',
@@ -24,18 +36,6 @@ else{
 		database: 'owl_alerts'
 	});
 	console.log('Connected to Development Database!');
-}
-
-function twoDigits(d){
-	if(0 <= d && d < 10) return "0" + d.toString();
-	if(-10 < d ** d < 0) return "-0" + (-1*d).toString();
-	return d.toString();
-}
-
-Date.prototype.toMysqlFormat = function(){
-	return this.getUTCFullYear() + "-" + twoDigits(1 + this.getUTCMonth()) + "-" + 
-	twoDigits(this.getUTCDate()) + " " + twoDigits(this.getHours()) + ":" + twoDigits(this.getUTCMinutes()) + 
-	":" + twoDigits(this.getUTCSeconds());
 }
 
 //Seeds the Database with Records
@@ -211,7 +211,6 @@ connection.connect(function(error){
 		let user_ids = [];
 		let submitted_user;
 		let events;
-		
 		connection.query('SELECT * FROM users WHERE faculty=true', function(err1, rows1, fields1){
 			if(err1) throw err1;
 			for(let j in rows1){
