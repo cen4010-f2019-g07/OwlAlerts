@@ -3,6 +3,7 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const http = require('http');
+const dashboardRouter = require('./routes/dashboard'); //dashboard.js in routes folder
 const indexRouter = require('./routes/index'); //Default page
 const userRouter = require('./routes/users');
 const eventRouter = require('./routes/events');
@@ -21,6 +22,7 @@ app.use('/users', userRouter);
 app.use('/garages', garageRouter);
 app.use('/events', eventRouter);
 app.use('/issues', issueRouter);
+app.use('/dashboard', dashboardRouter);
 
 app.set('view engine', 'ejs');
 
