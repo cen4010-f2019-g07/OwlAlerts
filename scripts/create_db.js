@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 const create_db = 'CREATE DATABASE owl_alerts';
 const use_db = 'USE owl_alerts';
-const create_users = 'CREATE TABLE users(id INT NOT NULL AUTO_INCREMENT, residency VARCHAR(100) NOT NULL, \
+const create_users = 'CREATE TABLE users(id INT NOT NULL AUTO_INCREMENT, residency VARCHAR(100), \
 faculty BOOL NOT NULL DEFAULT false, commuter BOOL NOT NULL DEFAULT false, \
 dormer BOOL NOT NULL DEFAULT false, building VARCHAR(100), room_number VARCHAR(100), \
 phone_number VARCHAR(100), address VARCHAR(255), email VARCHAR(100) NOT NULL, \
