@@ -4,7 +4,7 @@ var router = express.Router();
 var users_controller = require('../controllers/users_controller');
 
 // GET User home page.
-router.get('/', users_controller.index);
+router.get('/', users_controller.index); 
 
 // GET request for creating an User.
 router.get('/create', users_controller.user_create_get);
@@ -13,7 +13,7 @@ router.get('/create', users_controller.user_create_get);
 router.post('/create', users_controller.user_create_post);
 
 // GET request to delete User.
-router.get('/user/:id/delete', users_controller.user_delete_get);
+router.get('/user/:id/delete', users_controller.user_delete_get); //Prefaced by users - /users/user/:id/delete
 
 // POST request to delete User.
 router.post('/user/:id/delete', users_controller.user_delete_post);

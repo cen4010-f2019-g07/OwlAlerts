@@ -2,7 +2,7 @@ var user = require('../models/user');
 
 // Home Page for Users.
 exports.index = function(req, res){
-	res.send('NOT IMPLEMENTED: User index');
+	res.render('pages/users/index');
 };
 
 // Display list of all Users.
