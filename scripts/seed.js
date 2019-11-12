@@ -75,6 +75,9 @@ function seedUsers(i){
 		let residency = residency_values[Math.round(Math.random())];
 		let bool_selection_values = ['commuter', 'dormer', 'faculty']
 		let bool_selection = bool_selection_values[Math.round(Math.random()*2)];
+		if(bool_selection == 'faculty'){
+			residency = null;
+		}
 		let building_values = ['IVAS', 'IVAN', 'UVA 57', 'UVA 58', 'UVA 59', 'UVA 60', 
 		'UVA 61', 'PAR', 'HPT', 'GPT', 'IRT'];
 		let building = '';
@@ -174,14 +177,30 @@ function seedUsers(i){
 					console.log('Room Switch Statment Not Working!');
 			}
 		}
-		let address = faker.fake("{{address.streetAddress}}, {{address.city}}, {{address.state}}, {{address.zipCode}}");
+		let street = faker.address.streetAddress();
+		let city = faker.address.city();
+		if(residency == 'In-State' || bool_selection == 'faculty'){
+			city = 'Florida';
+		}
+		let state = faker.address.state();
+		let zip = faker.address.zipCode();
+		let country_values = [];
+		let country = 'United States of America';
+		if(residency == 'Out-State'){
+			for(var i = 0; i < 99; i++){
+				country_values[i] = 'United States of America';
+			}
+			country_values[99] = faker.address.country();
+			country = country_values[Math.round(Math.random()*99)];
+		}
 		let phone_number = faker.phone.phoneNumber();
 		let email = faker.internet.email();
 		let firstname = faker.name.firstName();
 		let lastname = faker.name.lastName();
-		let user = `INSERT INTO users(residency, ${bool_selection}, building, room_number, address, \
-		phone_number, email, firstname, lastname) VALUE(\"${residency}\", true, \"${building}\", \
-		\"${room_number}\", \"${address}\", \"${phone_number}\", \"${email}\", \"${firstname}\", \"${lastname}\")`;
+		let user = `INSERT INTO users(residency, ${bool_selection}, building, room_number, street, city, state, \
+		zip, country, phone_number, email, firstname, lastname) VALUE(\"${residency}\", true, \"${building}\", \
+		\"${room_number}\", \"${street}\", \"${city}\", \"${state}\", \"${zip}\", \"${country}\", \
+		\"${phone_number}\", \"${email}\", \"${firstname}\", \"${lastname}\")`;
 		pool.getConnection(function(error, connection){
 			if(error)
 				return reject(error);
@@ -196,7 +215,7 @@ function seedUsers(i){
 					console.log(`User Building for Record ${i+1}: ${building}`);
 					console.log(`User Room Number for Record ${i+1}: ${room_number}`);
 				}
-				console.log(`User Address for Record ${i+1}: ${address}`);
+				console.log(`User Address for Record ${i+1}: ${street}, ${city}, ${state}, ${zip}, ${country}`);
 				console.log(`User Phone Number for Record ${i+1}: ${phone_number}`);
 				console.log(`User Email for Record ${i+1}: ${email}`);
 				console.log(`User First Name for Record ${i+1}: ${firstname}`);
