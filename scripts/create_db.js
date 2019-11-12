@@ -5,8 +5,8 @@ const create_users = 'CREATE TABLE users(id INT NOT NULL AUTO_INCREMENT, residen
 faculty BOOL NOT NULL DEFAULT false, commuter BOOL NOT NULL DEFAULT false, \
 dormer BOOL NOT NULL DEFAULT false, building VARCHAR(100), room_number VARCHAR(100), \
 phone_number VARCHAR(100), street VARCHAR(255), city VARCHAR(255), state VARCHAR(255), \
-zip VARCHAR(255), country VARCHAR(255), email VARCHAR(100) NOT NULL, firstname VARCHAR(100) NOT NULL, \
-lastname VARCHAR(100) NOT NULL, PRIMARY KEY (id))';
+zip VARCHAR(255), country VARCHAR(255), email VARCHAR(100) NOT NULL, password VARCHAR(255), \
+firstname VARCHAR(100) NOT NULL, lastname VARCHAR(100) NOT NULL, PRIMARY KEY (id))';
 const create_garages = 'CREATE TABLE garages( id INT NOT NULL AUTO_INCREMENT, \
 location VARCHAR(100) NOT NULL, name VARCHAR(100) NOT NULL, full BOOL NOT NULL DEFAULT false, \
 free_spots INT NOT NULL DEFAULT 0, total_spots INT NOT NULL, PRIMARY KEY (id))';
@@ -28,7 +28,7 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err){
 	if(err) throw err;
-	console.log('Connected!');
+	console.log('Connected to MySQL!');
 	connection.query(create_db, function(err, result){
 		if(err) throw err;
 		console.log('Database Created!');

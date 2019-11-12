@@ -84,55 +84,55 @@ function seedUsers(i){
 		let counter = 0;
 		let uva_rooms = [];
 		let format_j;
-		for(let i = 0; i < 2; i++){
-			for(let j = 0; j < 30; j++){
-				format_j = ('0' + j).slice(-2);
-				uva_rooms[counter] = `${i+1}${format_j}`;
+		for(let j = 0; j < 2; j++){
+			for(let k = 0; k < 30; k++){
+				format_j = ('0' + k).slice(-2);
+				uva_rooms[counter] = `${j+1}${format_j}`;
 				counter++;
 			}
 		}
 		let iva_rooms = [];
 		counter = 0;
-		for(let i = 0; i < 7; i++){
-			for(let j = 0; j < 70; j++){
-				format_j = ('0' + j).slice(-2);
-				iva_rooms[counter] = `${i+1}${format_j}`;
+		for(let j = 0; j < 7; j++){
+			for(let k = 0; k < 70; k++){
+				format_j = ('0' + k).slice(-2);
+				iva_rooms[counter] = `${j+1}${format_j}`;
 				counter++;
 			}
 		}
 		let par_rooms = [];
 		counter = 0;
-		for(let i = 0; i < 5; i++){
-			for(let j = 0; j < 30; j++){
-				format_j = ('0' + j).slice(-2);
-				par_rooms[counter] = `${i+1}${format_j}`;
+		for(let j = 0; j < 5; j++){
+			for(let k = 0; k < 30; k++){
+				format_j = ('0' + k).slice(-2);
+				par_rooms[counter] = `${j+1}${format_j}`;
 				counter++
 			}
 		}
 		let hpt_rooms = [];
 		counter = 0;
-		for(let i = 0; i < 7; i++){419
-			for(let j = 0; j < 60; j++){
-				format_j = ('0' + j).slice(-2);
-				hpt_rooms[counter] = `${i+1}${format_j}`;
+		for(let j = 0; j < 7; j++){419
+			for(let k = 0; k < 60; k++){
+				format_j = ('0' + k).slice(-2);
+				hpt_rooms[counter] = `${j+1}${format_j}`;
 				counter++
 			}
 		}
 		let gpt_rooms = [];
 		counter = 0;
-		for(let i = 0; i < 7; i++){
-			for(let j = 0; j < 60; j++){
-				format_j = ('0' + j).slice(-2);
-				gpt_rooms[counter] = `${i+1}${format_j}`;
+		for(let j = 0; j < 7; j++){
+			for(let k = 0; k < 60; k++){
+				format_j = ('0' + k).slice(-2);
+				gpt_rooms[counter] = `${j+1}${format_j}`;
 				counter++
 			}
 		}
 		let irt_rooms = [];
 		counter = 0;
-		for(let i = 0; i < 7; i++){
-			for(let j = 0; j < 60; j++){
-				format_j = ('0' + j).slice(-2);
-				irt_rooms[counter] = `${i+1}${format_j}`;
+		for(let j = 0; j < 7; j++){
+			for(let k = 0; k < 60; k++){
+				format_j = ('0' + k).slice(-2);
+				irt_rooms[counter] = `${j+1}${format_j}`;
 				counter++
 			}
 		}
@@ -179,28 +179,29 @@ function seedUsers(i){
 		}
 		let street = faker.address.streetAddress();
 		let city = faker.address.city();
-		if(residency == 'In-State' || bool_selection == 'faculty'){
-			city = 'Florida';
-		}
 		let state = faker.address.state();
+		if(residency == 'In-State' || bool_selection == 'faculty'){
+			state = 'Florida';
+		}
 		let zip = faker.address.zipCode();
 		let country_values = [];
 		let country = 'United States of America';
 		if(residency == 'Out-State'){
-			for(var i = 0; i < 99; i++){
-				country_values[i] = 'United States of America';
+			for(let j = 0; j < 99; j++){
+				country_values[j] = 'United States of America';
 			}
 			country_values[99] = faker.address.country();
 			country = country_values[Math.round(Math.random()*99)];
 		}
 		let phone_number = faker.phone.phoneNumber();
 		let email = faker.internet.email();
+		let password = faker.internet.password();
 		let firstname = faker.name.firstName();
 		let lastname = faker.name.lastName();
 		let user = `INSERT INTO users(residency, ${bool_selection}, building, room_number, street, city, state, \
-		zip, country, phone_number, email, firstname, lastname) VALUE(\"${residency}\", true, \"${building}\", \
+		zip, country, phone_number, email, password, firstname, lastname) VALUE(\"${residency}\", true, \"${building}\", \
 		\"${room_number}\", \"${street}\", \"${city}\", \"${state}\", \"${zip}\", \"${country}\", \
-		\"${phone_number}\", \"${email}\", \"${firstname}\", \"${lastname}\")`;
+		\"${phone_number}\", \"${email}\", \"${password}\", \"${firstname}\", \"${lastname}\")`;
 		pool.getConnection(function(error, connection){
 			if(error)
 				return reject(error);
@@ -218,6 +219,7 @@ function seedUsers(i){
 				console.log(`User Address for Record ${i+1}: ${street}, ${city}, ${state}, ${zip}, ${country}`);
 				console.log(`User Phone Number for Record ${i+1}: ${phone_number}`);
 				console.log(`User Email for Record ${i+1}: ${email}`);
+				console.log(`User Password for Record ${i+1}: ${password}`);
 				console.log(`User First Name for Record ${i+1}: ${firstname}`);
 				console.log(`User Last Name for Record ${i+1}: ${lastname}`);
 				resolve(rows);
