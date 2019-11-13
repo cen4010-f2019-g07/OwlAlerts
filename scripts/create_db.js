@@ -19,6 +19,8 @@ location VARCHAR(255) NOT NULL, verified BOOL NOT NULL DEFAULT false, resolved B
 submitted_user INT NOT NULL, verified_faculty INT, resolved_faculty INT, PRIMARY KEY (id), \
 FOREIGN KEY (submitted_user) REFERENCES users(id), FOREIGN KEY (verified_faculty) REFERENCES users(id), \
 FOREIGN KEY (resolved_faculty) REFERENCES users(id))';
+const create_imgs = 'CREATE TABLE img( id INT NOT NULL AUTO_INCREMENT, name VARCHAR(255) NOT NULL, \
+description TEXT NOT NULL, type VARCHAR(100) NOT NULL, size INT(11) NOT NULL, PRIMARY KEY (id))';
 
 var connection = mysql.createConnection({
 	host: 'localhost',
@@ -52,6 +54,10 @@ connection.connect(function(err){
 	connection.query(create_issues, function(err, result){
 		if(err) throw err;
 		console.log('Issues Table Created!');
+	});
+	connection.query(create_imgs, function(err, result){
+		if(err) throw err;
+		console.log('Images Table Created!');
 	});
 	connection.end();
 	return;
