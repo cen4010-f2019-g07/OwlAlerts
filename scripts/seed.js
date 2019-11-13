@@ -6,6 +6,7 @@ const issuesCount = process.env.issues || 0;
 const eventsCount = process.env.events || 0;
 const usersCount = process.env.users || 0;
 const garagesCount = process.env.garages || 0;
+const imagesCount = process.env.images || 0;
 var connection;
 var pool;
 
