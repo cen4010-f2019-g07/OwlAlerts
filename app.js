@@ -3,6 +3,10 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const http = require('http');
+const session = require('express-session');
+const passport = require('passport');
+
+
 const dashboardRouter = require('./routes/dashboard'); //dashboard.js in routes folder
 const indexRouter = require('./routes/index'); //Default page
 const userRouter = require('./routes/users');
@@ -17,6 +21,9 @@ var pool;
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({secret: 'passport-tutorial', cookie: { maxAge: 60000 }, resave: false, 
+saveUninitialized: false, }));
+
 app.use('/', indexRouter);
 app.use('/users', userRouter);
 app.use('/garages', garageRouter);
