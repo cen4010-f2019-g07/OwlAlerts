@@ -7,10 +7,10 @@ var users_controller = require('../controllers/users_controller');
 router.get('/', users_controller.index); 
 
 // GET request for creating an User.
-router.get('/create', users_controller.user_create_get);
+router.get('/signup', users_controller.user_create_get);
 
 // POST request for creating User.
-router.post('/create', users_controller.user_create_post);
+router.post('/signup', users_controller.user_create_post);
 
 // GET request to delete User.
 router.get('/user/:id/delete', users_controller.user_delete_get); //Prefaced by users - /users/user/:id/delete
