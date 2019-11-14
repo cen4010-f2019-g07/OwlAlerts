@@ -53,7 +53,10 @@ exports.index = function(req, res){
 exports.user_list = function(req, res) {
 	let query = 'SELECT * FROM users';
 	databaseQuery(query).then(function(data){
-		res.send('NOT IMPLEMENTED: User list');
+    res.render('pages/users/userlist',
+    {
+      users: data
+    });
 	}).catch(function(err){
 		console.log(err);
 	});
@@ -75,7 +78,7 @@ exports.user_detail = function(req, res) {
 
 // Display User create form on GET.
 exports.user_create_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: User create GET');
+  res.render('pages/users/signup');
 };
 
 // Handle User create on POST.
