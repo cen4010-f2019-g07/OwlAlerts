@@ -53,6 +53,8 @@ databaseQuery(create_db).then(function(){
 }).then(databaseQuery(create_events)).then(function(){
 	console.log('Events Table Created!');
 }).then(databaseQuery(create_issues)).then(function(){
+	console.log('Issues Table Created!');
+}).then(function(){
 	console.log('All Tables Created!');
 	console.log('Database Creation Finished!');
 	connection.end();
