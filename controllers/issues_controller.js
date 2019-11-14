@@ -1,8 +1,54 @@
 var issue = require('../models/issue');
+const mysql = require('mysql');
+const production = process.env.production;
+const bodyParser = require('body-parser');
+
+if(production == true){
+	pool = mysql.createPool({
+		connectionLimit: 100,
+		host: 'localhost',
+		user: 'cen4010fal19_g07',
+		password: 'kJDrofNeU6',
+		database: 'cen4010fal19_g07',
+		multipleStatements: true
+	});
+}
+else{
+	pool = mysql.createPool({
+		connectionLimit: 100,
+		host: 'localhost',
+		user: 'user',
+		password: 'password',
+		database: 'owl_alerts',
+		multipleStatements: true
+	});
+}
+
+function databaseQuery(query){
+	return new Promise(function(resolve, reject){
+		pool.getConnection(function(error, connection){
+			connection.query(query, function(err, rows, fields){
+				connection.release();
+				if(err)
+					return reject(err);
+				resolve(rows);
+			});
+		});
+	});
+}
 
 //Home page for Issues.
 exports.index = function(req, res) {
-	res.send('NOT IMPLEMENTED: Issue index');
+	let query = 'SELECT * FROM issues';
+	databaseQuery(query).then(function(results){
+		let data = [];
+		console.log(results);
+		return data;
+	}).then(function(data){
+		res.send('NOT IMPLEMENTED: Issue index');
+	}).catch(function(err){
+		console.log(err);
+	});
 };
 
 // Display list of all Issues.
@@ -12,6 +58,10 @@ exports.issue_list = function(req, res) {
 
 // Display detail page for a specific Issue.
 exports.issue_detail = function(req, res) {
+	let query = `SELECT * FROM issues WHERE id=${req.params.id}`;
+	databaseQuery(query).then(function(result){
+
+	})
   res.send('NOT IMPLEMENTED: Issue detail: ' + req.params.id);
 };
 
