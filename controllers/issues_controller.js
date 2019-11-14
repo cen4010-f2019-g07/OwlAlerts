@@ -1,18 +1,75 @@
 var issue = require('../models/issue');
+const mysql = require('mysql');
+const production = process.env.production;
+const bodyParser = require('body-parser');
+
+if(production == true){
+	pool = mysql.createPool({
+		connectionLimit: 100,
+		host: 'localhost',
+		user: 'cen4010fal19_g07',
+		password: 'kJDrofNeU6',
+		database: 'cen4010fal19_g07',
+		multipleStatements: true
+	});
+}
+else{
+	pool = mysql.createPool({
+		connectionLimit: 100,
+		host: 'localhost',
+		user: 'user',
+		password: 'password',
+		database: 'owl_alerts',
+		multipleStatements: true
+	});
+}
+
+function databaseQuery(query){
+	return new Promise(function(resolve, reject){
+		pool.getConnection(function(error, connection){
+			connection.query(query, function(err, rows, fields){
+				connection.release();
+				if(err)
+					return reject(err);
+				resolve(rows);
+			});
+		});
+	});
+}
 
 //Home page for Issues.
 exports.index = function(req, res) {
-	res.send('NOT IMPLEMENTED: Issue index');
+	let query = 'SELECT * FROM issues';
+	databaseQuery(query).then(function(data){
+		res.send('NOT IMPLEMENTED: Issue index');
+	}).catch(function(err){
+		console.log(err);
+	});
 };
 
 // Display list of all Issues.
 exports.issue_list = function(req, res) {
-  res.send('NOT IMPLEMENTED: Issue list');
+	let query = 'SELECT * FROM issues';
+	databaseQuery(query).then(function(data){
+		//data is an array of all issues
+		res.send('NOT IMPLEMENTED: Issue list');
+	}).catch(function(err){
+		console.log(err);
+	});
 };
 
 // Display detail page for a specific Issue.
 exports.issue_detail = function(req, res) {
-  res.send('NOT IMPLEMENTED: Issue detail: ' + req.params.id);
+	let query = `SELECT * FROM issues WHERE id=${req.params.id}`;
+	databaseQuery(query).then(function(result){
+		let data = result[0]; //The returned result is an array with one element
+		return data;
+	}).then(function(data){
+		//Data holds the information for the issue with the id param
+		res.send('NOT IMPLEMENTED: Issue detail: ' + req.params.id);
+	}).catch(function(err){
+		console.log(err);
+	});
 };
 
 // Display Issue create form on GET.
@@ -27,7 +84,16 @@ exports.issue_create_post = function(req, res) {
 
 // Display Issue delete form on GET.
 exports.issue_delete_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: Issue delete GET');
+	let query = `SELECT * FROM issues WHERE id=${req.params.id}`;
+	databaseQuery(query).then(function(result){
+		let data = result[0]; //The returned result is an array with one element
+		return data;
+	}).then(function(data){
+		//Data holds the information for the issue with the id param
+		res.send('NOT IMPLEMENTED: Issue delete GET: ' + req.params.id);
+	}).catch(function(err){
+		console.log(err);
+	});
 };
 
 // Handle Issue delete on POST.
@@ -37,7 +103,16 @@ exports.issue_delete_post = function(req, res) {
 
 // Display Issue update form on GET.
 exports.issue_update_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: Issue update GET');
+	let query = `SELECT * FROM issues WHERE id=${req.params.id}`;
+	databaseQuery(query).then(function(result){
+		let data = result[0]; //The returned result is an array with one element
+		return data;
+	}).then(function(data){
+		//Data holds the information for the issue with the id param
+		res.send('NOT IMPLEMENTED: Issue update GET: ' + req.params.id);
+	}).catch(function(err){
+		console.log(err);
+	});
 };
 
 // Handle Issue update on POST.
