@@ -3,6 +3,16 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const http = require('http');
+const multer = require('multer');
+let storage = multer.diskStorage({
+	destination: function(req, file, callback){
+		callback(null, './public/images/issues');
+	},
+	filename: function(req, file, cb){
+		cb(null, file.fieldname + Date.now() + path.extname(file.originalname));
+	}
+});
+let upload = multer({storage: storage});
 const dashboardRouter = require('./routes/dashboard'); //dashboard.js in routes folder
 const indexRouter = require('./routes/index'); //Default page
 const userRouter = require('./routes/users');
