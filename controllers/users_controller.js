@@ -1,5 +1,17 @@
 var user = require('../models/user');
 
+const mysql = require('mysql');
+
+var pool = mysql.createPool({
+	connectionLimit: 100,
+	host: 'localhost',
+	user: 'user',
+	password: 'password',
+	database: 'owl_alerts',
+	multipleStatements: true
+});
+
+
 // Home Page for Users.
 exports.index = function(req, res){
 	res.render('pages/users/index');
@@ -7,7 +19,17 @@ exports.index = function(req, res){
 
 // Display list of all Users.
 exports.user_list = function(req, res) {
-	res.send('NOT IMPLEMENTED: User list');
+	var query = 'SELECT * FROM users';
+	pool.getConnection(function(error, connection){
+		if(error) throw error;
+		pool.query(query, function(err, result, fields){
+			if(err) throw err;
+			res.render('pages/users/userlist',
+			{
+				users: result
+			});
+		});
+  	});
 };
 
 // Display detail page for a specific User.
@@ -17,7 +39,7 @@ exports.user_detail = function(req, res) {
 
 // Display User create form on GET.
 exports.user_create_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: User create GET');
+  res.render('pages/users/signup');
 };
 
 // Handle User create on POST.
