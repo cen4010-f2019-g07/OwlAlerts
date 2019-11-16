@@ -84,7 +84,30 @@ exports.user_create_get = function(req, res) {
 
 // Handle User create on POST.
 exports.user_create_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: User create POST');
+	let firstname = req.body.firstname;
+	let lastname = req.body.lastname;
+	let email = req.body.email;
+	let password = req.body.password;
+	let confirm = req.body.confirm;
+	if(password == confirm){
+		let query = `INSERT INTO users(firstname, lastname, email, password) \
+		VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${password}\')`;
+		databaseQuery(query).then(function(result){
+			console.log(`User Successfully Created!`);
+		}).then(function(){
+			passport.authenticate('local', {
+				successRedirect: '/',
+				successFlash: 'You Have Been Successfully Logged In!',
+				failureRedirect: '/users/signin',
+				failureFlash: true
+			})(req, res, next);
+		}).catch(function(err){
+			console.log(err);
+		});
+	}
+	else{
+		res.redirect('/users/signup');
+	}
 };
 
 // Display User delete form on GET.
