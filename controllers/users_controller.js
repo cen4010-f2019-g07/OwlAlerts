@@ -143,8 +143,5 @@ exports.user_signin_post = (req, res, next) => {
 // GET Request to Logout User
 exports.user_logout_get = function(req, res){
 	req.logout();
-	req.flash('logout', 'You Have Been Successfully Logged Out!');
-	res.redirect('/',  {
-		message: req.flash('logout')
-	});
+	res.redirect('/');
 }
