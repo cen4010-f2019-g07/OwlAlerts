@@ -9,3 +9,9 @@ exports.show = function(req, res){
 		users: users
 	}); //Look for a dashboard_show.ejs
 };
+
+exports.index = function(req, res) {
+	res.render('pages/index', {
+		user: req.user
+	});
+};
