@@ -42,6 +42,7 @@ exports.index = function(req, res){
 	let query = 'SELECT * FROM users';
 	databaseQuery(query).then(function(data){
 		res.render('pages/users/index', {
+			sessionUser: req.user,
 			users: data
 		});
 	}).catch(function(err){
@@ -55,6 +56,7 @@ exports.user_list = function(req, res) {
 	databaseQuery(query).then(function(data){
     res.render('pages/users/userlist',
     {
+    	sessionUser: req.user,
       users: data
     });
 	}).catch(function(err){
@@ -78,7 +80,14 @@ exports.user_detail = function(req, res) {
 
 // Display User create form on GET.
 exports.user_create_get = function(req, res) {
-  res.render('pages/users/signup');
+	if(req.user){
+		res.redirect('/');
+	}
+	else{
+		res.render('pages/users/signup', {
+	  	sessionUser: req.user
+	  });
+	}
 };
 
 // Handle User create on POST.
@@ -161,7 +170,14 @@ exports.user_update_post = function(req, res) {
 
 //User Sign In Page
 exports.user_signin_get = function(req, res){
-	res.render('pages/users/signin');
+	if(req.user){
+		res.redirect("/");
+	}
+	else{
+		res.render('pages/users/signin', {
+			sessionUser: req.user
+		});
+	}
 }
 
 //Handle Post Request for User Sign In Page
