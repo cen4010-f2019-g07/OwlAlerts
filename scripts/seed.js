@@ -7,7 +7,6 @@ const eventsCount = process.env.events || 0;
 const usersCount = process.env.users || 0;
 const garagesCount = process.env.garages || 0;
 const imagesCount = process.env.images || 0;
-var connection;
 var pool;
 
 function twoDigits(d){
@@ -379,7 +378,7 @@ function seedIssues(i){
 					console.log(`Issue Submitted User Id for Record ${i+1}: ${submitted_user}`);
 					console.log(`Issue Verified Faculty User Id for Record ${i+1}: ${verified_faculty}`);
 					console.log(`Issue Resolved Faculty User Id for Record ${i+1}: ${resolved_faculty}`);
-					resolve(0);
+					resolve(rows);
 				});
 			});
 		});
