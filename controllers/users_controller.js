@@ -156,11 +156,11 @@ exports.user_delete_get = function(req, res) {
 			});
 		}
 		else{
-			res.status(401).send("Unauthorized - You Do Not Have Access Priveleges!");
+			res.status(401).render("errors/401");
 		}
 	}
 	else{
-		res.status(401).send("Unauthorized - You Do Not Have Access Priveleges!");
+		res.status(401).render("errors/401");
 	}
 };
 
@@ -171,11 +171,11 @@ exports.user_delete_post = function(req, res) {
 			res.send('NOT IMPLEMENTED: User delete POST');
 		}
 		else{
-			res.status(401).send("Unauthorized - You Do Not Have Access Priveleges!");
+			res.status(401).render("errors/401");
 		}
 	}
   else{
-  	res.status(401).send("Unauthorized - You Do Not Have Access Priveleges!");
+  	res.status(401).render("errors/401");
   }
 };
 
