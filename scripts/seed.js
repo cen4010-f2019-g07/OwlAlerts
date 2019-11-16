@@ -379,8 +379,32 @@ function seedIssues(i){
 					console.log(`Issue Submitted User Id for Record ${i+1}: ${submitted_user}`);
 					console.log(`Issue Verified Faculty User Id for Record ${i+1}: ${verified_faculty}`);
 					console.log(`Issue Resolved Faculty User Id for Record ${i+1}: ${resolved_faculty}`);
-					resolve(0);
+					resolve(rows);
 				});
+			});
+		});
+	});
+}
+
+function seedAdmin(){
+	return new Promise(function(resolve, reject){
+		let firstname = faker.name.firstName();
+		let lastname = faker.name.lastName();
+		let email = faker.internet.email();
+		let password = faker.internet.password();
+		let adminQuery = `INSERT INTO users(firstname, lastname, email, password, admin) \
+		VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${password}\', true)`;
+		pool.getConnection(function(error, connection){
+			if(error)
+				return reject(error);
+			connection.query(adminQuery, function(err, rows, fields){
+				connection.release();
+				console.log('---------------------------------------------------');
+				console.log(`Admin User First Name: ${firstname}`);
+				console.log(`Admin User Last Name: ${lastname}`);
+				console.log(`Admin User Email Address: ${email}`);
+				console.log(`Admin User Password: ${password}`);
+				resolve(rows);
 			});
 		});
 	});
@@ -441,7 +465,7 @@ function loopSeedIssues(count){
 function seedDatabase(){
 	return new Promise(function(resolve, reject){
 		loopSeedUsers(usersCount).then(loopSeedGarages(garagesCount)).then(loopSeedEvents(eventsCount))
-		.then(loopSeedIssues(issuesCount)).then(function(){
+		.then(loopSeedIssues(issuesCount)).then(seedAdmin()).then(function(){
 			resolve();
 		});
 	});
