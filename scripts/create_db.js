@@ -5,13 +5,13 @@ const create_images = 'CREATE TABLE images( id INT NOT NULL AUTO_INCREMENT, name
 description TEXT NOT NULL, type VARCHAR(100) NOT NULL, size INT(11) NOT NULL, PRIMARY KEY (id))';
 const create_users = 'CREATE TABLE users(id INT NOT NULL AUTO_INCREMENT, residency VARCHAR(100), \
 faculty BOOL NOT NULL DEFAULT false, admin BOOL NOT NULL DEFAULT false, commuter BOOL NOT NULL DEFAULT false, \
-dormer BOOL NOT NULL DEFAULT false, building VARCHAR(100), room_number VARCHAR(100), \
-phone_number VARCHAR(100), street VARCHAR(255), city VARCHAR(255), state VARCHAR(255), \
-zip VARCHAR(255), country VARCHAR(255), email VARCHAR(100) NOT NULL, password VARCHAR(255), \
-firstname VARCHAR(100) NOT NULL, lastname VARCHAR(100) NOT NULL, image_id INT, PRIMARY KEY (id), \
+dormer BOOL NOT NULL DEFAULT false, building VARCHAR(255), room_number VARCHAR(255), \
+phone_number VARCHAR(255), street VARCHAR(255), city VARCHAR(255), state VARCHAR(255), \
+zip VARCHAR(255), country VARCHAR(255), email VARCHAR(255) NOT NULL, password VARCHAR(255), \
+firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, image_id INT, PRIMARY KEY (id), \
 FOREIGN KEY (image_id) REFERENCES images(id))';
 const create_garages = 'CREATE TABLE garages( id INT NOT NULL AUTO_INCREMENT, \
-location VARCHAR(100) NOT NULL, name VARCHAR(100) NOT NULL, full BOOL NOT NULL DEFAULT false, \
+location VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, full BOOL NOT NULL DEFAULT false, \
 free_spots INT NOT NULL DEFAULT 0, total_spots INT NOT NULL, PRIMARY KEY (id))';
 const create_events = 'CREATE TABLE events( id INT NOT NULL AUTO_INCREMENT, \
 location VARCHAR(255) NOT NULL, start_date DATETIME NOT NULL, end_date DATETIME NOT NULL, \
