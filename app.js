@@ -3,10 +3,9 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const http = require('http');
-
 const session = require('express-session');
-const passport = require('./config/passport');
 const multer = require('multer');
+const flash = require('connect-flash');
 let storage = multer.diskStorage({
 	destination: function(req, file, callback){
 		callback(null, './public/images/issues');
@@ -23,16 +22,20 @@ const userRouter = require('./routes/users');
 const eventRouter = require('./routes/events');
 const garageRouter = require('./routes/garages');
 const issueRouter = require('./routes/issues');
+const passport = require('./config/passport');
 
 const app = express();
-const production = process.env.production;
+const production = process.env.production || false;
 var pool;
 
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({secret: 'passport-tutorial', cookie: { maxAge: 60000 }, resave: false, 
+app.use(session({secret: 'secret', cookie: { maxAge: 60000 }, resave: false, 
 saveUninitialized: false, }));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 
 app.use('/', indexRouter);
 app.use('/users', userRouter);
@@ -42,6 +45,23 @@ app.use('/issues', issueRouter);
 app.use('/dashboard', dashboardRouter);
 
 app.set('view engine', 'ejs');
+
+passport.serializeUser(function(user, done){
+	done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done){
+	let userQuery = `SELECT * FROM users WHERE id=\'${id}\'`;
+	pool.getConnection(function(error, connection){
+		if(error)
+			console.log(error);
+		connection.query(userQuery, function(err, rows, fields){
+			if(err)
+				console.log(err);
+			done(err, rows[0]);
+		});
+	});
+});
 
 if(production == true){
 	pool = mysql.createPool({
