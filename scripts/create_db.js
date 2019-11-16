@@ -7,7 +7,7 @@ const create_users = 'CREATE TABLE users(id INT NOT NULL AUTO_INCREMENT, residen
 faculty BOOL NOT NULL DEFAULT false, admin BOOL NOT NULL DEFAULT false, commuter BOOL NOT NULL DEFAULT false, \
 dormer BOOL NOT NULL DEFAULT false, building VARCHAR(255), room_number VARCHAR(255), \
 phone_number VARCHAR(255), street VARCHAR(255), city VARCHAR(255), state VARCHAR(255), \
-zip VARCHAR(255), country VARCHAR(255), email VARCHAR(255) NOT NULL, password VARCHAR(255), \
+zip VARCHAR(255), country VARCHAR(255), email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, \
 firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, image_id INT, PRIMARY KEY (id), \
 FOREIGN KEY (image_id) REFERENCES images(id), UNIQUE(email))';
 const create_garages = 'CREATE TABLE garages( id INT NOT NULL AUTO_INCREMENT, \
