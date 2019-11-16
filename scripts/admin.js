@@ -27,10 +27,9 @@ else{
 
 function seedAdmin(){
 	return new Promise(function(resolve, reject){
-		let firstname = faker.name.firstName();
-		let lastname = faker.name.lastName();
-		
 		if(production){
+			let firstname = faker.name.firstName();
+			let lastname = faker.name.lastName();
 			let email = faker.internet.email();
 			let password = faker.internet.password();
 			let adminQuery = `INSERT INTO users(firstname, lastname, email, password, admin) \
@@ -52,7 +51,9 @@ function seedAdmin(){
 			});
 		}
 		else{
-			let email = 'admin@fau.edu'
+			let firstname = 'Development';
+			let lastname = 'Admin';
+			let email = 'admin@fau.edu';
 			let password = 'password';
 			let adminQuery = `INSERT INTO users(firstname, lastname, email, password, admin) \
 			VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${password}\', true)`;
