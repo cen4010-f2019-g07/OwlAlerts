@@ -1,7 +1,6 @@
 var user = require('../models/user');
 const mysql = require('mysql');
 const production = process.env.production;
-const bodyParser = require('body-parser');
 passport = require('../config/passport');
 
 if(production == true){
@@ -83,31 +82,43 @@ exports.user_create_get = function(req, res) {
 };
 
 // Handle User create on POST.
-exports.user_create_post = function(req, res) {
+exports.user_create_post = function(req, res, next) {
 	let firstname = req.body.firstname;
 	let lastname = req.body.lastname;
 	let email = req.body.email;
 	let password = req.body.password;
 	let confirm = req.body.confirm;
-	if(password == confirm){
-		let query = `INSERT INTO users(firstname, lastname, email, password) \
-		VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${password}\')`;
-		databaseQuery(query).then(function(result){
-			console.log(`User Successfully Created!`);
-		}).then(function(){
-			passport.authenticate('local', {
-				successRedirect: '/',
-				successFlash: 'You Have Been Successfully Logged In!',
-				failureRedirect: '/users/signin',
-				failureFlash: true
-			})(req, res, next);
-		}).catch(function(err){
-			console.log(err);
-		});
-	}
-	else{
-		res.redirect('/users/signup');
-	}
+	let check = `SELECT * FROM users WHERE email=\'${email}\'`;
+	databaseQuery(check).then(function(user){
+		if(user.length == 0){
+			if(password == confirm){
+				let query = `INSERT INTO users(firstname, lastname, email, password) \
+				VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${password}\')`;
+				databaseQuery(query).then(function(result){
+					console.log(`User Successfully Created!`);
+				}).then(function(){
+					passport.authenticate('local', {
+						successRedirect: '/',
+						successFlash: 'You Have Been Successfully Logged In!',
+						failureRedirect: '/users/signin',
+						failureFlash: true
+					})(req, res, next);
+				}).catch(function(err){
+					console.log(err);
+				});
+			}
+			else{
+				console.log('Confirm Password is not the same as Password!');
+				res.redirect('/users/signup');
+			}
+		}
+		else{
+			console.log('User Account Already Exists!')
+			res.redirect('/users/signup');
+		}
+	}).catch(function(err){
+		console.log(err);
+	});
 };
 
 // Display User delete form on GET.
