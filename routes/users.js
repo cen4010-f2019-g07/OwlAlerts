@@ -30,4 +30,10 @@ router.get('/user/:id', users_controller.user_detail);
 // GET request for list of all User items.
 router.get('/users', users_controller.user_list);
 
+// GET request for User Sign In Page
+router.get('/signin', users_controller.user_signin_get);
+
+// POST request for User Sign In Page
+router.post('/signin', users_controller.user_signin_post);
+
 module.exports = router;
