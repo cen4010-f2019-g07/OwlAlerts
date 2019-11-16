@@ -51,15 +51,25 @@ exports.index = function(req, res){
 
 // Display list of all Users.
 exports.user_list = function(req, res) {
-	let query = 'SELECT * FROM users';
-	databaseQuery(query).then(function(data){
-    res.render('pages/users/userlist',
-    {
-      users: data
-    });
-	}).catch(function(err){
-		console.log(err);
-	});
+	if(req.user){
+		if(req.user.faculty || req.user.admin){
+			let query = 'SELECT * FROM users';
+			databaseQuery(query).then(function(data){
+		    res.render('pages/users/userlist',
+		    {
+		      users: data
+		    });
+			}).catch(function(err){
+				console.log(err);
+			});
+		}
+		else{
+			res.status(401).send("Unauthorized - You Do Not Have Access Priveleges!");
+		}
+	}
+	else{
+		res.status(401).send("Unauthorized - You Do Not Have Access Priveleges!");
+	}
 };
 
 // Display detail page for a specific User.
