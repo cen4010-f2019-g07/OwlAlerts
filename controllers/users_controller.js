@@ -66,11 +66,11 @@ exports.user_list = function(req, res) {
 			});
 		}
 		else{
-			res.status(401).send("Unauthorized - You Do Not Have Access Priveleges!");
+			res.status(401).render("errors/401");
 		}
 	}
 	else{
-		res.status(401).send("Unauthorized - You Do Not Have Access Priveleges!");
+		res.status(401).render("errors/401");
 	}
 };
 
