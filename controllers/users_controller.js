@@ -2,7 +2,7 @@ var user = require('../models/user');
 const mysql = require('mysql');
 const production = process.env.production;
 const bodyParser = require('body-parser');
-const passport = require('../config/passport');
+passport = require('../config/passport');
 
 if(production == true){
 	pool = mysql.createPool({
@@ -65,6 +65,7 @@ exports.user_list = function(req, res) {
 
 // Display detail page for a specific User.
 exports.user_detail = function(req, res) {
+	console.log(req.user);
 	let query = `SELECT * FROM users WHERE id=${req.params.id}`;
 	databaseQuery(query).then(function(result){
 		let data = result[0]; //The returned result is an array with one element
@@ -131,7 +132,15 @@ exports.user_signin_get = function(req, res){
 }
 
 //Handle Post Request for User Sign In Page
-exports.user_signin_post = function(req, res){
-	console.log(passport);
-	res.render('pages/index.ejs');
+exports.user_signin_post = (req, res, next) => {
+	passport.authenticate('local', {
+		successRedirect: '/',
+		failureRedirect: '/users/signin',
+		failureFlash: true
+	})(req, res, next);
+}
+
+exports.user_logout_get = function(req, res){
+	req.logout();
+	res.redirect('/');
 }
