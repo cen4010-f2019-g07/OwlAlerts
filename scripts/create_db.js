@@ -4,7 +4,7 @@ const use_db = 'USE owl_alerts';
 const create_images = 'CREATE TABLE images( id INT NOT NULL AUTO_INCREMENT, name VARCHAR(255) NOT NULL, \
 description TEXT NOT NULL, type VARCHAR(100) NOT NULL, size INT(11) NOT NULL, PRIMARY KEY (id))';
 const create_users = 'CREATE TABLE users(id INT NOT NULL AUTO_INCREMENT, residency VARCHAR(100), \
-faculty BOOL NOT NULL DEFAULT false, commuter BOOL NOT NULL DEFAULT false, \
+faculty BOOL NOT NULL DEFAULT false, admin BOOL NOT NULL DEFAULT false, commuter BOOL NOT NULL DEFAULT false, \
 dormer BOOL NOT NULL DEFAULT false, building VARCHAR(100), room_number VARCHAR(100), \
 phone_number VARCHAR(100), street VARCHAR(255), city VARCHAR(255), state VARCHAR(255), \
 zip VARCHAR(255), country VARCHAR(255), email VARCHAR(100) NOT NULL, password VARCHAR(255), \
