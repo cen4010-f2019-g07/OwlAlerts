@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<% include ../../partials/head %>
+	</head>
+	<body style="background-color:#BDBDBD">
+		<header> 
+			<div>
+                <% include ../../partials/header %>
+			</div>
+    </header>
+      <% include ../../partials/sidebar %>
+      <div id="main">
+      <div class="container">        
+          <div class="container text-center mx-sm-3">
+              <h2 class="mt-5">Profile Information</h2>
+                  <table class="table text-center">
+                      <h3 class="mt-2"><%= user.firstname %> <%= user.lastname %></h3>
+                      <tbody>    
+                        <tr>
+                          <td>
+                              <img class="rounded-circle" id="userImageUpload" src="https://via.placeholder.com/180x180" width='180' height='180'/>
+                          </td>
+                        </tr>                        
+                        <tr><td>Email: <%= user.email %></td></tr>
+                        <tr><td>Phone Number: <%= user.phone_number %></td></tr>
+                        <tr><td>Residency: <%= user.residency %></td></tr>
+                        <% if(user.dormer) { %>
+                          <tr><td>FAU Building: <%= user.building %></td></tr>
+                        <% } %>
+                      </tbody>
+                  </table>        
+          </div>
+
+          <button type="button" class="btn btn-dark" onclick="window.location.href='/users/user/<%= user.id %>/update'">Edit Profile</button>
+
+      </div>    
+      </div>
+    </body>
+</html>

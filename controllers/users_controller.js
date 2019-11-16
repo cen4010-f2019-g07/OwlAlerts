@@ -65,15 +65,19 @@ exports.user_list = function(req, res) {
 // Display detail page for a specific User.
 exports.user_detail = function(req, res) {
 	let query = `SELECT * FROM users WHERE id=${req.params.id}`;
+	
 	databaseQuery(query).then(function(result){
 		let data = result[0]; //The returned result is an array with one element
-		return data;
+		res.render('pages/users/show', {
+			user: data
+		}); 
+		
 	}).then(function(data){
 		//Data holds the information for the issue with the id param
 		res.send('NOT IMPLEMENTED: User detail: ' + req.params.id);
 	}).catch(function(err){
 		console.log(err);
-	});
+	});	
 };
 
 // Display User create form on GET.
@@ -85,6 +89,8 @@ exports.user_create_get = function(req, res) {
 exports.user_create_post = function(req, res) {
   res.send('NOT IMPLEMENTED: User create POST');
 };
+
+
 
 // Display User delete form on GET.
 exports.user_delete_get = function(req, res) {
@@ -110,7 +116,9 @@ exports.user_update_get = function(req, res) {
 	let query = `SELECT * FROM users WHERE id=${req.params.id}`;
 	databaseQuery(query).then(function(result){
 		let data = result[0]; //The returned result is an array with one element
-		return data;
+		res.render('pages/users/update', {
+			user: data
+		}); 
 	}).then(function(data){
 		//Data holds the information for the issue with the id param
 		res.send('NOT IMPLEMENTED: User update GET: ' + req.params.id);
