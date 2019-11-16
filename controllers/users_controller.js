@@ -65,7 +65,6 @@ exports.user_list = function(req, res) {
 
 // Display detail page for a specific User.
 exports.user_detail = function(req, res) {
-	console.log(req.user);
 	let query = `SELECT * FROM users WHERE id=${req.params.id}`;
 	databaseQuery(query).then(function(result){
 		let data = result[0]; //The returned result is an array with one element
