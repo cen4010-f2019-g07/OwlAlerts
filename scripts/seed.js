@@ -7,7 +7,6 @@ const eventsCount = process.env.events || 0;
 const usersCount = process.env.users || 0;
 const garagesCount = process.env.garages || 0;
 const imagesCount = process.env.images || 0;
-var connection;
 var pool;
 
 function twoDigits(d){
@@ -386,30 +385,6 @@ function seedIssues(i){
 	});
 }
 
-function seedAdmin(){
-	return new Promise(function(resolve, reject){
-		let firstname = faker.name.firstName();
-		let lastname = faker.name.lastName();
-		let email = faker.internet.email();
-		let password = faker.internet.password();
-		let adminQuery = `INSERT INTO users(firstname, lastname, email, password, admin) \
-		VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${password}\', true)`;
-		pool.getConnection(function(error, connection){
-			if(error)
-				return reject(error);
-			connection.query(adminQuery, function(err, rows, fields){
-				connection.release();
-				console.log('---------------------------------------------------');
-				console.log(`Admin User First Name: ${firstname}`);
-				console.log(`Admin User Last Name: ${lastname}`);
-				console.log(`Admin User Email Address: ${email}`);
-				console.log(`Admin User Password: ${password}`);
-				resolve(rows);
-			});
-		});
-	});
-}
-
 function loopSeedUsers(count){
 	return new Promise(function(resolve, reject){
 		for(let i = 0; i < count; i++){
@@ -465,7 +440,7 @@ function loopSeedIssues(count){
 function seedDatabase(){
 	return new Promise(function(resolve, reject){
 		loopSeedUsers(usersCount).then(loopSeedGarages(garagesCount)).then(loopSeedEvents(eventsCount))
-		.then(loopSeedIssues(issuesCount)).then(seedAdmin()).then(function(){
+		.then(loopSeedIssues(issuesCount)).then(function(){
 			resolve();
 		});
 	});
