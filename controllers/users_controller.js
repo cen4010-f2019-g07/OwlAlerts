@@ -135,12 +135,17 @@ exports.user_signin_get = function(req, res){
 exports.user_signin_post = (req, res, next) => {
 	passport.authenticate('local', {
 		successRedirect: '/',
+		successFlash: 'You Have Been Successfully Logged In!',
 		failureRedirect: '/users/signin',
 		failureFlash: true
 	})(req, res, next);
 }
 
+// GET Request to Logout User
 exports.user_logout_get = function(req, res){
 	req.logout();
-	res.redirect('/');
+	req.flash('logout', 'You Have Been Successfully Logged Out!');
+	res.redirect('/',  {
+		message: req.flash('logout')
+	});
 }
