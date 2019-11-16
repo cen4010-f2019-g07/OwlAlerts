@@ -7,13 +7,20 @@ var connection = mysql.createConnection({
 	password: 'password'
 });
 
-connection.connect(function(error){
-	if(error) throw error;
-	console.log('Connected to MySQL!');
-	connection.query(drop_db, function(err, rows, fields){
-		if(err) throw err;
-		console.log('Database Deleted!');
+function databaseQuery(queryString){
+	return new Promise(function(resolve, reject){
+		connection.query(queryString, function(err, rows, fields){
+			if(err)
+				return reject(err);
+			resolve(rows);
+		});
 	});
+}
+
+databaseQuery(drop_db).then(function(){
+	console.log('Database Deleted!');
 	connection.end();
 	return;
+}).catch(function(err){
+	console.log(err);
 });
