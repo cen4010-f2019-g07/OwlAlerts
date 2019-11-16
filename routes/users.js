@@ -37,4 +37,7 @@ router.get('/signin', users_controller.user_signin_get);
 // POST request for User Sign In Page
 router.post('/signin', users_controller.user_signin_post);
 
+// GET request to logout user
+router.get('/logout', users_controller.user_logout_get);
+
 module.exports = router;
