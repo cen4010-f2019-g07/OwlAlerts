@@ -85,7 +85,7 @@ exports.user_create_get = function(req, res) {
 exports.user_create_post = function(req, res, next) {
 	let firstname = req.body.firstname;
 	let lastname = req.body.lastname;
-	let email = req.body.email;
+	let email = req.body.username;
 	let password = req.body.password;
 	let confirm = req.body.confirm;
 	let check = `SELECT * FROM users WHERE email=\'${email}\'`;
