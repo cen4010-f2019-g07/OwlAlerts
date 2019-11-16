@@ -9,7 +9,7 @@ dormer BOOL NOT NULL DEFAULT false, building VARCHAR(255), room_number VARCHAR(2
 phone_number VARCHAR(255), street VARCHAR(255), city VARCHAR(255), state VARCHAR(255), \
 zip VARCHAR(255), country VARCHAR(255), email VARCHAR(255) NOT NULL, password VARCHAR(255), \
 firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, image_id INT, PRIMARY KEY (id), \
-FOREIGN KEY (image_id) REFERENCES images(id))';
+FOREIGN KEY (image_id) REFERENCES images(id), UNIQUE(email))';
 const create_garages = 'CREATE TABLE garages( id INT NOT NULL AUTO_INCREMENT, \
 location VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, full BOOL NOT NULL DEFAULT false, \
 free_spots INT NOT NULL DEFAULT 0, total_spots INT NOT NULL, PRIMARY KEY (id))';
