@@ -52,16 +52,26 @@ exports.index = function(req, res){
 
 // Display list of all Users.
 exports.user_list = function(req, res) {
-	let query = 'SELECT * FROM users';
-	databaseQuery(query).then(function(data){
-    res.render('pages/users/userlist',
-    {
-    	sessionUser: req.user,
-      users: data
-    });
-	}).catch(function(err){
-		console.log(err);
-	});
+	if(req.user){
+		if(req.user.faculty || req.user.admin){
+			let query = 'SELECT * FROM users';
+			databaseQuery(query).then(function(data){
+		    res.render('pages/users/userlist',
+		    {
+          sessionUser: req.user,
+		      users: data
+		    });
+			}).catch(function(err){
+				console.log(err);
+			});
+		}
+		else{
+			res.status(401).render("errors/401");
+		}
+	}
+	else{
+		res.status(401).render("errors/401");
+	}
 };
 
 // Display detail page for a specific User.
@@ -132,21 +142,41 @@ exports.user_create_post = function(req, res, next) {
 
 // Display User delete form on GET.
 exports.user_delete_get = function(req, res) {
-	let query = `SELECT * FROM users WHERE id=${req.params.id}`;
-	databaseQuery(query).then(function(result){
-		let data = result[0]; //The returned result is an array with one element
-		return data;
-	}).then(function(data){
-		//Data holds the information for the issue with the id param
-		res.send('NOT IMPLEMENTED: User delete GET: ' + req.params.id);
-	}).catch(function(err){
-		console.log(err);
-	});
+	if(req.user){
+		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
+			let query = `SELECT * FROM users WHERE id=${req.params.id}`;
+			databaseQuery(query).then(function(result){
+				let data = result[0]; //The returned result is an array with one element
+				return data;
+			}).then(function(data){
+				//Data holds the information for the issue with the id param
+				res.send('NOT IMPLEMENTED: User delete GET: ' + req.params.id);
+			}).catch(function(err){
+				console.log(err);
+			});
+		}
+		else{
+			res.status(401).render("errors/401");
+		}
+	}
+	else{
+		res.status(401).render("errors/401");
+	}
 };
 
 // Handle User delete on POST.
 exports.user_delete_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: User delete POST');
+	if(req.user){
+		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
+			res.send('NOT IMPLEMENTED: User delete POST');
+		}
+		else{
+			res.status(401).render("errors/401");
+		}
+	}
+  else{
+  	res.status(401).render("errors/401");
+  }
 };
 
 // Display User update form on GET.
