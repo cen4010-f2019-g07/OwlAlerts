@@ -1,8 +1,8 @@
 const mysql = require('mysql');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
-const production = process.env.production;
+const production = process.env.production || false;
 var pool;
 
 
@@ -42,14 +42,16 @@ function databaseQuery(query){
 	});
 }
 
-passport.use(new LocalStrategy(function(email, password, done){
-	const userQuery = `SELECT * FROM users WHERE email=\'${email}\' AND password=\'${password}\'`;
+passport.use(new LocalStrategy(function(username, password, done){
+	const userQuery = `SELECT * FROM users WHERE email=\'${username}\' AND password=\'${password}\'`;
 	databaseQuery(userQuery).then(function(result){
-		if(result.length > 0){
+		if(result.length == 0){
 			return done(null, false, {message: 'Incorrect Email or Password!'});
 		}
-		return done(null, user);
+		return done(null, result[0]);
 	}).catch(function(err){
 		return done(err);
 	});
 }));
+
+module.exports = passport;
