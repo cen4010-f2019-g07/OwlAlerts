@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const http = require('http');
 
 const session = require('express-session');
-const passport = require('passport');
+const passport = require('./config/passport');
 const multer = require('multer');
 let storage = multer.diskStorage({
 	destination: function(req, file, callback){
