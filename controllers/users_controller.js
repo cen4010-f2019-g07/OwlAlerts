@@ -2,6 +2,7 @@ var user = require('../models/user');
 const mysql = require('mysql');
 const production = process.env.production;
 const bodyParser = require('body-parser');
+const passport = require('../config/passport');
 
 if(production == true){
 	pool = mysql.createPool({
@@ -123,3 +124,14 @@ exports.user_update_get = function(req, res) {
 exports.user_update_post = function(req, res) {
   res.send('NOT IMPLEMENTED: User update POST');
 };
+
+//User Sign In Page
+exports.user_signin_get = function(req, res){
+	res.render('pages/users/signin');
+}
+
+//Handle Post Request for User Sign In Page
+exports.user_signin_post = function(req, res){
+	console.log(passport);
+	res.render('pages/index.ejs');
+}
