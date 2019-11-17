@@ -20,6 +20,11 @@
             </h4>
             <br>
             <div class="rounded mx-sm-4" style="background-color:white">
+                <% if(message.length > 0) { %>
+                    <div class="alert alert-danger text-center rounded mx-sm-1" role="alert">
+                        <%= message %>
+                    </div>
+                <% } %>
                 <br>
                 <form action="/users/signin" method="post">
                     <div class="form-group mx-sm-5">

@@ -177,7 +177,8 @@ exports.user_signin_get = function(req, res){
 	}
 	else{
 		res.render('pages/users/signin', {
-			sessionUser: req.user
+			sessionUser: req.user,
+			message: req.flash('error')
 		});
 	}
 }
