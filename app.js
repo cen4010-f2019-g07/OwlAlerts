@@ -4,19 +4,8 @@ const pool = require('./lib/pool_db');
 const bodyParser = require('body-parser');
 const http = require('http');
 const session = require('express-session');
-const multer = require('multer');
 const flash = require('connect-flash');
 const fileUpload = require('express-fileupload');
-let storage = multer.diskStorage({
-	destination: function(req, file, callback){
-		callback(null, './public/images/issues');
-	},
-	filename: function(req, file, cb){
-		cb(null, file.fieldname + Date.now() + path.extname(file.originalname));
-	}
-});
-
-let upload = multer({storage: storage});
 
 const dashboardRouter = require('./routes/dashboard'); //dashboard.js in routes folder
 const indexRouter = require('./routes/index'); //Default page
@@ -31,7 +20,8 @@ const production = process.env.production || false;
 
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(session({secret: 'secret', cookie: { maxAge: 60000 }, resave: false, 
 saveUninitialized: false, }));
 app.use(passport.initialize());
