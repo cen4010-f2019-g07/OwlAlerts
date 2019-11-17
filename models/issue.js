@@ -26,8 +26,8 @@ class Issue {
 
 	update(attr){// For Attribute
 		return new Promise(function(resolve, reject){
-			let getUserQuery = `SELECT * FROM issues WHERE id='${attr[id]}'`
-			databaseQuery(getUserQuery).then(function(result){
+			let getIssueQuery = `SELECT * FROM issues WHERE id='${attr[id]}'`
+			databaseQuery(getIssueQuery).then(function(result){
 				let issue = result[0];
 				if(attr[image_id] != issue.image_id){
 					let imageQuery = `UPDATE issues SET image_id='${attr[image_id]}'' WHERE id='${attr[id]}'`;
@@ -42,8 +42,8 @@ class Issue {
 					});
 				}
 				if(attr[description] != issue.description){
-					let commuterQuery = `UPDATE issues SET description=${attr[description]} WHERE id='${attr[id]}'`;
-					databaseQuery(commuterQuery).catch(function(err){
+					let descriptionQuery = `UPDATE issues SET description=${attr[description]} WHERE id='${attr[id]}'`;
+					databaseQuery(descriptionQuery).catch(function(err){
 						console.log(err);
 					});
 				}
