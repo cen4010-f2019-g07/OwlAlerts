@@ -14,7 +14,15 @@ class Image {
 	contructor(){}
 
 	create(name, description, type, size){
-
+		return new Promise(function(resolve, reject){
+			let query = `INSERT INTO images(name, description, type, size) \
+					VALUE(\'${name}\', \'${description}\', \'${type}\', \'${size}\')`;
+			databaseQuery(query).then(function(result){
+				resolve(result);
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
 	}
 
 	update(){
