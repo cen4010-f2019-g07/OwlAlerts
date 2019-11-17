@@ -3,7 +3,7 @@
         <% if(sessionUser.faculty || sessionUser.admin) { %>
             <a href="/users/users">Userlist</a>
         <% } %>
-        <a href="/users/user/{{sessionUser.id}}">View Profile</a>
+        <a href="/users/user/<%= sessionUser.id%>">View Profile</a>
         <a href="#">About</a>
         <a href="/users/logout">Logout</a>
     <% } else { %>
