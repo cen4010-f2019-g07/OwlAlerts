@@ -47,21 +47,31 @@ UserModel.create = function(firstname, lastname, email, password){
 	});
 }
 
-UserModel.update = function(){
+UserModel.update = function(data){
 	return new Promise(function(resolve, reject){
-
+		
 	});
 }
 
-UserModel.delete = function(){
+UserModel.delete = function(id){
 	return new Promise(function(resolve, reject){
-
+		let query = `DELETE FROM uses WHERE id=${id}`;
+		databaseQuery(query).then(function(result){
+			resolve(result);
+		}).catch(function(err){
+			console.log(err);
+		});
 	});
 }
 
-UserModel.list = function(){
+UserModel.all = function(){
 	return new Promise(function(resolve, reject){
-
+		let query = 'SELECT * FROM users';
+		databaseQuery(query).then(function(result){
+			resolve(result);
+		}).catch(function(err){
+			console.log(err);
+		});
 	});
 }
 
@@ -75,4 +85,21 @@ UserModel.get = function(id){
 		});
 	});
 }
+
+UserModel.checkEmail = function(email){
+	return new Promise(function(resolve, reject){
+		let query = `SELECT * FROM users WHERE email=\'${email}\'`;
+		databaseQuery(query).then(function(result){
+			if(result > 0){
+				resolve(false);
+			}
+			else{
+				resolve(true);
+			}
+		}).catch(function(err){
+			console.log(err);
+		});
+	});
+}
+
 module.exports = UserModel;
