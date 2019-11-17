@@ -1,40 +1,16 @@
 const mysql = require('mysql');
+const pool = require('../lib/pool_db');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-const production = process.env.production || false;
-var pool;
-
-
-if(production == true){
-	pool = mysql.createPool({
-		connectionLimit: 100,
-		host: 'localhost',
-		user: 'cen4010fal19_g07',
-		password: 'kJDrofNeU6',
-		database: 'cen4010fal19_g07',
-		multipleStatements: true
-	});
-}
-else{
-	pool = mysql.createPool({
-		connectionLimit: 100,
-		host: 'localhost',
-		user: 'user',
-		password: 'password',
-		database: 'owl_alerts',
-		multipleStatements: true
-	});
-}
-
 function databaseQuery(query){
 	return new Promise(function(resolve, reject){
-	pool.query(query, function(err, rows, fields){
-		if(err)
-			return reject(err);
-		resolve(rows);
+		pool.query(query, function(err, rows, fields){
+			if(err)
+				return reject(err);
+			resolve(rows);
+		});
 	});
-});
 }
 
 passport.use(new LocalStrategy(function(username, password, done){
