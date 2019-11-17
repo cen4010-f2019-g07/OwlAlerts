@@ -16,8 +16,7 @@ let storage = multer.diskStorage({
 });
 let upload = multer({storage: storage});
 
-const dashboardRouter = require('./routes/dashboard'); //dashboard.js in routes folder
-const indexRouter = require('./routes/index'); //Default page
+const dashboardRouter = require('./routes/dashboard'); //Our New Default Page
 const userRouter = require('./routes/users');
 const eventRouter = require('./routes/events');
 const garageRouter = require('./routes/garages');
@@ -36,12 +35,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-app.use('/', indexRouter);
+app.use('/', dashboardRouter);
 app.use('/users', userRouter);
 app.use('/garages', garageRouter);
 app.use('/events', eventRouter);
 app.use('/issues', issueRouter);
-app.use('/dashboard', dashboardRouter);
 
 app.set('view engine', 'ejs');
 
