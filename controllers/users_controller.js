@@ -1,46 +1,9 @@
-var user = require('../models/user');
-const mysql = require('mysql');
-const production = process.env.production;
+const UserModel = require('../models/user');
 passport = require('../config/passport');
-
-if(production == true){
-	pool = mysql.createPool({
-		connectionLimit: 100,
-		host: 'localhost',
-		user: 'cen4010fal19_g07',
-		password: 'kJDrofNeU6',
-		database: 'cen4010fal19_g07',
-		multipleStatements: true
-	});
-}
-else{
-	pool = mysql.createPool({
-		connectionLimit: 100,
-		host: 'localhost',
-		user: 'user',
-		password: 'password',
-		database: 'owl_alerts',
-		multipleStatements: true
-	});
-}
-
-function databaseQuery(query){
-	return new Promise(function(resolve, reject){
-		pool.getConnection(function(error, connection){
-			connection.query(query, function(err, rows, fields){
-				connection.release();
-				if(err)
-					return reject(err);
-				resolve(rows);
-			});
-		});
-	});
-}
 
 // Home Page for Users.
 exports.index = function(req, res){
-	let query = 'SELECT * FROM users';
-	databaseQuery(query).then(function(data){
+	UserModel.all().then(function(data){
 		res.render('pages/users/index', {
 			sessionUser: req.user,
 			users: data
@@ -54,8 +17,7 @@ exports.index = function(req, res){
 exports.user_list = function(req, res) {
 	if(req.user){
 		if(req.user.faculty || req.user.admin){
-			let query = 'SELECT * FROM users';
-			databaseQuery(query).then(function(data){
+			UserModel.all().then(function(data){
 		    res.render('pages/users/userlist',
 		    {
           sessionUser: req.user,
@@ -76,16 +38,21 @@ exports.user_list = function(req, res) {
 
 // Display detail page for a specific User.
 exports.user_detail = function(req, res) {
-	let query = `SELECT * FROM users WHERE id=${req.params.id}`;
-	databaseQuery(query).then(function(result){
-		let data = result[0]; //The returned result is an array with one element
-		return data;
-	}).then(function(data){
-		//Data holds the information for the issue with the id param
-		res.send('NOT IMPLEMENTED: User detail: ' + req.params.id);
-	}).catch(function(err){
-		console.log(err);
-	});
+	if(req.user){
+		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
+			UserModel.get(req.user.id).then(function(data){
+				res.send('NOT IMPLEMENTED: User detail: ' + req.user.id);
+			}).catch(function(err){
+				console.log(err);
+			});
+		}
+		else{
+			res.status(401).render("errors/401");
+		}
+	}
+	else{
+		res.status(401).render("errors/401");
+	}
 };
 
 // Display User create form on GET.
@@ -107,15 +74,10 @@ exports.user_create_post = function(req, res, next) {
 	let email = req.body.username;
 	let password = req.body.password;
 	let confirm = req.body.confirm;
-	let check = `SELECT * FROM users WHERE email=\'${email}\'`;
-	databaseQuery(check).then(function(user){
-		if(user.length == 0){
+	UserModel.checkEmail(email).then(function(result){
+		if(result){
 			if(password == confirm){
-				let query = `INSERT INTO users(firstname, lastname, email, password) \
-				VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${password}\')`;
-				databaseQuery(query).then(function(result){
-					console.log(`User Successfully Created!`);
-				}).then(function(){
+				UserModel.create(firstname, lastname, email, password).then(function(){
 					passport.authenticate('local', {
 						successRedirect: '/',
 						successFlash: 'You Have Been Successfully Logged In!',
@@ -144,12 +106,7 @@ exports.user_create_post = function(req, res, next) {
 exports.user_delete_get = function(req, res) {
 	if(req.user){
 		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
-			let query = `SELECT * FROM users WHERE id=${req.params.id}`;
-			databaseQuery(query).then(function(result){
-				let data = result[0]; //The returned result is an array with one element
-				return data;
-			}).then(function(data){
-				//Data holds the information for the issue with the id param
+			UserModel.get(req.params.id).then(function(data){
 				res.send('NOT IMPLEMENTED: User delete GET: ' + req.params.id);
 			}).catch(function(err){
 				console.log(err);
@@ -181,21 +138,36 @@ exports.user_delete_post = function(req, res) {
 
 // Display User update form on GET.
 exports.user_update_get = function(req, res) {
-	let query = `SELECT * FROM users WHERE id=${req.params.id}`;
-	databaseQuery(query).then(function(result){
-		let data = result[0]; //The returned result is an array with one element
-		return data;
-	}).then(function(data){
-		//Data holds the information for the issue with the id param
-		res.send('NOT IMPLEMENTED: User update GET: ' + req.params.id);
-	}).catch(function(err){
-		console.log(err);
-	});
+	if(req.user){
+		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
+			UserModel.get(req.params.id).then(function(data){
+				res.send('NOT IMPLEMENTED: User update GET: ' + req.params.id);
+			}).catch(function(err){
+				console.log(err);
+			});
+		}
+		else{
+			res.status(401).render("errors/401");
+		}
+	}
+	else{
+		res.status(401).render("errors/401");
+	}
 };
 
 // Handle User update on POST.
 exports.user_update_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: User update POST');
+	if(req.user){
+		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
+			res.send('NOT IMPLEMENTED: User update POST');
+		}
+		else{
+			res.status(401).render("errors/401");
+		}
+	}
+  else{
+  	res.status(401).render("errors/401");
+  }
 };
 
 //User Sign In Page
