@@ -1,20 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-//THIS SHOULD ACTUALLY BE PASSED IN FROM THE APP.JS FILE, BUT NOT SURE HOW TO DO THIS!
-var multer = require("multer");
-
-let storage = multer.diskStorage({
-	destination: function(req, file, callback){
-		callback(null, './public/images/issues');
-	},
-	filename: function(req, file, cb){
-		cb(null, file.fieldname + Date.now() + path.extname(file.originalname));
-	}
-});
-
-let upload = multer({storage: storage});
-
 var users_controller = require('../controllers/users_controller');
 const auth = require('./auth');
 
@@ -37,7 +23,7 @@ router.post('/user/:id/delete', users_controller.user_delete_post);
 router.get('/user/:id/update', users_controller.user_update_get);
 
 // POST request to update User.
-router.post('/user/:id/update', upload.single("profile"), users_controller.user_update_post);
+router.post('/user/:id/update', users_controller.user_update_post);
 
 // GET request for one User.
 router.get('/user/:id', users_controller.user_detail);
