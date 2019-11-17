@@ -20,10 +20,14 @@ exports.index = function(req, res) {
 
 // Privacy policy Page
 exports.showpp = function(req, res) {
-	res.render('pages/showpp');
+	res.render('pages/showpp',{
+		sessionUser: req.user
+	});
 };
 
 // Terms and conditions page
 exports.showtc = function(req, res) {
-	res.render('pages/showtc');
+	res.render('pages/showtc', {
+		sessionUser: req.user
+	});
 };
