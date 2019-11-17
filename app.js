@@ -1,4 +1,5 @@
 "use strict";
+global.__basedir = __dirname;
 const express = require('express');
 const pool = require('./lib/pool_db');
 const bodyParser = require('body-parser');

@@ -14,7 +14,7 @@
       <div class="container">  
             <h2 class="mt-5">Update <%= user.firstname %>'s Profile Infomation</h2>  
             <div class="image-wrapper">
-                    <img class="rounded-circle" id="userImageUpload" src="https://via.placeholder.com/180x180" width='180' height='180'/>
+                    <img class="rounded-circle" id="userImageUpload" src=<%= imgFilePath %> width='180' height='180'/>
             </div>
             <br />
         
@@ -32,7 +32,7 @@
                 </div>
                 <div class="form-group mx-sm-5">
                         <label for="image">Profile Image</label>                            
-                        <input type="file" class="form-control" id="profileImg" accept="" name="profile"/>                                                      
+                        <input type="file" class="form-control" id="profileImg" accept="" name="profile" onchange="onImageUpload(this);"/>                                                      
                 </div>
                 <div class="text-center pb-2">
                     <button type="submit" class="btn btn-dark">Submit</button>
