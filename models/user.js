@@ -1,4 +1,4 @@
-var mysql = require('mysql');
+const pool = require('../lib/pool_db');
 const production = process.env.production;
 
 function databaseQuery(query){
@@ -12,28 +12,7 @@ function databaseQuery(query){
 }
 
 class Issue {
-	contructor(){;
-		if(production == true){
-			this.pool = mysql.createPool({
-				connectionLimit: 100,
-				host: 'localhost',
-				user: 'cen4010fal19_g07',
-				password: 'kJDrofNeU6',
-				database: 'cen4010fal19_g07',
-				multipleStatements: true
-			});
-		}
-		else{
-			this.pool = mysql.createPool({
-				connectionLimit: 100,
-				host: 'localhost',
-				user: 'user',
-				password: 'password',
-				database: 'owl_alerts',
-				multipleStatements: true
-			});
-		}
-	}
+	contructor(){}
 
 	create(firstname, lastname, email, password){
 		return new Promise(function(resolve, reject){
