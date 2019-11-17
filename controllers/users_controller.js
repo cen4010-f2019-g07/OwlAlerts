@@ -1,4 +1,5 @@
 const UserModel = require('../models/user');
+//var upload = require('../config/multer');
 passport = require('../config/passport');
 
 // Home Page for Users.
@@ -166,6 +167,7 @@ exports.user_update_get = function(req, res) {
 
 // Handle User update on POST.
 exports.user_update_post = function(req, res) {
+	console.log(req.files);
 	if(req.user){
 		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
 
