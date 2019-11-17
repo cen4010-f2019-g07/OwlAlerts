@@ -21,7 +21,7 @@
         <div class="rounded mx-sm-4" style="background-color:white">
         
             <br>
-            <form method="POST" action="/users/user/<%= sessionUser.id%>/update">                
+            <form method="POST" action="/users/user/<%= sessionUser.id%>/update" enctype="multipart/form-data" ref="uploadForm">
                 <div class="form-group mx-sm-5">
                         <label for="passInput">Password</label>
                         <input type="password" class="form-control" id="passInput" placeholder="Password" name="password">
@@ -32,7 +32,7 @@
                 </div>
                 <div class="form-group mx-sm-5">
                         <label for="image">Profile Image</label>                            
-                        <input type="file" class="form-control" id="profileImg" accept="" onchange="onImageUpload(this);" name="profile"/>                                                      
+                        <input type="file" class="form-control" id="profileImg" accept="" name="profile"/>                                                      
                 </div>
                 <div class="text-center pb-2">
                     <button type="submit" class="btn btn-dark">Submit</button>
