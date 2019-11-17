@@ -25,8 +25,38 @@ class Image {
 		});
 	}
 
-	update(){
-
+	update(attr){// Short for Attributes
+		return new Promise(function(resolve, reject){
+			//Note done yet. Need to delete the image after updating it.
+			let getImageQuery = `SELECT * FROM images WHERE id='${attr[id]}'`
+			databaseQuery(getImageQuery).then(function(result){
+				let image = result[0];
+				if(attr[name] != issue.name){
+					let nameQuery = `UPDATE images SET name='${attr[name]}'' WHERE id='${attr[id]}'`;
+					databaseQuery(nameQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+				if(attr[description] != issue.description){
+					let descriptionQuery = `UPDATE images SET description='${attr[description]}' WHERE id='${attr[id]}'`;
+					databaseQuery(descriptionQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+				if(attr[type] != issue.type){
+					let typeQuery = `UPDATE images SET type=${attr[type]} WHERE id='${attr[id]}'`;
+					databaseQuery(typeQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+				if(attr[size] != issue.size){
+					let sizeQuery = `UPDATE images SET size=${attr[size]} WHERE id='${attr[id]}'`;
+					databaseQuery(sizeQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+			})
+		});
 	}
 
 	delete(id){
