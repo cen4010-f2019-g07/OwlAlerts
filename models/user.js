@@ -14,7 +14,7 @@ function databaseQuery(query){
 	});
 }
 
-class User {
+class Issue {
 	contructor(){;
 		if(production == true){
 			this.pool = mysql.createPool({
@@ -58,7 +58,7 @@ class User {
 
 	delete(id){
 		return new Promise(function(resolve, reject){
-			let query = `DELETE FROM uses WHERE id=${id}`;
+			let query = `DELETE FROM users WHERE id=${id}`;
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
@@ -106,6 +106,6 @@ class User {
 	}
 }
 
-var UserModel = new User();
+var IssueModel = new Issue();
 
-module.exports = UserModel;
+module.exports = IssueModel;
