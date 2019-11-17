@@ -157,7 +157,17 @@ exports.user_update_get = function(req, res) {
 
 // Handle User update on POST.
 exports.user_update_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: User update POST');
+	if(req.user){
+		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
+			res.send('NOT IMPLEMENTED: User update POST');
+		}
+		else{
+			res.status(401).render("errors/401");
+		}
+	}
+  else{
+  	res.status(401).render("errors/401");
+  }
 };
 
 //User Sign In Page
