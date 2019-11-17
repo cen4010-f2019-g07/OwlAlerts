@@ -1,5 +1,4 @@
 const pool = require('../lib/pool_db');
-const production = process.env.production;
 
 function databaseQuery(query){
 	return new Promise(function(resolve, reject){

@@ -1,5 +1,4 @@
-var mysql = require('mysql');
-const production = process.env.production;
+const pool = require('../lib/pool_db');
 
 function databaseQuery(query){
 	return new Promise(function(resolve, reject){
