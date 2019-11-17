@@ -40,14 +40,19 @@ exports.user_list = function(req, res) {
 exports.user_detail = function(req, res) {
 	if(req.user){
 		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
-			
+			UserModel.get(req.user.id).then(function(data){
+				res.send('NOT IMPLEMENTED: User detail: ' + req.user.id);
+			}).catch(function(err){
+				console.log(err);
+			});
+		}
+		else{
+			res.status(401).render("errors/401");
 		}
 	}
-	UserModel.get(req.user.id).then(function(data){
-		res.send('NOT IMPLEMENTED: User detail: ' + req.user.id);
-	}).catch(function(err){
-		console.log(err);
-	});
+	else{
+		res.status(401).render("errors/401");
+	}
 };
 
 // Display User create form on GET.
@@ -133,11 +138,21 @@ exports.user_delete_post = function(req, res) {
 
 // Display User update form on GET.
 exports.user_update_get = function(req, res) {
-	UserModel.get(req.params.id).then(function(data){
-		res.send('NOT IMPLEMENTED: User update GET: ' + req.params.id);
-	}).catch(function(err){
-		console.log(err);
-	});
+	if(req.user){
+		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
+			UserModel.get(req.params.id).then(function(data){
+				res.send('NOT IMPLEMENTED: User update GET: ' + req.params.id);
+			}).catch(function(err){
+				console.log(err);
+			});
+		}
+		else{
+			res.status(401).render("errors/401");
+		}
+	}
+	else{
+		res.status(401).render("errors/401");
+	}
 };
 
 // Handle User update on POST.
