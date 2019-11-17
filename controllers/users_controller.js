@@ -38,8 +38,13 @@ exports.user_list = function(req, res) {
 
 // Display detail page for a specific User.
 exports.user_detail = function(req, res) {
-	UserModel.get(req.params.id).then(function(data){
-		res.send('NOT IMPLEMENTED: User detail: ' + req.params.id);
+	if(req.user){
+		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
+			
+		}
+	}
+	UserModel.get(req.user.id).then(function(data){
+		res.send('NOT IMPLEMENTED: User detail: ' + req.user.id);
 	}).catch(function(err){
 		console.log(err);
 	});
