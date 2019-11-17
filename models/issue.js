@@ -24,9 +24,69 @@ class Issue {
 		});
 	}
 
-	update(){
+	update(attr){// For Attribute
 		return new Promise(function(resolve, reject){
-
+			let getIssueQuery = `SELECT * FROM issues WHERE id='${attr[id]}'`
+			databaseQuery(getIssueQuery).then(function(result){
+				let issue = result[0];
+				if(attr[image_id] != issue.image_id){
+					let imageQuery = `UPDATE issues SET image_id='${attr[image_id]}'' WHERE id='${attr[id]}'`;
+					databaseQuery(imageQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+				if(attr[title] != issue.title){
+					let titleQuery = `UPDATE issues SET title='${attr[title]}' WHERE id='${attr[id]}'`;
+					databaseQuery(titleQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+				if(attr[description] != issue.description){
+					let descriptionQuery = `UPDATE issues SET description=${attr[description]} WHERE id='${attr[id]}'`;
+					databaseQuery(descriptionQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+				if(attr[location] != issue.location){
+					let locationQuery = `UPDATE issues SET location=${attr[location]} WHERE id='${attr[id]}'`;
+					databaseQuery(locationQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+				if(attr[verified] != issue.verified){
+					let verifiedQuery = `UPDATE issues SET verified=${attr[verified]} WHERE id='${attr[id]}'`;
+					databaseQuery(verifiedQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+				if(attr[resolved] != issue.resolved){
+					let resolvedQuery = `UPDATE issues SET resolved='${attr[resolved]}' WHERE id='${attr[id]}'`;
+					databaseQuery(resolvedQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+				if(attr[submitted_user] != user.submitted_user){
+					let submittedUserQuery = `UPDATE issues SET submitted_user='${attr[submitted_user]}' \
+					WHERE id='${attr[id]}'`;
+					databaseQuery(submittedUserQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+				if(attr[verified_faculty] != user.verified_faculty){
+					let verifiedFacultyQuery = `UPDATE issues SET verified_faculty='${attr[verified_faculty]}' \
+					WHERE id='${attr[id]}'`;
+					databaseQuery(verifiedFacultyQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+				if(attr[resolved_faculty] != user.resolved_faculty){
+					let resolvedFacultyQuery = `UPDATE issues SET resolved_faculty='${attr[resolved_faculty]}' \
+					WHERE id='${attr[id]}'`;
+					databaseQuery(resolvedFacultyQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+			})
 		});
 	}
 
