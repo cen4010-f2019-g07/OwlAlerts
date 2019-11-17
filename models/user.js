@@ -10,7 +10,7 @@ function databaseQuery(query){
 	});
 }
 
-class Issue {
+class User {
 	contructor(){}
 
 	create(firstname, lastname, email, password){
@@ -81,6 +81,6 @@ class Issue {
 	}
 }
 
-var IssueModel = new Issue();
+var UserModel = new User();
 
-module.exports = IssueModel;
+module.exports = UserModel;

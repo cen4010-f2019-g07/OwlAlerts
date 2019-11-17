@@ -11,28 +11,7 @@ function databaseQuery(query){
 }
 
 class Issue {
-	contructor(){;
-		if(production == true){
-			this.pool = mysql.createPool({
-				connectionLimit: 100,
-				host: 'localhost',
-				user: 'cen4010fal19_g07',
-				password: 'kJDrofNeU6',
-				database: 'cen4010fal19_g07',
-				multipleStatements: true
-			});
-		}
-		else{
-			this.pool = mysql.createPool({
-				connectionLimit: 100,
-				host: 'localhost',
-				user: 'user',
-				password: 'password',
-				database: 'owl_alerts',
-				multipleStatements: true
-			});
-		}
-	}
+	contructor(){}
 
 	create(){ //Needs to be done
 		return new Promise(function(resolve, reject){
