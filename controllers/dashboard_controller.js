@@ -3,6 +3,7 @@ var events = require('../models/event');
 var garages = require('../models/garage');
 var issues = require('../models/issue');
 
+
 exports.show = function(req, res){
 	users = ["hi I'm a user 1", "Hi im user 2"];
 	res.render('pages/show', {
@@ -10,8 +11,19 @@ exports.show = function(req, res){
 	}); //Look for a dashboard_show.ejs
 };
 
+// Home page for Dashboard
 exports.index = function(req, res) {
 	res.render('pages/index', {
-		user: req.user
+		sessionUser: req.user
 	});
+};
+
+// Privacy policy Page
+exports.showpp = function(req, res) {
+	res.render('pages/showpp');
+};
+
+// Terms and conditions page
+exports.showtc = function(req, res) {
+	res.render('pages/showtc');
 };

@@ -7,8 +7,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const fileUpload = require('express-fileupload');
 
-const dashboardRouter = require('./routes/dashboard'); //dashboard.js in routes folder
-const indexRouter = require('./routes/index'); //Default page
+const dashboardRouter = require('./routes/dashboard'); //Our New Default Page
 const userRouter = require('./routes/users');
 const eventRouter = require('./routes/events');
 const garageRouter = require('./routes/garages');
@@ -29,12 +28,11 @@ app.use(passport.session());
 app.use(fileUpload());
 app.use(flash());
 
-app.use('/', indexRouter);
+app.use('/', dashboardRouter);
 app.use('/users', userRouter);
 app.use('/garages', garageRouter);
 app.use('/events', eventRouter);
 app.use('/issues', issueRouter);
-app.use('/dashboard', dashboardRouter);
 
 app.set('view engine', 'ejs');
 
