@@ -29,17 +29,12 @@ else{
 
 function databaseQuery(query){
 	return new Promise(function(resolve, reject){
-		pool.getConnection(function(error, connection){
-			if(error)
-				return reject(error);
-			connection.query(query, function(err, rows, fields){
-				connection.release();
-				if(err)
-					return reject(err);
-				resolve(rows);
-			});
-		});
+	pool.query(query, function(err, rows, fields){
+		if(err)
+			return reject(err);
+		resolve(rows);
 	});
+});
 }
 
 passport.use(new LocalStrategy(function(username, password, done){
