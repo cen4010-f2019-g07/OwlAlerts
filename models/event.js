@@ -2,13 +2,10 @@ const pool = require('../lib/pool_db');
 
 function databaseQuery(query){
 	return new Promise(function(resolve, reject){
-		pool.getConnection(function(error, connection){
-			connection.query(query, function(err, rows, fields){
-				connection.release();
-				if(err)
-					return reject(err);
-				resolve(rows);
-			});
+		pool.query(query, function(err, rows, fields){
+			if(err)
+				return reject(err);
+			resolve(rows);
 		});
 	});
 }
