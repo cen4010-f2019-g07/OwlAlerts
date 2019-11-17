@@ -1,28 +1,4 @@
 var event = require('../models/event');
-const mysql = require('mysql');
-const production = process.env.production;
-const bodyParser = require('body-parser');
-
-if(production == true){
-	pool = mysql.createPool({
-		connectionLimit: 100,
-		host: 'localhost',
-		user: 'cen4010fal19_g07',
-		password: 'kJDrofNeU6',
-		database: 'cen4010fal19_g07',
-		multipleStatements: true
-	});
-}
-else{
-	pool = mysql.createPool({
-		connectionLimit: 100,
-		host: 'localhost',
-		user: 'user',
-		password: 'password',
-		database: 'owl_alerts',
-		multipleStatements: true
-	});
-}
 
 function databaseQuery(query){
 	return new Promise(function(resolve, reject){
