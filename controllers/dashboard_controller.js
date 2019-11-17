@@ -24,6 +24,6 @@ exports.showpp = function(req, res) {
 };
 
 // Terms and conditions page
-exports.index = function(req, res) {
+exports.showtc = function(req, res) {
 	res.render('pages/showtc');
 };
