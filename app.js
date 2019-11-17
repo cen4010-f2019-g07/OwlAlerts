@@ -6,6 +6,7 @@ const http = require('http');
 const session = require('express-session');
 const multer = require('multer');
 const flash = require('connect-flash');
+const fileUpload = require('express-fileupload');
 let storage = multer.diskStorage({
 	destination: function(req, file, callback){
 		callback(null, './public/images/issues');
@@ -14,6 +15,7 @@ let storage = multer.diskStorage({
 		cb(null, file.fieldname + Date.now() + path.extname(file.originalname));
 	}
 });
+
 let upload = multer({storage: storage});
 
 const dashboardRouter = require('./routes/dashboard'); //dashboard.js in routes folder
@@ -34,6 +36,7 @@ app.use(session({secret: 'secret', cookie: { maxAge: 60000 }, resave: false,
 saveUninitialized: false, }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(fileUpload());
 app.use(flash());
 
 app.use('/', indexRouter);

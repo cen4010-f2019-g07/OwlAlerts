@@ -168,7 +168,30 @@ exports.user_update_get = function(req, res) {
 exports.user_update_post = function(req, res) {
 	if(req.user){
 		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
-			res.send('NOT IMPLEMENTED: User update POST');
+
+
+			//res.send("im " + req.files.profile.mimetype)
+
+			if(!req.file)
+				res.send("No files were uploaded");
+
+			//res.send('NOT IMPLEMENTED: User update POST');
+
+/*			let file = req.profile;
+
+			UserModel.update(firstname, lastname, email, password).then(function(){
+				passport.authenticate('local', {
+					successRedirect: '/',
+					successFlash: 'You Have Been Successfully Logged In!',
+					failureRedirect: '/users/signin',
+					failureFlash: true
+				})(req, res, next);
+			}).catch(function(err){
+				console.log(err);
+			});*/
+
+
+
 		}
 		else{
 			res.status(401).render("errors/401");

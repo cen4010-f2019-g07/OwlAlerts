@@ -27,7 +27,13 @@ class User {
 
 	update(){
 		return new Promise(function(resolve, reject){
-
+			let query = `UPDATE users \
+					SET VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${password}\')`;
+			databaseQuery(query).then(function(result){
+				resolve(result);
+			}).catch(function(err){
+				console.log(err);
+			});
 		});
 	}
 
