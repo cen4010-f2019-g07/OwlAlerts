@@ -56,8 +56,8 @@ class User {
 					});
 				}
 				if(attr[building] != user.building){
-					let building = `UPDATE users SET building='${attr[building]}' WHERE id='${attr[id]}'`;
-					databaseQuery(building).catch(function(err){
+					let buildingQuery = `UPDATE users SET building='${attr[building]}' WHERE id='${attr[id]}'`;
+					databaseQuery(buildingQuery).catch(function(err){
 						console.log(err);
 					});
 				}
