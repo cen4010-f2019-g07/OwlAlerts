@@ -1,4 +1,3 @@
-const mysql = require('mysql');
 const pool = require('../lib/pool_db');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
