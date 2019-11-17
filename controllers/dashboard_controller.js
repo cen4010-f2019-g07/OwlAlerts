@@ -13,7 +13,9 @@ exports.show = function(req, res){
 
 // Home page for Dashboard
 exports.index = function(req, res) {
-	res.render('pages/index');
+	res.render('pages/index', {
+		sessionUser: req.user
+	});
 };
 
 // Privacy policy Page
@@ -22,6 +24,6 @@ exports.showpp = function(req, res) {
 };
 
 // Terms and conditions page
-exports.index = function(req, res) {
+exports.showtc = function(req, res) {
 	res.render('pages/showtc');
 };

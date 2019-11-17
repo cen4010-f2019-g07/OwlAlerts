@@ -3,7 +3,10 @@ var router = express.Router();
 
 var dashboard_controller = require('../controllers/dashboard_controller');
 
-//Home page for dashboard
+//Home Page
+router.get('/', dashboard_controller.index);
+
+//Show page for dashboard
 router.get('/show', dashboard_controller.show);
 
 //privacy policy page
