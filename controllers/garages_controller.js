@@ -1,22 +1,8 @@
-var garage = require('../models/garage');
-
-function databaseQuery(query){
-	return new Promise(function(resolve, reject){
-		pool.getConnection(function(error, connection){
-			connection.query(query, function(err, rows, fields){
-				connection.release();
-				if(err)
-					return reject(err);
-				resolve(rows);
-			});
-		});
-	});
-}
+var GarageModel = require('../models/garage');
 
 // Home Page for Garages
 exports.index = function(req, res) {
-	let query = 'SELECT * FROM garages';
-	databaseQuery(query).then(function(data){
+	GarageModel.all().then(function(data){
 		res.send('NOT IMPLEMENTED: Garage index');
 	}).catch(function(err){
 		console.log(err);
@@ -25,8 +11,7 @@ exports.index = function(req, res) {
 
 // Display list of all Garages.
 exports.garage_list = function(req, res) {
-	let query = 'SELECT * FROM garages';
-	databaseQuery(query).then(function(data){
+	GarageModel.all().then(function(data){
 		res.send('NOT IMPLEMENTED: Garage list');
 	}).catch(function(err){
 		console.log(err);
@@ -35,11 +20,7 @@ exports.garage_list = function(req, res) {
 
 // Display detail page for a specific Garage.
 exports.garage_detail = function(req, res) {
-	let query = `SELECT * FROM garages WHERE id=${req.params.id}`;
-	databaseQuery(query).then(function(result){
-		let data = result[0]; //The returned result is an array with one element
-		return data;
-	}).then(function(data){
+	GarageModel.get(req.params.id).then(function(result){
 		//Data holds the information for the issue with the id param
 		res.send('NOT IMPLEMENTED: Garage detail: ' + req.params.id);
 	}).catch(function(err){
@@ -59,11 +40,7 @@ exports.garage_create_post = function(req, res) {
 
 // Display Garage delete form on GET.
 exports.garage_delete_get = function(req, res) {
-	let query = `SELECT * FROM garages WHERE id=${req.params.id}`;
-	databaseQuery(query).then(function(result){
-		let data = result[0]; //The returned result is an array with one element
-		return data;
-	}).then(function(data){
+	GarageModel.delete(req.params.id).then(function(result){
 		//Data holds the information for the issue with the id param
 		res.send('NOT IMPLEMENTED: Garage delete GET: ' + req.params.id);
 	}).catch(function(err){
@@ -78,11 +55,7 @@ exports.garage_delete_post = function(req, res) {
 
 // Display Garage update form on GET.
 exports.garage_update_get = function(req, res) {
-	let query = `SELECT * FROM garages WHERE id=${req.params.id}`;
-	databaseQuery(query).then(function(result){
-		let data = result[0]; //The returned result is an array with one element
-		return data;
-	}).then(function(data){
+	GarageModel.update().then(function(result){
 		//Data holds the information for the issue with the id param
 		res.send('NOT IMPLEMENTED: Garage update GET: ' + req.params.id);
 	}).catch(function(err){
