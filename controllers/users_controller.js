@@ -41,7 +41,7 @@ exports.user_list = function(req, res) {
 		}
 	}
 	else{
-		res.status(401).render("errors/401");
+		res.redirect('/users/signin');
 	}
 };
 
@@ -71,7 +71,7 @@ exports.user_detail = function(req, res) {
 		}
 	}
 	else{
-		res.status(401).render("errors/401");
+		res.redirect('/users/signin');
 	}
 };
 
@@ -139,7 +139,7 @@ exports.user_delete_get = function(req, res) {
 		}
 	}
 	else{
-		res.status(401).render("errors/401");
+		res.redirect('/users/signin');
 	}
 };
 
@@ -154,7 +154,7 @@ exports.user_delete_post = function(req, res) {
 		}
 	}
   else{
-  	res.status(401).render("errors/401");
+  	res.redirect('/users/signin');
   }
 };
 
@@ -186,7 +186,7 @@ exports.user_update_get = function(req, res) {
 		}
 	}
 	else{
-		res.status(401).render("errors/401");
+		res.redirect('/users/signin');
 	}
 };
 
@@ -229,7 +229,7 @@ exports.user_update_post = function(req, res) {
 		}
 	}
   else{
-  	res.status(401).render("errors/401");
+  	res.redirect('/users/signin');
   }
 };
 
