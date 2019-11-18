@@ -60,6 +60,7 @@ exports.issue_create_post = function(req, res) {
 		attr['title'] = req.body.title;
 		attr['description'] = req.body.description;
 		attr['location'] = req.body.location;
+		attr['submitted_user'] = req.user.id;
 		IssueModel.create(attr).then(function(){
 			res.redirect('/issues/create');
 		});
