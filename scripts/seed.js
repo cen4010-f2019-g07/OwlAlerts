@@ -1,4 +1,5 @@
 "use strict";
+This needs to be updated for new housing status field
 const mysql = require('mysql');
 const faker = require('faker');
 const production = process.env.production || false;
