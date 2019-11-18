@@ -13,9 +13,10 @@ function databaseQuery(query){
 class Issue {
 	contructor(){}
 
-	create(){ //Needs to be done
+	create(attr){ //Needs to be done
 		return new Promise(function(resolve, reject){
-			let query = '';
+			let query = `INSERT INTO issues(title, description, location, submitted_user) \
+			VALUE('${attr['title']}', '${attr['description']}', '${attr['location']}', ${attr['submitted_user']})`;
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
