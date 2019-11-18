@@ -308,6 +308,7 @@ function seedEvents(i){
 //Seed the Database with Issue Records
 function seedIssues(i){
 	return new Promise(function(resolve, reject){
+		let title = faker.lorem.words();
 		let description = faker.lorem.text();
 		let location_values = ['IVAS', 'IVAN', 'UVA 57', 'UVA 58', 'UVA 59', 'UVA 60', 
 		'UVA 61', 'PAR', 'HPT', 'GPT', 'IRT', `${faker.lorem.words()} Hall, Boca Campus`];
@@ -333,8 +334,9 @@ function seedIssues(i){
 				submitted_user_values[i] = users_list[i].id;
 			}
 			submitted_user = submitted_user_values[Math.round(Math.random()*(submitted_user_values.length-1))];
-			issues = `INSERT INTO issues(description, location, verified, resolved, submitted_user, verified_faculty, \
-			resolved_faculty)	VALUE(\"${description}\", \"${location}\", ${verified}, ${resolved}, ${submitted_user},`;
+			issues = `INSERT INTO issues(title, description, location, verified, resolved, submitted_user, \
+			verified_faculty, resolved_faculty)	VALUE(\"${title}\", \"${description}\", \"${location}\", \
+			${verified}, ${resolved}, ${submitted_user},`;
 			return;
 		}).then(function(){
 			return getFaculty();
