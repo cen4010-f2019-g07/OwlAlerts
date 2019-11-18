@@ -1,6 +1,5 @@
 "use strict";
 const production = process.env.production || false;
-process.env.production = production;
 global.__basedir = __dirname;
 const express = require('express');
 const pool = require('./lib/pool_db');
