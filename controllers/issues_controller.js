@@ -3,7 +3,10 @@ var IssueModel = require('../models/issue');
 //Home page for Issues.
 exports.index = function(req, res) {
 	IssueModel.all().then(function(data){
-		res.send('NOT IMPLEMENTED: Issue index');
+		res.render('pages/issues/issuehome',
+		{
+			issues:data
+		});
 	}).catch(function(err){
 		console.log(err);
 	});
@@ -12,8 +15,11 @@ exports.index = function(req, res) {
 // Display list of all Issues.
 exports.issue_list = function(req, res) {
 	IssueModel.all().then(function(data){
-		//data is an array of all issues
-		res.send('NOT IMPLEMENTED: Issue list');
+		res.render('pages/issues/issuelist',
+		{
+			sessionUser: 1,
+			issues: data
+		});
 	}).catch(function(err){
 		console.log(err);
 	});
