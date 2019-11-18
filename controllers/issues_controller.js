@@ -107,7 +107,7 @@ exports.issue_update_get = function(req, res) {
 			});
 		}
 		else{
-			res.redirect('/users/signin');
+			res.status(401).render("errors/401");
 		}
 	}
 	else{
@@ -122,7 +122,7 @@ exports.issue_update_post = function(req, res) {
 			res.send('NOT IMPLEMENTED: Issue update POST');
 		}
 		else{
-			res.redirect('/users/signin');
+			res.status(401).render("errors/401");
 		}
 	}
   else{
