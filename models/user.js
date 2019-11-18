@@ -1,5 +1,7 @@
 "use strict";
 const pool = require('../lib/pool_db');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 var fs = require('fs');
 
 let userImageSaveDir = '/resources/user_images/';
@@ -21,29 +23,20 @@ class User {
 
 	create(firstname, lastname, email, password){
 		return new Promise(function(resolve, reject){
-			let query = `INSERT INTO users(firstname, lastname, email, password) \
-					VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${password}\')`;
-			databaseQuery(query).then(function(result){
-				resolve(result);
+			bcrypt.hash(password, saltRounds).then(function(hash){
+				let query = `INSERT INTO users(firstname, lastname, email, password) \
+				VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${hash}\')`;
+				databaseQuery(query).then(function(result){
+					resolve(result);
+				}).catch(function(err){
+					console.log(err);
+				});
 			}).catch(function(err){
 				console.log(err);
 			});
 		});
 	}
- /*
-	update(userId, profileImageId){
-		return new Promise(function(resolve, reject){
-			let query = `UPDATE users \
-					SET image_id = \'${profileImageId}'\
-					WHERE id= \'${userId}\'`;
-			databaseQuery(query).then(function(result){
-				resolve(result);
-			}).catch(function(err){
-				console.log(err);
-			});
-		});
-	}
-*/
+
 	upload(image){
 		return new Promise(function(resolve, reject){
 
@@ -149,12 +142,16 @@ class User {
 						console.log(err);
 					});
 				}
-				if(attr['password'] != user.password  && attr['password'] != null){
-					let passwordQuery = `UPDATE users SET password='${attr['password']}' WHERE id='${attr['id']}'`;
-					databaseQuery(passwordQuery).catch(function(err){
-						console.log(err);
-					});
-				}
+				bcrypt.compare(attr['password'], user.password).then(function(res){
+					if(attr['password'] != null && !res){
+						bcypt.hash(attr['password'], saltRounds).then(function(hash){
+							let passwordQuery = `UPDATE users SET password='${hash}' WHERE id='${attr['id']}'`;
+							databaseQuery(passwordQuery).catch(function(err){
+								console.log(err);
+							});
+						});
+					}
+				})
 				if(attr['firstname'] != user.firstname  && attr['firstname'] != null){
 					let firstnameQuery = `UPDATE users SET firstname='${attr['firstname']}' WHERE id='${attr['id']}'`;
 					databaseQuery(firstnameQuery).catch(function(err){
@@ -239,6 +236,33 @@ class User {
 
 	getUserProfileImagePath(imgFileName) {
 		return userImageSaveDir + imgFileName;
+	}
+
+	checkLogin(email, password){
+		return new Promise(function(resolve, reject){
+			let query = `SELECT * FROM users WHERE email='${email}'`;
+			databaseQuery(query).then(function(result){
+				console.log(result);
+				let user = result[0];
+				if(!user){
+					resolve(false);
+				}
+				return user;
+			}).then(function(user){
+				bcrypt.compare(password, user.password).then(function(res){
+					if(res){
+						resolve(user);
+					}
+					else{
+						resolve(false);
+					}
+				});
+			}).catch(function(err){
+				console.log(err);
+			});
+		}).catch(function(err){
+			console.log(err);
+		});
 	}
 }
 
