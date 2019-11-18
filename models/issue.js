@@ -16,7 +16,7 @@ class Issue {
 	create(attr){ //Needs to be done
 		return new Promise(function(resolve, reject){
 			let query = `INSERT INTO issues(title, description, location, submitted_user) \
-			VALUE('${attr['title']}', '${attr['description']}', '${attr['location']}', ${attr[submitted_user]})`;
+			VALUE('${attr['title']}', '${attr['description']}', '${attr['location']}', ${attr['submitted_user']})`;
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
