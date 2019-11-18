@@ -5,6 +5,8 @@ exports.index = function(req, res) {
 	IssueModel.all().then(function(data){
 		res.render('pages/issues/issuehome',
 		{
+			sessionUser: req.user,
+
 			issues:data
 		});
 	}).catch(function(err){
@@ -17,7 +19,7 @@ exports.issue_list = function(req, res) {
 	IssueModel.all().then(function(data){
 		res.render('pages/issues/issuelist',
 		{
-			sessionUser: 1,
+			sessionUser: req.user,
 			issues: data
 		});
 	}).catch(function(err){
@@ -27,9 +29,13 @@ exports.issue_list = function(req, res) {
 
 // Display detail page for a specific Issue.
 exports.issue_detail = function(req, res) {
-	IssueModel.get(req.params.id).then(function(result){
+	IssueModel.get(req.params.id).then(function(data){
 		//Data holds the information for the issue with the id param
-		res.send('NOT IMPLEMENTED: Issue detail: ' + req.params.id);
+		res.render('pages/issues/show',
+		{
+			sessionUser: req.user,
+			issue: data
+		});
 	}).catch(function(err){
 		console.log(err);
 	});
@@ -37,7 +43,10 @@ exports.issue_detail = function(req, res) {
 
 // Display Issue create form on GET.
 exports.issue_create_get = function(req, res) {
-  res.send('NOT IMPLEMENTED: Issue create GET');
+  res.render('pages/issues/issuepost',
+  {
+	  sessionUser: req.user
+  });
 };
 
 // Handle Issue create on POST.

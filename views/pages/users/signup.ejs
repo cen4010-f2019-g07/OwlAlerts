@@ -24,30 +24,71 @@
                 <form action="/users/signup" method="post">
                     <div class="form-group mx-sm-5">
                         <label for="firstNameInput">First Name</label>
-                        <input type="text" class="form-control" id="firstNameInput" placeholder="John" name="firstname">
+                        <input type="text" class="form-control" id="firstNameInput" placeholder="John" name="firstname" required>
+                        <div class="invalid-feedback">
+                            Please enter your first name.
+                        </div>
                     </div>
                     <div class="form-group mx-sm-5">
                         <label for="lastNameInput">Last Name</label>
-                        <input type="text" class="form-control" id="lastNameInput" placeholder="Smith" name="lastname">
+                        <input type="text" class="form-control" id="lastNameInput" placeholder="Smith" name="lastname" required>
+                        <div class="invalid-feedback">
+                                Please enter your last name.
+                            </div>                   
                     </div>
                     <div class="form-group mx-sm-5">
                         <label for="emailInput">Email address</label>
-                        <input type="email" class="form-control" id="emailInput" placeholder="name@example.com" name="username">
+                        <input type="email" class="form-control" id="emailInput" placeholder="name@example.com" name="username" required>
+                        <div class="invalid-feedback">
+                                Please enter your email address.
+                            </div>
                     </div>
+                   
                     <div class="form-group mx-sm-5">
                             <label for="passInput">Password</label>
-                            <input type="password" class="form-control" id="passInput" placeholder="Password" name="password">
+                            <input type="password" class="form-control" id="passInput" placeholder="Password" name="password" required>
+                    <div class="invalid-feedback">
+                            Please enter a password.
+                        </div>
                     </div>
                     <div class="form-group mx-sm-5">
                             <label for="confirmPass">Confirm Password</label>
-                            <input type="password" class="form-control" id="confirmPass" placeholder="Password" name="confirm">
+                            <input type="password" class="form-control" id="confirmPass" placeholder="Password" name="confirm" required>
+                            <span id='message'></span>
+                            <div class="invalid-feedback">
+                                Please enter your password again.
+                            </div>
+                    </div>
+                    <div class="form-group mx-sm-5">
+                            <label for="privacyAndTCAgreement">You verify that you have read and agreed to the 
+                                <a href="/showpp">privacy policy</a> and <a href="/showtc">terms and conditions</a></label>
+                                <br>
+                            <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                            <label class="form-check-label" for="invalidCheck">
+                              Agree to terms and conditions and privacy policy
+                            </label>
+                            <div class="invalid-feedback">
+                              You must agree before submitting.
+                            </div>
                     </div>
                     <div class="text-center pb-2">
-                        <button type="submit" class="btn btn-dark">Submit</button>
+                        <button id="submitButton" type="submit" class="btn btn-dark">Submit</button>
                     </div>
                 </form>
                 
             </div>
+            <script>
+                $('#passInput, #confirmPass').on('keyup', function () {
+                if ($('#passInput').val() == $('#confirmPass').val()) {
+                    $('#message').html('Matching').css('color', 'green');
+                    $('#submitButton').removeAttr('disabled');
+                    console.log('#submitButton'.prop('disabled'));
+
+                } else 
+                    $('#message').html('Not Matching').css('color', 'red');
+                    $('#submitButton').attr('disabled', 'disabled');
+                });
+            </script>
             
         </div>
         </div>
