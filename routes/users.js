@@ -3,7 +3,6 @@ var express = require('express');
 var router = express.Router();
 
 var users_controller = require('../controllers/users_controller');
-const auth = require('./auth');
 
 // GET User home page.
 router.get('/', users_controller.index); 
