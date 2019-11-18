@@ -1,3 +1,4 @@
+"use strict";
 const mysql = require('mysql');
 const drop_db;
 const production = process.env.production || false;
