@@ -1,6 +1,6 @@
 "use strict";
 const mysql = require('mysql');
-const drop_db;
+var drop_db;
 const production = process.env.production || false;
 var connection;
 
