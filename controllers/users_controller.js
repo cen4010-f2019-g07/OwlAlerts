@@ -1,3 +1,4 @@
+"use strict";
 const UserModel = require('../models/user');
 //var upload = require('../config/multer');
 passport = require('../config/passport');

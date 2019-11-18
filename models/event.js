@@ -1,3 +1,4 @@
+"use strict";
 const pool = require('../lib/pool_db');
 
 function databaseQuery(query){

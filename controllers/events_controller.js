@@ -1,3 +1,4 @@
+"use strict";
 var EventModel = require('../models/event');
 
 // Home page for Events
