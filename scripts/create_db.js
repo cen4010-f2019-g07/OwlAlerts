@@ -68,7 +68,7 @@ if(production){
 		console.log('Issues Table Created!');
 	}).then(function(){
 		console.log('All Tables Created!');
-		console.log('Database Creation Finished!');
+		console.log('Table Creation Finished!');
 		connection.end();
 		return;
 	}).catch(function(err){
