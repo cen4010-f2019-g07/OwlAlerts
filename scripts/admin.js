@@ -4,7 +4,7 @@ const faker = require('faker');
 const production = process.env.production || false;
 var pool;
 
-if(production == true){
+if(production){
 	pool = mysql.createPool({
 		connectionLimit: 10,
 		host: 'localhost',
@@ -27,52 +27,27 @@ else{
 
 function seedAdmin(){
 	return new Promise(function(resolve, reject){
-		if(production){
-			let firstname = faker.name.firstName();
-			let lastname = faker.name.lastName();
-			let email = faker.internet.email();
-			let password = faker.internet.password();
-			let adminQuery = `INSERT INTO users(firstname, lastname, email, password, admin) \
-			VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${password}\', true)`;
-			pool.getConnection(function(error, connection){
-				if(error)
-					return reject(error);
-				connection.query(adminQuery, function(err, rows, fields){
-					if(err)
-						return reject(err);
-					connection.release();
-					console.log('---------------------------------------------------');
-					console.log(`Admin User First Name: ${firstname}`);
-					console.log(`Admin User Last Name: ${lastname}`);
-					console.log(`Admin User Email Address: ${email}`);
-					console.log(`Admin User Password: ${password}`);
-					resolve(rows);
-				});
+		let firstname = 'Development';
+		let lastname = 'Admin';
+		let email = 'admin@fau.edu';
+		let password = 'password';
+		let adminQuery = `INSERT INTO users(firstname, lastname, email, password, admin) \
+		VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${password}\', true)`;
+		pool.getConnection(function(error, connection){
+			if(error)
+				return reject(error);
+			connection.query(adminQuery, function(err, rows, fields){
+				if(err)
+					return reject(err);
+				connection.release();
+				console.log('---------------------------------------------------');
+				console.log(`Admin User First Name: ${firstname}`);
+				console.log(`Admin User Last Name: ${lastname}`);
+				console.log(`Admin User Email Address: ${email}`);
+				console.log(`Admin User Password: ${password}`);
+				resolve(rows);
 			});
-		}
-		else{
-			let firstname = 'Development';
-			let lastname = 'Admin';
-			let email = 'admin@fau.edu';
-			let password = 'password';
-			let adminQuery = `INSERT INTO users(firstname, lastname, email, password, admin) \
-			VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${password}\', true)`;
-			pool.getConnection(function(error, connection){
-				if(error)
-					return reject(error);
-				connection.query(adminQuery, function(err, rows, fields){
-					if(err)
-						return reject(err);
-					connection.release();
-					console.log('---------------------------------------------------');
-					console.log(`Admin User First Name: ${firstname}`);
-					console.log(`Admin User Last Name: ${lastname}`);
-					console.log(`Admin User Email Address: ${email}`);
-					console.log(`Admin User Password: ${password}`);
-					resolve(rows);
-				});
-			});
-		}
+		});
 	});
 }
 
