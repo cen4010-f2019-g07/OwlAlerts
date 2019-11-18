@@ -1,4 +1,5 @@
 const UserModel = require('../models/user');
+//var upload = require('../config/multer');
 passport = require('../config/passport');
 
 // Home Page for Users.
@@ -20,7 +21,7 @@ exports.user_list = function(req, res) {
 			UserModel.all().then(function(data){
 		    res.render('pages/users/userlist',
 		    {
-          sessionUser: req.user,
+              sessionUser: req.user,
 		      users: data
 		    });
 			}).catch(function(err){
@@ -38,10 +39,22 @@ exports.user_list = function(req, res) {
 
 // Display detail page for a specific User.
 exports.user_detail = function(req, res) {
+
 	if(req.user){
 		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
 			UserModel.get(req.user.id).then(function(data){
-				res.send('NOT IMPLEMENTED: User detail: ' + req.user.id);
+
+				UserModel.getProfileImage(data.image_id).then(function(imgData){
+
+					var imageSrcPath = (imgData != null) ? UserModel.getUserProfileImagePath(imgData.name) :
+					"https://via.placeholder.com/180x180";
+
+					res.render('pages/users/show', {
+						sessionUser: req.user,
+						user: data,
+						imgFilePath: imageSrcPath
+					}); 
+				})	
 			}).catch(function(err){
 				console.log(err);
 			});
@@ -102,6 +115,8 @@ exports.user_create_post = function(req, res, next) {
 	});
 };
 
+
+
 // Display User delete form on GET.
 exports.user_delete_get = function(req, res) {
 	if(req.user){
@@ -141,7 +156,18 @@ exports.user_update_get = function(req, res) {
 	if(req.user){
 		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
 			UserModel.get(req.params.id).then(function(data){
-				res.send('NOT IMPLEMENTED: User update GET: ' + req.params.id);
+
+				UserModel.getProfileImage(data.image_id).then(function(imgData){
+
+					var imageSrcPath = (imgData != null) ? UserModel.getUserProfileImagePath(imgData.name) :
+					"https://via.placeholder.com/180x180";
+
+					res.render('pages/users/update', {
+						sessionUser: req.user,
+						user: data,
+						imgFilePath: imageSrcPath
+					}); 
+				})				
 			}).catch(function(err){
 				console.log(err);
 			});
@@ -159,7 +185,18 @@ exports.user_update_get = function(req, res) {
 exports.user_update_post = function(req, res) {
 	if(req.user){
 		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
-			res.send('NOT IMPLEMENTED: User update POST');
+
+			if(!req.files)
+				res.send("No Files Were Uploaded");
+			else {
+				UserModel.upload(req.files.profile).then(function(result) {
+					let newImageId = result.insertId;
+					UserModel.update(req.params.id, newImageId);
+				});				
+			}
+			
+			res.redirect("/users/user/<%= sessionUser.id%>");
+			
 		}
 		else{
 			res.status(401).render("errors/401");

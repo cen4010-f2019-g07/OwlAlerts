@@ -17,11 +17,12 @@ const create_events = 'CREATE TABLE events( id INT NOT NULL AUTO_INCREMENT, \
 location VARCHAR(255) NOT NULL, start_date DATETIME NOT NULL, end_date DATETIME NOT NULL, \
 description TEXT NOT NULL, submitted_user INT NOT NULL, host VARCHAR(255) NOT NULL, PRIMARY KEY (id), \
 FOREIGN KEY (submitted_user) REFERENCES users(id))';
-const create_issues = 'CREATE TABLE issues( id INT NOT NULL AUTO_INCREMENT, description TEXT NOT NULL, \
-location VARCHAR(255) NOT NULL, verified BOOL NOT NULL DEFAULT false, resolved BOOL NOT NULL DEFAULT false, \
-submitted_user INT NOT NULL, verified_faculty INT, resolved_faculty INT, image_id INT, PRIMARY KEY (id), \
-FOREIGN KEY (submitted_user) REFERENCES users(id), FOREIGN KEY (verified_faculty) REFERENCES users(id), \
-FOREIGN KEY (resolved_faculty) REFERENCES users(id), FOREIGN KEY (image_id) REFERENCES images(id))';
+const create_issues = 'CREATE TABLE issues( id INT NOT NULL AUTO_INCREMENT, title VARCHAR(255) NOT NULL, \
+description TEXT NOT NULL, location VARCHAR(255) NOT NULL, verified BOOL NOT NULL DEFAULT false, \
+resolved BOOL NOT NULL DEFAULT false, submitted_user INT NOT NULL, verified_faculty INT, \
+resolved_faculty INT, image_id INT, PRIMARY KEY (id), FOREIGN KEY (submitted_user) REFERENCES users(id), \
+FOREIGN KEY (verified_faculty) REFERENCES users(id), FOREIGN KEY (resolved_faculty) REFERENCES users(id), \
+FOREIGN KEY (image_id) REFERENCES images(id))';
 
 var connection = mysql.createConnection({
 	host: 'localhost',
