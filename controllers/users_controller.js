@@ -2,6 +2,14 @@ const UserModel = require('../models/user');
 //var upload = require('../config/multer');
 passport = require('../config/passport');
 
+function isEmpty(obj) {
+  for(var key in obj) {
+    if(obj.hasOwnProperty(key))
+      return false;
+  }
+  return true;
+}
+
 // Home Page for Users.
 exports.index = function(req, res){
 	UserModel.all().then(function(data){
@@ -39,7 +47,6 @@ exports.user_list = function(req, res) {
 
 // Display detail page for a specific User.
 exports.user_detail = function(req, res) {
-
 	if(req.user){
 		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
 			UserModel.get(req.user.id).then(function(data){
@@ -167,7 +174,9 @@ exports.user_update_get = function(req, res) {
 						user: data,
 						imgFilePath: imageSrcPath
 					}); 
-				})				
+				}).catch(function(err){
+					console.log(err);
+				});
 			}).catch(function(err){
 				console.log(err);
 			});
@@ -185,17 +194,34 @@ exports.user_update_get = function(req, res) {
 exports.user_update_post = function(req, res) {
 	if(req.user){
 		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
-
-			if(!req.files)
-				res.send("No Files Were Uploaded");
+			let attr = {}
+			attr['id'] = req.user.id;
+			attr['firstname'] = req.body.firstname || null;
+			attr['lastname'] = req.body.lastname || null;
+			attr['residency'] = req.body.residency || null;
+			attr['housing_status'] = req.body.housing_status;
+			attr['building'] = req.body.building;
+			attr['room_number'] = req.body.room_number || null;
+			attr['phone_number'] = req.body.phone_number || null;
+			attr['street'] = req.body.street || null;
+			attr['city'] = req.body.city || null;
+			attr['state'] = req.body.state || null;
+			attr['zip'] = req.body.zip || null;
+			attr['country'] = req.body.country || null;
+			attr['email'] = req.body.email || null;
+			attr['password'] = req.body.password || null;
+			console.log(attr)
+			if(isEmpty(req.files))
+				attr['image_id'] = null;
 			else {
 				UserModel.upload(req.files.profile).then(function(result) {
 					let newImageId = result.insertId;
-					UserModel.update(req.params.id, newImageId);
+					attr['image_id'] = newImageId;
+					//UserModel.update(req.params.id, newImageId);
 				});				
 			}
-			
-			res.redirect("/users/user/<%= sessionUser.id%>");
+			UserModel.update(attr);
+			res.redirect(`/users/user/${req.user.id}`);
 			
 		}
 		else{
