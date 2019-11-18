@@ -29,7 +29,7 @@ exports.user_list = function(req, res) {
 			UserModel.all().then(function(data){
 		    res.render('pages/users/userlist',
 		    {
-              sessionUser: req.user,
+          sessionUser: req.user,
 		      users: data
 		    });
 			}).catch(function(err){

@@ -6,7 +6,6 @@ exports.index = function(req, res) {
 		res.render('pages/issues/issuehome',
 		{
 			sessionUser: req.user,
-
 			issues:data
 		});
 	}).catch(function(err){
@@ -43,15 +42,31 @@ exports.issue_detail = function(req, res) {
 
 // Display Issue create form on GET.
 exports.issue_create_get = function(req, res) {
-  res.render('pages/issues/issuepost',
-  {
-	  sessionUser: req.user
-  });
+	if(req.user){
+		res.render('pages/issues/issuepost',
+	  {
+		  sessionUser: req.user
+	  });
+	}
+  else{
+  	res.redirect('/users/signin');
+  }
 };
 
 // Handle Issue create on POST.
 exports.issue_create_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: Issue create POST');
+	if(req.user){
+		let attr = {};
+		attr['title'] = req.body.title;
+		attr['description'] = req.body.description;
+		attr['location'] = req.body.location;
+		IssueModel.create(attr).then(function(){
+			res.redirect('/issues/create');
+		});
+	}
+	else{
+		res.redirect('/users/signin');
+	}
 };
 
 // Display Issue delete form on GET.
@@ -71,15 +86,35 @@ exports.issue_delete_post = function(req, res) {
 
 // Display Issue update form on GET.
 exports.issue_update_get = function(req, res) {
-	IssueModel.update().then(function(result){
-		//Data holds the information for the issue with the id param
-		res.send('NOT IMPLEMENTED: Issue update GET: ' + req.params.id);
-	}).catch(function(err){
-		console.log(err);
-	});
+	if(req.user){
+		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
+			IssueModel.update().then(function(result){
+				//Data holds the information for the issue with the id param
+				res.send('NOT IMPLEMENTED: Issue update GET: ' + req.params.id);
+			}).catch(function(err){
+				console.log(err);
+			});
+		}
+		else{
+			res.redirect('/users/signin');
+		}
+	}
+	else{
+		res.redirect('/users/signin');
+	}
 };
 
 // Handle Issue update on POST.
 exports.issue_update_post = function(req, res) {
-  res.send('NOT IMPLEMENTED: Issue update POST');
+	if(req.user){
+		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
+			res.send('NOT IMPLEMENTED: Issue update POST');
+		}
+		else{
+			res.redirect('/users/signin');
+		}
+	}
+  else{
+  	res.redirect('/users/signin');
+  }
 };
