@@ -1,3 +1,4 @@
+"use strict";
 const pool = require('../lib/pool_db');
 var fs = require('fs');
 

@@ -1,4 +1,7 @@
+"use strict";
 const mysql = require('mysql');
+const production = process.env.production || false;
+var connection;
 const create_db = 'CREATE DATABASE owl_alerts';
 const use_db = 'USE owl_alerts';
 const create_images = 'CREATE TABLE images( id INT NOT NULL AUTO_INCREMENT, name VARCHAR(255) NOT NULL, \
@@ -24,12 +27,23 @@ resolved_faculty INT, image_id INT, PRIMARY KEY (id), FOREIGN KEY (submitted_use
 FOREIGN KEY (verified_faculty) REFERENCES users(id), FOREIGN KEY (resolved_faculty) REFERENCES users(id), \
 FOREIGN KEY (image_id) REFERENCES images(id))';
 
-var connection = mysql.createConnection({
-	host: 'localhost',
-	user: 'user',
-	password: 'password'
-});
-
+if(production){
+	connection = mysql.createConnection({
+		connectionLimit: 10,
+		host: 'localhost',
+		user: 'cen4010fal19_g07',
+		password: 'kJDrofNeU6',
+		database: 'cen4010fal19_g07',
+		multipleStatements: true
+	});
+}
+else{
+	connection = mysql.createConnection({
+		host: 'localhost',
+		user: 'user',
+		password: 'password'
+	});
+}
 
 function databaseQuery(queryString){
 	return new Promise(function(resolve, reject){
@@ -41,25 +55,47 @@ function databaseQuery(queryString){
 	});
 }
 
-databaseQuery(create_db).then(function(){
-	console.log('Database Created!');
-}).then(databaseQuery(use_db)).then(function(){
-	console.log('Owl Alerts Database Selected!');
-}).then(databaseQuery(create_images)).then(function(){
-	console.log('Images Table Created!');
-}).then(databaseQuery(create_users)).then(function(){
-	console.log('Users Table Created!');
-}).then(databaseQuery(create_garages)).then(function(){
-	console.log('Garages Table Created!');
-}).then(databaseQuery(create_events)).then(function(){
-	console.log('Events Table Created!');
-}).then(databaseQuery(create_issues)).then(function(){
-	console.log('Issues Table Created!');
-}).then(function(){
-	console.log('All Tables Created!');
-	console.log('Database Creation Finished!');
-	connection.end();
-	return;
-}).catch(function(err){
-	console.log(err);
-});
+if(production){
+	databaseQuery(create_images).then(function(){
+		console.log('Images Table Created!');
+	}).then(databaseQuery(create_users)).then(function(){
+		console.log('Users Table Created!');
+	}).then(databaseQuery(create_garages)).then(function(){
+		console.log('Garages Table Created!');
+	}).then(databaseQuery(create_events)).then(function(){
+		console.log('Events Table Created!');
+	}).then(databaseQuery(create_issues)).then(function(){
+		console.log('Issues Table Created!');
+	}).then(function(){
+		console.log('All Tables Created!');
+		console.log('Table Creation Finished!');
+		connection.end();
+		return;
+	}).catch(function(err){
+		console.log(err);
+	});
+}
+else{
+	databaseQuery(create_db).then(function(){
+		console.log('Database Created!');
+	}).then(databaseQuery(use_db)).then(function(){
+		console.log('Owl Alerts Database Selected!');
+	}).then(databaseQuery(create_images)).then(function(){
+		console.log('Images Table Created!');
+	}).then(databaseQuery(create_users)).then(function(){
+		console.log('Users Table Created!');
+	}).then(databaseQuery(create_garages)).then(function(){
+		console.log('Garages Table Created!');
+	}).then(databaseQuery(create_events)).then(function(){
+		console.log('Events Table Created!');
+	}).then(databaseQuery(create_issues)).then(function(){
+		console.log('Issues Table Created!');
+	}).then(function(){
+		console.log('All Tables Created!');
+		console.log('Database Creation Finished!');
+		connection.end();
+		return;
+	}).catch(function(err){
+		console.log(err);
+	});
+}

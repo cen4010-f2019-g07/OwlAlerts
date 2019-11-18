@@ -1,3 +1,4 @@
+"use strict";
 var GarageModel = require('../models/garage');
 
 // Home Page for Garages

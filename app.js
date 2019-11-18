@@ -1,4 +1,6 @@
 "use strict";
+const production = process.env.production || false;
+process.env.production = production;
 global.__basedir = __dirname;
 const express = require('express');
 const pool = require('./lib/pool_db');
@@ -16,7 +18,6 @@ const issueRouter = require('./routes/issues');
 const passport = require('./config/passport');
 
 const app = express();
-const production = process.env.production || false;
 
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
