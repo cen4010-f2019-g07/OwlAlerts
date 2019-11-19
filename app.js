@@ -8,7 +8,7 @@ const http = require('http');
 const session = require('express-session');
 const flash = require('connect-flash');
 const fileUpload = require('express-fileupload');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const dashboardRouter = require('./routes/dashboard'); //Our New Default Page
 const userRouter = require('./routes/users');

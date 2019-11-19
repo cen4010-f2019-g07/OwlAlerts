@@ -1,7 +1,10 @@
 "use strict";
 This needs to be updated for new housing status field
+Needs to be upadted with new password scheme
 const mysql = require('mysql');
 const faker = require('faker');
+const bcrypt = require('bcryptjs');
+const saltRounds = 10;
 const production = process.env.production || false;
 const issuesCount = process.env.issues || 0;
 const eventsCount = process.env.events || 0;

@@ -1,6 +1,6 @@
 "use strict";
 const pool = require('../lib/pool_db');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 var fs = require('fs');
 
@@ -242,7 +242,6 @@ class User {
 		return new Promise(function(resolve, reject){
 			let query = `SELECT * FROM users WHERE email='${email}'`;
 			databaseQuery(query).then(function(result){
-				console.log(result);
 				let user = result[0];
 				if(!user){
 					resolve(false);
