@@ -211,14 +211,12 @@ exports.user_update_post = function(req, res) {
 			attr['country'] = req.body.country || null;
 			attr['email'] = req.body.email || null;
 			attr['password'] = req.body.password || null;
-			console.log(attr)
 			if(isEmpty(req.files))
 				attr['image_id'] = null;
 			else {
 				UserModel.upload(req.files.profile).then(function(result) {
 					let newImageId = result.insertId;
 					attr['image_id'] = newImageId;
-					//UserModel.update(req.params.id, newImageId);
 				});				
 			}
 			UserModel.update(attr);
