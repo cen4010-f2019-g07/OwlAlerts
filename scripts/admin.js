@@ -1,8 +1,31 @@
 "use strict";
-const pool = require('../lib/pool_db');
+const mysql = require('mysql');
 const faker = require('faker');
 const bcrypt = require('bcryptjs');
+const production = process.env.production || false;
 const saltRounds = 10;
+var pool;
+
+if(production){
+	pool = mysql.createPool({
+		connectionLimit: 100,
+		host: 'localhost',
+		user: 'cen4010fal19_g07',
+		password: 'kJDrofNeU6',
+		database: 'cen4010fal19_g07',
+		multipleStatements: true
+	});
+}
+else{
+	pool = mysql.createPool({
+		connectionLimit: 100,
+		host: 'localhost',
+		user: 'user',
+		password: 'password',
+		database: 'owl_alerts',
+		multipleStatements: true
+	});
+}
 
 function databaseQuery(query){
 	return new Promise(function(resolve, reject){
