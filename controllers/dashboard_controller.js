@@ -1,3 +1,4 @@
+"use strict";
 var user = require('../models/user');
 var events = require('../models/event');
 var garages = require('../models/garage');

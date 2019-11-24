@@ -1,3 +1,4 @@
+"use strict";
 var IssueModel = require('../models/issue');
 
 //Home page for Issues.
