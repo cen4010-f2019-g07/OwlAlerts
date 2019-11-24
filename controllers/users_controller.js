@@ -2,6 +2,7 @@
 const UserModel = require('../models/user');
 //var upload = require('../config/multer');
 var passport = require('../config/passport');
+const paginate = require('express-paginate');
 
 function isEmpty(obj) {
   for(var key in obj) {
@@ -27,12 +28,29 @@ exports.index = function(req, res){
 exports.user_list = function(req, res) {
 	if(req.user){
 		if(req.user.faculty || req.user.admin){
-			UserModel.all().then(function(data){
-		    res.render('pages/users/userlist',
-		    {
-          sessionUser: req.user,
-		      users: data
-		    });
+			let numPerPage = parseInt(req.query.npp, 10) || 10;
+			let page = parseInt(req.query.page, 10) || 0;
+			let skip = (page-1) * numPerPage;
+			let limit = skip + ',' + numPerPage;
+			var itemCount;
+			var pageCount;
+			console.log(limit);
+			UserModel.allCount().then(function(userCount){
+				itemCount = userCount;
+				pageCount = Math.ceil(itemCount/req.query.limit);
+			}).then(function(){
+				UserModel.all(limit).then(function(data){
+					res.render('pages/users/userlist',
+			    {
+	          sessionUser: req.user,
+			      users: data,
+			      pageCount,
+			      itemCount,
+			      pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
+			    });
+				}).catch(function(err){
+					console.log(err);
+				});
 			}).catch(function(err){
 				console.log(err);
 			});
