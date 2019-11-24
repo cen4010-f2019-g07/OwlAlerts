@@ -33,7 +33,8 @@ class Garage {
 			databaseQuery(getGarageQuery).then(function(result){
 				let garage = result[0];
 				if(attr['location'] != null && attr['location'] != garage.location){
-					let locationQuery = `UPDATE garages SET location='${attr['location']}' WHERE id='${attr['id']}'`;
+					let locationQuery = `UPDATE garages SET location='${attr['location']}' \
+					WHERE id='${attr['id']}'`;
 					databaseQuery(locationQuery).catch(function(err){
 						console.log(err);
 					});
@@ -64,6 +65,8 @@ class Garage {
 						console.log(err);
 					});
 				}
+			}).catch(function(err){
+				console.log(err);
 			});
 		});
 	}

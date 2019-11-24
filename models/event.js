@@ -14,9 +14,18 @@ function databaseQuery(query){
 class Event {
 	contructor(){}
 
-	create(){ //Needs to be done
+	create(attr){
 		return new Promise(function(resolve, reject){
-			let query = '';
+			attr['location'] = req.body.location;
+			attr['start_date'] = req.body.start_date;
+			attr['end_date'] = req.body.end_date;
+			attr['description'] = req.body.description;
+			attr['submitted_user'] = req.user.id;
+			attr['host'] = req.body.host;
+			let query = `INSERT INTO events(location, start_date, end_date, description, \
+			submitted_user, host) VALUE('${attr['location']}', '${attr['start_date']}', \
+			'${attr['end_date']}', '${attr['description']}', '${attr['submitted_user']}', \
+			'${attr['host']}')`;
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
@@ -25,9 +34,51 @@ class Event {
 		});
 	}
 
-	update(){
+	update(attr){
 		return new Promise(function(resolve, reject){
-
+			let getEventQuery = `SELECT * FROM events WHERE id='${attr['id']}'`;
+			databaseQuery(getEventQuery).then(function(result){
+				let event = result[0];
+				if(attr['location'] != null && attr['location'] != event.location){
+					let locationQuery = `UPDATE events SET location='${attr['location']}' \
+					WHERE id='${attr['id']}'`;
+					databaseQuery(locationQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+				//May Need to Adjust
+				if(attr['start_date'] != null && attr['start_date'] != event.start_date){
+					let startDateQuery = `UPDATE events SET start_date='${attr['start_date']}' \
+					WHERE id='${attr['id']}'`;
+					databaseQuery(startDateQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+				//May Need to Adjust
+				if(attr['end_date'] != null && attr['end_date'] != event.end_date){
+					let endDateQuery = `UPDATE events SET end_date='${attr['end_date']}' \
+					WHERE id='${attr['id']}'`;
+					databaseQuery(endDateQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+				if(attr['description'] != null && attr['description'] != event.description){
+					let descriptionQuery = `UPDATE events SET description='${attr['description']}' \
+					WHERE id='${attr['id']}'`;
+					databaseQuery(descriptionQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+				if(attr['host'] != null && attr['host'] != event.host){
+					let hostQuery = `UPDATE events SET host='${attr['host']}' \
+					WHERE id='${attr['id']}'`;
+					databaseQuery(hostQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+			}).catch(function(err){
+				console.log(err);
+			});
 		});
 	}
 

@@ -126,6 +126,7 @@ exports.garage_update_post = function(req, res) {
   if(req.user){
   	if(req.user.admin){
   		let attr = {};
+  		attr['id'] - req.params.id;
 			attr['location'] = req.body.location || null;
 			attr['name'] = req.body.name || null;
 			attr['full'] = req.body.full;
