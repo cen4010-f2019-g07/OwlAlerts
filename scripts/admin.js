@@ -1,28 +1,40 @@
 "use strict";
 const mysql = require('mysql');
 const faker = require('faker');
+const bcrypt = require('bcryptjs');
 const production = process.env.production || false;
+const saltRounds = 10;
 var pool;
 
 if(production){
 	pool = mysql.createPool({
-		connectionLimit: 10,
+		connectionLimit: 100,
 		host: 'localhost',
 		user: 'cen4010fal19_g07',
 		password: 'kJDrofNeU6',
-		database: 'cen4010fal19_g07'
+		database: 'cen4010fal19_g07',
+		multipleStatements: true
 	});
-	console.log('Connected to Production Database!');
 }
 else{
 	pool = mysql.createPool({
-		connectionLimit: 10,
+		connectionLimit: 100,
 		host: 'localhost',
 		user: 'user',
 		password: 'password',
-		database: 'owl_alerts'
+		database: 'owl_alerts',
+		multipleStatements: true
 	});
-	console.log('Connected to Development Database!');
+}
+
+function databaseQuery(query){
+	return new Promise(function(resolve, reject){
+		pool.query(query, function(err, rows, fields){
+			if(err)
+				return reject(err);
+			resolve(rows);
+		});
+	});
 }
 
 function seedAdmin(){
@@ -31,22 +43,21 @@ function seedAdmin(){
 		let lastname = 'Admin';
 		let email = 'admin@fau.edu';
 		let password = 'password';
-		let adminQuery = `INSERT INTO users(firstname, lastname, email, password, admin) \
-		VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${password}\', true)`;
-		pool.getConnection(function(error, connection){
-			if(error)
-				return reject(error);
-			connection.query(adminQuery, function(err, rows, fields){
-				if(err)
-					return reject(err);
-				connection.release();
-				console.log('---------------------------------------------------');
-				console.log(`Admin User First Name: ${firstname}`);
-				console.log(`Admin User Last Name: ${lastname}`);
-				console.log(`Admin User Email Address: ${email}`);
-				console.log(`Admin User Password: ${password}`);
-				resolve(rows);
+		bcrypt.hash(password, saltRounds).then(function(hash){
+			let adminQuery = `INSERT INTO users(firstname, lastname, email, password, admin) \
+			VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${hash}\', true)`;
+			databaseQuery(adminQuery).then(function(result){
+					console.log('---------------------------------------------------');
+					console.log(`Admin User First Name: ${firstname}`);
+					console.log(`Admin User Last Name: ${lastname}`);
+					console.log(`Admin User Email Address: ${email}`);
+					console.log(`Admin User Password: ${password}`);
+					resolve(result);
+			}).catch(function(err){
+				console.log(err);
 			});
+		}).catch(function(err){
+			console.log(err);
 		});
 	});
 }
