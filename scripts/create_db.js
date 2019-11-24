@@ -67,6 +67,7 @@ function databaseQuery(queryString){
 }
 
 if(production){
+	console.log('---------------------------------------------------');
 	databaseQuery(create_images).then(function(){
 		console.log('Images Table Created!');
 	}).then(databaseQuery(create_users)).then(function(){
@@ -80,6 +81,7 @@ if(production){
 	}).then(function(){
 		console.log('All Tables Created!');
 		console.log('Table Creation Finished!');
+		console.log('---------------------------------------------------');
 		connection.end();
 		return;
 	}).catch(function(err){
@@ -87,6 +89,7 @@ if(production){
 	});
 }
 else{
+	console.log('---------------------------------------------------');
 	databaseQuery(create_db).then(function(){
 		console.log('Database Created!');
 	}).then(databaseQuery(use_db)).then(function(){
@@ -104,6 +107,7 @@ else{
 	}).then(function(){
 		console.log('All Tables Created!');
 		console.log('Database Creation Finished!');
+		console.log('---------------------------------------------------');
 		connection.end();
 		return;
 	}).catch(function(err){
