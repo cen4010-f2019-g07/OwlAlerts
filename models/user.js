@@ -64,10 +64,9 @@ class User {
 
 	update(attr){ //Short for attributes
 		return new Promise(function(resolve, reject){
-			let getUserQuery = `SELECT * FROM users WHERE id='${attr['id']}'`
+			let getUserQuery = `SELECT * FROM users WHERE id='${attr['id']}'`;
 			databaseQuery(getUserQuery).then(function(result){
 				let user = result[0];
-				console.log(user);
 				if(attr['residency'] != user.residency && attr['residency'] != null){
 					let residencyQuery = `UPDATE users SET residency='${attr['residency']}' WHERE id='${attr['id']}'`;
 					databaseQuery(residencyQuery).catch(function(err){
