@@ -114,6 +114,28 @@ class Issue {
 		});
 	}
 
+	allPaginate(limit){
+		return new Promise(function(resolve, reject){
+			let query = `SELECT * FROM issues ORDER BY ID DESC LIMIT ${limit}`;
+			databaseQuery(query).then(function(result){
+				resolve(result);
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
+	}
+
+	allCount(){
+		return new Promise(function(resolve, reject){
+			let query = 'SELECT count(*) as numRows FROM issues';
+			databaseQuery(query).then(function(results){
+				resolve(results[0].numRows);
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
+	}
+
 	get(id){
 		return new Promise(function(resolve, reject){
 			let query = `SELECT * FROM issues WHERE id=\'${id}\'`;

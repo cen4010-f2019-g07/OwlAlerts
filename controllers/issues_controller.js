@@ -1,13 +1,30 @@
 "use strict";
 var IssueModel = require('../models/issue');
+const paginate = require('express-paginate');
 
 //Home page for Issues.
 exports.index = function(req, res) {
-	IssueModel.all().then(function(data){
-		res.render('pages/issues/issuehome',
-		{
-			sessionUser: req.user,
-			issues:data
+	let numPerPage = parseInt(req.query.npp, 10) || 10;
+	let page = parseInt(req.query.page, 10) || 0;
+	let skip = (page-1) * numPerPage;
+	let limit = skip + ',' + numPerPage;
+	var itemCount;
+	var pageCount;
+	IssueModel.allCount().then(function(issueCount){
+		itemCount = issueCount;
+		pageCount = Math.ceil(itemCount/req.query.limit);
+	}).then(function(){
+		IssueModel.allPaginate(limit).then(function(data){
+			res.render('pages/issues/index',
+	    {
+        sessionUser: req.user,
+	      issues: data,
+	      pageCount,
+	      itemCount,
+	      pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
+	    });
+		}).catch(function(err){
+			console.log(err);
 		});
 	}).catch(function(err){
 		console.log(err);
@@ -16,11 +33,27 @@ exports.index = function(req, res) {
 
 // Display list of all Issues.
 exports.issue_list = function(req, res) {
-	IssueModel.all().then(function(data){
-		res.render('pages/issues/issuelist',
-		{
-			sessionUser: req.user,
-			issues: data
+	let numPerPage = parseInt(req.query.npp, 10) || 10;
+	let page = parseInt(req.query.page, 10) || 0;
+	let skip = (page-1) * numPerPage;
+	let limit = skip + ',' + numPerPage;
+	var itemCount;
+	var pageCount;
+	IssueModel.allCount().then(function(issueCount){
+		itemCount = issueCount;
+		pageCount = Math.ceil(itemCount/req.query.limit);
+	}).then(function(){
+		IssueModel.allPaginate(limit).then(function(data){
+			res.render('pages/issues/issuelist',
+	    {
+        sessionUser: req.user,
+	      issues: data,
+	      pageCount,
+	      itemCount,
+	      pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
+	    });
+		}).catch(function(err){
+			console.log(err);
 		});
 	}).catch(function(err){
 		console.log(err);
@@ -44,7 +77,7 @@ exports.issue_detail = function(req, res) {
 // Display Issue create form on GET.
 exports.issue_create_get = function(req, res) {
 	if(req.user){
-		res.render('pages/issues/issuepost',
+		res.render('pages/issues/create',
 	  {
 		  sessionUser: req.user
 	  });
