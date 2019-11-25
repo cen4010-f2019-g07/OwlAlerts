@@ -43,14 +43,14 @@
                                         <td><%= users[i].building %></td>
                                         <td><%= users[i].room_number %></td>
                                         <td>
-                                            <% if(users[i].commuter) { %>
+                                            <% if(users[i].housing_status == 'Commuter') { %>
                                                 Yes
                                             <% } else { %>
                                                 No
                                             <% } %>
                                         </td>
                                         <td>
-                                            <% if(users[i].dormer) { %>
+                                            <% if(users[i].housing_status == 'Dormer') { %>
                                                 Yes
                                             <% } else { %>
                                                 No
