@@ -8,6 +8,7 @@ const http = require('http');
 const session = require('express-session');
 const flash = require('connect-flash');
 const fileUpload = require('express-fileupload');
+const paginate = require('express-paginate');
 const bcrypt = require('bcryptjs');
 
 const dashboardRouter = require('./routes/dashboard'); //Our New Default Page
@@ -19,6 +20,7 @@ const passport = require('./config/passport');
 
 const app = express();
 
+app.use(paginate.middleware(10, 50));
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(bodyParser.urlencoded({ extended: false }));
