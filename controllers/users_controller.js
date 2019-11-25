@@ -34,7 +34,6 @@ exports.user_list = function(req, res) {
 			let limit = skip + ',' + numPerPage;
 			var itemCount;
 			var pageCount;
-			console.log(limit);
 			UserModel.allCount().then(function(userCount){
 				itemCount = userCount;
 				pageCount = Math.ceil(itemCount/req.query.limit);
