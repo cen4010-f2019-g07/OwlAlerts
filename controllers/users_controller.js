@@ -67,7 +67,7 @@ exports.user_list = function(req, res) {
 exports.user_detail = function(req, res) {
 	if(req.user){
 		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
-			UserModel.get(req.user.id).then(function(data){
+			UserModel.get(req.params.id).then(function(data){
 
 				UserModel.getProfileImage(data.image_id).then(function(imgData){
 
