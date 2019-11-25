@@ -116,12 +116,16 @@ exports.issue_delete_post = function(req, res) {
 // Display Issue update form on GET.
 exports.issue_update_get = function(req, res) {
 	if(req.user){
-		if(req.user.faculty || req.user.admin){
-			res.send('NOT IMPLEMENTED: Issue update GET: ' + req.params.id);
-		}
-		else{
-			res.status(401).render("errors/401");
-		}
+		IssueModel.get(req.params.id).then(function(issue){
+			if(req.user.id == issue.submitted_user || req.user.faculty || req.user.admin){
+				res.send('NOT IMPLEMENTED: Issue update GET: ' + req.params.id);
+			}
+			else{
+				res.status(401).render("errors/401");
+			}
+		}).catch(function(err){
+			console.log(err);
+		});
 	}
 	else{
 		res.redirect('/users/signin');
@@ -131,19 +135,22 @@ exports.issue_update_get = function(req, res) {
 // Handle Issue update on POST.
 exports.issue_update_post = function(req, res) {
 	if(req.user){
-		if(req.user.faculty || req.user.admin){
-			let attr = {};
-			IssueModel.update(attr).then(function(result){
-				//Data holds the information for the issue with the id param
-				res.send('NOT IMPLEMENTED: Issue update POST: ' + req.params.id);
-			}).catch(function(err){
-				console.log(err);
-			});
-			
-		}
-		else{
-			res.status(401).render("errors/401");
-		}
+		IssueModel.get(req.params.id).then(function(issue){
+			if(req.user.id == issue.submitted_user || req.user.faculty || req.user.admin){
+				let attr = {};
+				IssueModel.update(attr).then(function(result){
+					//Data holds the information for the issue with the id param
+					res.send('NOT IMPLEMENTED: Issue update POST: ' + req.params.id);
+				}).catch(function(err){
+					console.log(err);
+				});
+			}
+			else{
+				res.status(401).render("errors/401");
+			}
+		}).catch(function(err){
+			console.log(err);
+		});
 	}
   else{
   	res.redirect('/users/signin');
