@@ -29,6 +29,7 @@
                                     <th scope="col">Commuter?</th>
                                     <th scope="col">Dormer?</th>
                                     <th scope="col">Faculty?</th>
+                                    <th scope="col"></th>
                                 </tr>	
                             </thead>
                             <tbody>
@@ -62,6 +63,9 @@
                                             <% } else { %>
                                                 No
                                             <% } %>
+                                        </td>
+                                        <td>
+                                            <a href="/users/user/<%= users[i].id %>">View</a>
                                         </td>
                                     </tr>
                                 <% } %>
