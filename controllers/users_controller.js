@@ -39,7 +39,7 @@ exports.user_list = function(req, res) {
 				itemCount = userCount;
 				pageCount = Math.ceil(itemCount/req.query.limit);
 			}).then(function(){
-				UserModel.all(limit).then(function(data){
+				UserModel.allPaginate(limit).then(function(data){
 					res.render('pages/users/userlist',
 			    {
 	          sessionUser: req.user,

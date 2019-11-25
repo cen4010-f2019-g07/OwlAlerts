@@ -195,7 +195,7 @@ class User {
 		});
 	}
 
-	all(limit){
+	allPaginate(limit){
 		return new Promise(function(resolve, reject){
 			let query = `SELECT * FROM users ORDER BY ID DESC LIMIT ${limit}`;
 			databaseQuery(query).then(function(result){
