@@ -27,6 +27,7 @@
                                     <th scope="col">Resolved by Faculty</th>
                                     <th scope="col">Verified?</th>
                                     <th scope="col">Resolved?</th>
+                                    <th scope="col"></th>
                                 </tr>	
                             </thead>
                             <tbody>
@@ -53,7 +54,9 @@
                                                 No
                                             <% } %>
                                         </td>
-
+                                        <td>
+                                            <a href="/issues/issue/<%= issues[i].id %>" class="btn btn-secondary">View Issue</a>
+                                        </td>
                                     </tr>
                                 <% } %>
                             </tbody>
