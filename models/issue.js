@@ -146,6 +146,17 @@ class Issue {
 			});
 		});
 	}
+
+	getRecent(limit){
+		return new Promise(function(resolve, reject){
+			let query = `SELECT * FROM issues ORDER BY created_at DESC LIMIT ${limit}`;
+			databaseQuery(query).then(function(result){
+				resolve(result);
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
+	}
 }
 
 var IssueModel = new Issue();
