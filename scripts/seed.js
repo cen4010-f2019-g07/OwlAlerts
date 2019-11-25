@@ -75,7 +75,7 @@ function seedUsers(i){
 	return new Promise(function(resolve, reject){
 		let residency_values = ['Out-State', 'In-State'];
 		let residency = residency_values[Math.round(Math.random())];
-		let housing_status_values = ['commuter', 'dormer', null]
+		let housing_status_values = ['Commuter', 'Dormer', null]
 		let housing_status = housing_status_values[Math.round(Math.random()*2)];
 		let faculty = false;
 		if(housing_status == null){
@@ -141,7 +141,7 @@ function seedUsers(i){
 			}
 		}
 		let room_number = '';
-		if(housing_status == 'dormer'){
+		if(housing_status == 'Dormer'){
 			building = building_values[Math.round(Math.random()*10)];
 			switch(building){
 				case 'PAR':
@@ -217,7 +217,7 @@ function seedUsers(i){
 					console.log('---------------------------------------------------');
 					console.log(`User Residency for Record ${i+1}: ${residency}`);
 					console.log(`User Housing Status for Record ${i+1}: ${housing_status}`);
-					if(housing_status == 'dormer'){
+					if(housing_status == 'Dormer'){
 						console.log(`User Building for Record ${i+1}: ${building}`);
 						console.log(`User Room Number for Record ${i+1}: ${room_number}`);
 					}
