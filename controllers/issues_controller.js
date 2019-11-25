@@ -117,12 +117,7 @@ exports.issue_delete_post = function(req, res) {
 exports.issue_update_get = function(req, res) {
 	if(req.user){
 		if(req.user.faculty || req.user.admin){
-			IssueModel.update().then(function(result){
-				//Data holds the information for the issue with the id param
-				res.send('NOT IMPLEMENTED: Issue update GET: ' + req.params.id);
-			}).catch(function(err){
-				console.log(err);
-			});
+			res.send('NOT IMPLEMENTED: Issue update GET: ' + req.params.id);
 		}
 		else{
 			res.status(401).render("errors/401");
@@ -137,7 +132,14 @@ exports.issue_update_get = function(req, res) {
 exports.issue_update_post = function(req, res) {
 	if(req.user){
 		if(req.user.faculty || req.user.admin){
-			res.send('NOT IMPLEMENTED: Issue update POST');
+			let attr = {};
+			IssueModel.update(attr).then(function(result){
+				//Data holds the information for the issue with the id param
+				res.send('NOT IMPLEMENTED: Issue update POST: ' + req.params.id);
+			}).catch(function(err){
+				console.log(err);
+			});
+			
 		}
 		else{
 			res.status(401).render("errors/401");
