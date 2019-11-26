@@ -18,7 +18,8 @@ exports.index = function(req, res){
 	UserModel.all().then(function(data){
 		res.render('pages/users/index', {
 			sessionUser: req.user,
-			users: data
+			users: data,
+			message: req.flash()
 		});
 	}).catch(function(err){
 		console.log(err);
@@ -78,7 +79,8 @@ exports.user_detail = function(req, res) {
 					res.render('pages/users/show', {
 						sessionUser: req.user,
 						user: data,
-						imgFilePath: imageSrcPath
+						imgFilePath: imageSrcPath,
+						message: req.flash()
 					}); 
 				})	
 			}).catch(function(err){
@@ -101,7 +103,8 @@ exports.user_create_get = function(req, res) {
 	}
 	else{
 		res.render('pages/users/signup', {
-	  	sessionUser: req.user
+	  	sessionUser: req.user,
+	  	message: req.flash()
 	  });
 	}
 };
@@ -187,11 +190,12 @@ exports.user_update_get = function(req, res) {
 
 					var imageSrcPath = (imgData != null) ? ImageModel.getPath(imgData.name) :
 					"https://via.placeholder.com/180x180";
-
+					console.log(req.flash());
 					res.render('pages/users/update', {
 						sessionUser: req.user,
 						user: data,
-						imgFilePath: imageSrcPath
+						imgFilePath: imageSrcPath,
+						message: req.flash()
 					}); 
 				}).catch(function(err){
 					console.log(err);
@@ -229,12 +233,12 @@ exports.user_update_post = function(req, res) {
 			attr['country'] = req.body.country || null;
 			attr['email'] = req.body.email || null;
 			attr['password'] = req.body.password || null;
-
 			if(isEmpty(req.files)) {
 				attr['image_id'] = null;
 				UserModel.update(attr).catch(function(err){
 					console.log(err);
 				});
+				req.flash('success', 'Your Profile Has Been Updated!');
 				res.redirect(`/users/user/${req.user.id}`);	
 			}				
 			else {
@@ -244,7 +248,8 @@ exports.user_update_post = function(req, res) {
 				}).then(function(result){
 					UserModel.update(attr).catch(function(err){
 						console.log(err);
-					});		
+					});
+					req.flash('success', 'Your Profile Has Been Updated!');
 					res.redirect(`/users/user/${req.user.id}`);	
 				}).catch(function(err){
 					console.log(err);
@@ -267,7 +272,8 @@ exports.user_signin_get = function(req, res){
 	}
 	else{
 		res.render('pages/users/signin', {
-			sessionUser: req.user
+			sessionUser: req.user,
+			message: req.flash()
 		});
 	}
 }
@@ -285,5 +291,6 @@ exports.user_signin_post = (req, res, next) => {
 // GET Request to Logout User
 exports.user_logout_get = function(req, res){
 	req.logout();
+	req.flash('success', 'You Have Been Successfully Logged Out!');
 	res.redirect('/');
 }

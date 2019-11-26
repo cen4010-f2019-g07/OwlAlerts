@@ -19,7 +19,14 @@
             <br />
         
         <div class="rounded mx-sm-4" style="background-color:white">
-        
+            <br>
+            <% if(message.error) { %>
+                <div class="alert alert-danger text-center rounded mx-sm-5" role="alert">
+                    <% for(var i in message.error){ %>
+                        <%= message.error[i] %>
+                    <% } %>
+                </div>
+            <% } %>
             <br>
             <form method="POST" action="/users/user/<%= user.id%>/update" enctype="multipart/form-data" ref="uploadForm" id='user-update'>
                 <div class="form-group mx-sm-5">

@@ -7,9 +7,6 @@ var dashboard_controller = require('../controllers/dashboard_controller');
 //Home Page
 router.get('/', dashboard_controller.index);
 
-//Show page for dashboard
-router.get('/show', dashboard_controller.show);
-
 //privacy policy page
 router.get('/showpp', dashboard_controller.showpp);
 

@@ -125,6 +125,39 @@ class Issue {
 		});
 	}
 
+	allUnverified(limit){
+		return new Promise(function(resolve, reject){
+			let query = `SELECT * FROM issues WHERE verified=false ORDER BY created_at ASC LIMIT ${limit}`;
+			databaseQuery(query).then(function(result){
+				resolve(result);
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
+	}
+
+	allVerified(limit){
+		return new Promise(function(resolve, reject){
+			let query = `SELECT * FROM issues WHERE verified=true ORDER BY created_at ASC LIMIT ${limit}`;
+			databaseQuery(query).then(function(result){
+				resolve(result);
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
+	}
+
+	allResolved(limit){
+		return new Promise(function(resolve, reject){
+			let query = `SELECT * FROM issues WHERE resolved=true ORDER BY created_at ASC LIMIT ${limit}`;
+			databaseQuery(query).then(function(result){
+				resolve(result);
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
+	}
+
 	allCount(){
 		return new Promise(function(resolve, reject){
 			let query = 'SELECT count(*) as numRows FROM issues';
