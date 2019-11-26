@@ -17,6 +17,7 @@
             <table class="table table-dark table-striped mt-5">
                 <thead>
                     <tr>
+                      <th scope="col">Image</th>
                       <th scope="col">Title</th>
                       <th scope="col">Description</th>
                       <th scope="col">Location</th>
@@ -24,7 +25,8 @@
                   </thead>
                 <tbody>
                   <tr>
-                    <td><h6><%= issue.title %></h3></td>
+                    <td><img class="rounded-circle" id="userImageUpload" src=<%= imgFilePath %> width='180' height='180'/></td>
+                      <td><h6><%= issue.title %></h3></td>
                     <td><h6><%= issue.description %></h6></td>
                     <td><h6> <%= issue.location %></h6></td>
                     <% if(sessionUser && (issue.submitted_user == sessionUser.id || sessionUser.faculty || sessionUser.admin)) { %>

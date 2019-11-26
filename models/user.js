@@ -4,9 +4,6 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 var fs = require('fs');
 
-let userImageSaveDir = '/resources/user_images/';
-let userProfileImageDirectory = __basedir + '/public' + userImageSaveDir;
-
 
 function databaseQuery(query){
 	return new Promise(function(resolve, reject){
@@ -35,31 +32,7 @@ class User {
 				console.log(err);
 			});
 		});
-	}
-
-	upload(image){
-		return new Promise(function(resolve, reject){
-			//to append timestamp before the extension
-			let newFileName = image.name.replace(".", "_" + Date.now()+".");
-
-			//create image directory if does not exist
-			if(!fs.existsSync(userProfileImageDirectory)){
-				fs.mkdirSync(userProfileImageDirectory);
-			}
-
-			//move the imgae file to directory on server
-			image.mv(userProfileImageDirectory + newFileName);
-	
-			let query = `INSERT INTO images(name, description, type, size) \
-					VALUE(\'${newFileName}\', \'${"sample image"}\', \'${image.mimetype}\', \'${image.data.length}\')`;
-
-			databaseQuery(query).then(function(result){
-				resolve(result);
-			}).catch(function(err){
-				console.log(err);
-			});
-    });
-  }
+	}	
 
 	update(attr){ //Short for attributes
 		return new Promise(function(resolve, reject){
@@ -227,17 +200,6 @@ class User {
 		});
 	}
 
-	getProfileImage(id) {
-		return new Promise(function(resolve, reject){
-			let query = `SELECT * FROM images WHERE id=\'${id}\'`;
-			databaseQuery(query).then(function(result){
-				resolve(result[0]);
-			}).catch(function(err){
-				console.log(err);
-			});
-		});
-	}
-
 	checkEmail(email){
 		return new Promise(function(resolve, reject){
 			let query = `SELECT * FROM users WHERE email='${email}'`;
@@ -252,10 +214,6 @@ class User {
 				console.log(err);
 			});
 		});
-	}
-
-	getUserProfileImagePath(imgFileName) {
-		return userImageSaveDir + imgFileName;
 	}
 
 	checkLogin(email, password){
