@@ -21,9 +21,11 @@
             <br>
             <div class="rounded mx-sm-4" style="background-color:white">
                 <br>
-                <% if(message.length > 0) { %>
+                <% if(message.error) { %>
                     <div class="alert alert-danger text-center rounded mx-sm-5" role="alert">
-                        <%= message %>
+                        <% for(var i in message.error) { %>
+                            <%= message.error[i] %>
+                        <% } %>
                     </div>
                 <% } %>
                 <form action="/users/signin" method="post">
