@@ -228,17 +228,27 @@ exports.user_update_post = function(req, res) {
 			attr['country'] = req.body.country || null;
 			attr['email'] = req.body.email || null;
 			attr['password'] = req.body.password || null;
-			if(isEmpty(req.files))
+
+			if(isEmpty(req.files)) {
 				attr['image_id'] = null;
+				UserModel.update(attr).catch(function(err){
+					console.log(err);
+				});
+				res.redirect(`/users/user/${req.user.id}`);	
+			}				
 			else {
 				UserModel.upload(req.files.profile).then(function(result) {
 					let newImageId = result.insertId;
 					attr['image_id'] = newImageId;
+				}).then(function(result){
+					UserModel.update(attr).catch(function(err){
+						console.log(err);
+					});		
+					res.redirect(`/users/user/${req.user.id}`);	
+				}).catch(function(err){
+					console.log(err);
 				});				
-			}
-			UserModel.update(attr);
-			res.redirect(`/users/user/${req.user.id}`);
-			
+			}							
 		}
 		else{
 			res.status(401).render("errors/401");
