@@ -237,8 +237,7 @@ exports.user_update_post = function(req, res) {
 				UserModel.update(attr).catch(function(err){
 					console.log(err);
 				});
-				req.flash('info', 'Flash is back!');
-				console.log(req.flash('info'));
+				req.flash('success', 'Your Profile Has Been Updated!');
 				res.redirect(`/users/user/${req.user.id}`);	
 			}				
 			else {
@@ -249,7 +248,7 @@ exports.user_update_post = function(req, res) {
 					UserModel.update(attr).catch(function(err){
 						console.log(err);
 					});
-					req.flash('info', 'Flash is back!');
+					req.flash('success', 'Your Profile Has Been Updated!');
 					res.redirect(`/users/user/${req.user.id}`);	
 				}).catch(function(err){
 					console.log(err);
