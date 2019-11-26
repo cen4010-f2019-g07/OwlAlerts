@@ -127,7 +127,7 @@ class Issue {
 
 	allUnverified(limit){
 		return new Promise(function(resolve, reject){
-			let query = `SELECT * FROM issues WHERE verified=false ORDER BY created_at DESC LIMIT ${limit}`;
+			let query = `SELECT * FROM issues WHERE verified=false ORDER BY created_at ASC LIMIT ${limit}`;
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
@@ -138,7 +138,7 @@ class Issue {
 
 	allVerified(limit){
 		return new Promise(function(resolve, reject){
-			let query = `SELECT * FROM issues WHERE verified=true ORDER BY created_at DESC LIMIT ${limit}`;
+			let query = `SELECT * FROM issues WHERE verified=true ORDER BY created_at ASC LIMIT ${limit}`;
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
@@ -149,7 +149,7 @@ class Issue {
 
 	allResolved(limit){
 		return new Promise(function(resolve, reject){
-			let query = `SELECT * FROM issues WHERE resolved=true ORDER BY created_at DESC LIMIT ${limit}`;
+			let query = `SELECT * FROM issues WHERE resolved=true ORDER BY created_at ASC LIMIT ${limit}`;
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
