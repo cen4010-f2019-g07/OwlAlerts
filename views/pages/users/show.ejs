@@ -13,6 +13,16 @@
       <div id="main">
       <div class="container">        
           <div class="container text-center mx-sm-3">
+            <div class="mt-2 text-center">
+              <br>
+              <% if(message.success) { %>
+                  <div class="alert alert-success text-center rounded mx-sm-5" role="alert">
+                      <% for(var i in message.success) { %>
+                          <%= message.success[i] %>
+                      <% } %>
+                  </div>
+              <% } %>
+            </div>
               <h2 class="mt-5">Profile Information</h2>
                   <table class="table text-center">
                       <h3 class="mt-2"><%= user.firstname %> <%= user.lastname %></h3>

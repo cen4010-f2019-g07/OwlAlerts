@@ -8,7 +8,8 @@ exports.index = function(req, res) {
 		res.render('pages/issues/index',
     {
       sessionUser: req.user,
-      issues: data
+      issues: data,
+      message: req.flash()
     });
 	}).catch(function(err){
 		console.log(err);
@@ -51,7 +52,8 @@ exports.issue_detail = function(req, res) {
 		res.render('pages/issues/show',
 		{
 			sessionUser: req.user,
-			issue: data
+			issue: data,
+			message: req.flash()
 		});
 	}).catch(function(err){
 		console.log(err);
@@ -63,10 +65,12 @@ exports.issue_create_get = function(req, res) {
 	if(req.user){
 		res.render('pages/issues/create',
 	  {
-		  sessionUser: req.user
+		  sessionUser: req.user,
+		  message: req.flash()
 	  });
 	}
   else{
+  	req.flash('info', 'Please Sign In to Report An Issue!');
   	res.redirect('/users/signin');
   }
 };
@@ -79,11 +83,13 @@ exports.issue_create_post = function(req, res) {
 		attr['description'] = req.body.description;
 		attr['location'] = req.body.location;
 		attr['submitted_user'] = req.user.id;
-		IssueModel.create(attr).then(function(){
+		IssueModel.create(attr).then(function(result){
+			req.flash('success', 'Issue Successfully Reported!');
 			res.redirect('/issues/create');
 		});
 	}
 	else{
+		req.flash('info', 'Please Sign In to Report An Issue!');
 		res.redirect('/users/signin');
 	}
 };
@@ -104,12 +110,14 @@ exports.issue_delete_get = function(req, res) {
 		}
 	}
 	else{
+		req.flash('info', 'Please Sign In to Delete An Issue!');
 		res.redirect('/users/signin');
 	}
 };
 
 // Handle Issue delete on POST.
 exports.issue_delete_post = function(req, res) {
+	req.flash('info', 'Please Sign In to Delete An Issue!');
   res.send('NOT IMPLEMENTED: Issue delete POST');
 };
 
@@ -128,6 +136,7 @@ exports.issue_update_get = function(req, res) {
 		});
 	}
 	else{
+		req.flash('info', 'Please Sign In to Edit An Issue!');
 		res.redirect('/users/signin');
 	}
 };
@@ -153,6 +162,7 @@ exports.issue_update_post = function(req, res) {
 		});
 	}
   else{
+  	req.flash('info', 'Please Sign In to Edit An Issue!');
   	res.redirect('/users/signin');
   }
 };
