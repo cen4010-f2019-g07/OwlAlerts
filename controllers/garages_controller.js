@@ -4,7 +4,11 @@ var GarageModel = require('../models/garage');
 // Home Page for Garages
 exports.index = function(req, res) {
 	GarageModel.all().then(function(data){
-		res.send('NOT IMPLEMENTED: Garage index');
+		res.render('pages/garages/gindex',
+		{
+		  sessionUser: req.user,
+		  issues: data
+		});
 	}).catch(function(err){
 		console.log(err);
 	});
