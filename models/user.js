@@ -39,7 +39,6 @@ class User {
 
 	upload(image){
 		return new Promise(function(resolve, reject){
-
 			//to append timestamp before the extension
 			let newFileName = image.name.replace(".", "_" + Date.now()+".");
 
@@ -81,7 +80,7 @@ class User {
 				}
 				if(attr['housing_status'] != user.housing_status  && attr['housing_status'] != null){
 					//Make sure that both dormer and commuter can't be true
-					let housingStatusQuery = `UPDATE users SET housing_status='${attr['housing_status']}'' \
+					let housingStatusQuery = `UPDATE users SET housing_status='${attr['housing_status']}' \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(housingStatusQuery).catch(function(err){
 						console.log(err);

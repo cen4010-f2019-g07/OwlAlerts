@@ -234,9 +234,13 @@ exports.user_update_post = function(req, res) {
 				UserModel.upload(req.files.profile).then(function(result) {
 					let newImageId = result.insertId;
 					attr['image_id'] = newImageId;
+				}).catch(function(err){
+					console.log(err);
 				});				
 			}
-			UserModel.update(attr);
+			UserModel.update(attr).catch(function(err){
+				console.log(err);
+			});
 			res.redirect(`/users/user/${req.user.id}`);
 			
 		}
