@@ -15,7 +15,8 @@ exports.show = function(req, res){
 // Home page for Dashboard
 exports.index = function(req, res) {
 	res.render('pages/index', {
-		sessionUser: req.user
+		sessionUser: req.user,
+		message: req.flash()
 	});
 };
 
