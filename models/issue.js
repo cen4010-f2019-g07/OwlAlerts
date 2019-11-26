@@ -1,3 +1,4 @@
+"use strict";
 const pool = require('../lib/pool_db');
 
 function databaseQuery(query){
@@ -13,9 +14,10 @@ function databaseQuery(query){
 class Issue {
 	contructor(){}
 
-	create(){ //Needs to be done
+	create(attr){ //Needs to be done
 		return new Promise(function(resolve, reject){
-			let query = '';
+			let query = `INSERT INTO issues(title, description, location, submitted_user) \
+			VALUE('${attr['title']}', '${attr['description']}', '${attr['location']}', ${attr['submitted_user']})`;
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
@@ -112,11 +114,44 @@ class Issue {
 		});
 	}
 
+	allPaginate(limit){
+		return new Promise(function(resolve, reject){
+			let query = `SELECT * FROM issues ORDER BY ID DESC LIMIT ${limit}`;
+			databaseQuery(query).then(function(result){
+				resolve(result);
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
+	}
+
+	allCount(){
+		return new Promise(function(resolve, reject){
+			let query = 'SELECT count(*) as numRows FROM issues';
+			databaseQuery(query).then(function(results){
+				resolve(results[0].numRows);
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
+	}
+
 	get(id){
 		return new Promise(function(resolve, reject){
 			let query = `SELECT * FROM issues WHERE id=\'${id}\'`;
 			databaseQuery(query).then(function(result){
 				resolve(result[0]);
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
+	}
+
+	getRecent(limit){
+		return new Promise(function(resolve, reject){
+			let query = `SELECT * FROM issues ORDER BY created_at DESC LIMIT ${limit}`;
+			databaseQuery(query).then(function(result){
+				resolve(result);
 			}).catch(function(err){
 				console.log(err);
 			});

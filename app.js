@@ -1,4 +1,5 @@
 "use strict";
+const production = process.env.production || false;
 global.__basedir = __dirname;
 const express = require('express');
 const pool = require('./lib/pool_db');
@@ -7,6 +8,8 @@ const http = require('http');
 const session = require('express-session');
 const flash = require('connect-flash');
 const fileUpload = require('express-fileupload');
+const paginate = require('express-paginate');
+const bcrypt = require('bcryptjs');
 
 const dashboardRouter = require('./routes/dashboard'); //Our New Default Page
 const userRouter = require('./routes/users');
@@ -16,8 +19,8 @@ const issueRouter = require('./routes/issues');
 const passport = require('./config/passport');
 
 const app = express();
-const production = process.env.production || false;
 
+app.use(paginate.middleware(10, 50));
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(bodyParser.urlencoded({ extended: false }));

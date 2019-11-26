@@ -21,13 +21,26 @@
                           <td>
                               <img class="rounded-circle" id="userImageUpload" src=<%= imgFilePath %> width='180' height='180'/>
                           </td>
-                        </tr>                        
+                        </tr>
+                        <% if(user.faculty) { %>
+                          <tr><td>Faculty Member</td></tr>
+                        <% } %>
+                        <% if(user.admin) { %>
+                          <tr><td>Administrator</td></tr>
+                        <% } %>
                         <tr><td>Email: <%= user.email %></td></tr>
                         <tr><td>Phone Number: <%= user.phone_number %></td></tr>
                         <tr><td>Residency: <%= user.residency %></td></tr>
-                        <% if(user.dormer) { %>
-                          <tr><td>FAU Building: <%= user.building %></td></tr>
+                        <% if(user.housing_status == 'Dormer') { %>
+                          <tr><td>Building: <%= user.building %>, Room: <%=user.room_number %></td></tr>
                         <% } %>
+                        <tr>
+                          <td>
+                            Address:
+                            <%= user.street %>, <%= user.city %>, <%= user.state %> <%= user.zip %>,
+                            <%= user.country %>
+                          </td>
+                        </tr>
                       </tbody>
                   </table>        
           </div>

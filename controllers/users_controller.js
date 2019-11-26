@@ -1,6 +1,16 @@
+"use strict";
 const UserModel = require('../models/user');
 //var upload = require('../config/multer');
-passport = require('../config/passport');
+var passport = require('../config/passport');
+const paginate = require('express-paginate');
+
+function isEmpty(obj) {
+  for(var key in obj) {
+    if(obj.hasOwnProperty(key))
+      return false;
+  }
+  return true;
+}
 
 // Home Page for Users.
 exports.index = function(req, res){
@@ -18,12 +28,28 @@ exports.index = function(req, res){
 exports.user_list = function(req, res) {
 	if(req.user){
 		if(req.user.faculty || req.user.admin){
-			UserModel.all().then(function(data){
-		    res.render('pages/users/userlist',
-		    {
-              sessionUser: req.user,
-		      users: data
-		    });
+			let numPerPage = parseInt(req.query.npp, 10) || 10;
+			let page = parseInt(req.query.page, 10) || 0;
+			let skip = (page-1) * numPerPage;
+			let limit = skip + ',' + numPerPage;
+			var itemCount;
+			var pageCount;
+			UserModel.allCount().then(function(userCount){
+				itemCount = userCount;
+				pageCount = Math.ceil(itemCount/req.query.limit);
+			}).then(function(){
+				UserModel.allPaginate(limit).then(function(data){
+					res.render('pages/users/userlist',
+			    {
+	          sessionUser: req.user,
+			      users: data,
+			      pageCount,
+			      itemCount,
+			      pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
+			    });
+				}).catch(function(err){
+					console.log(err);
+				});
 			}).catch(function(err){
 				console.log(err);
 			});
@@ -33,16 +59,15 @@ exports.user_list = function(req, res) {
 		}
 	}
 	else{
-		res.status(401).render("errors/401");
+		res.redirect('/users/signin');
 	}
 };
 
 // Display detail page for a specific User.
 exports.user_detail = function(req, res) {
-
 	if(req.user){
 		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
-			UserModel.get(req.user.id).then(function(data){
+			UserModel.get(req.params.id).then(function(data){
 
 				UserModel.getProfileImage(data.image_id).then(function(imgData){
 
@@ -64,7 +89,7 @@ exports.user_detail = function(req, res) {
 		}
 	}
 	else{
-		res.status(401).render("errors/401");
+		res.redirect('/users/signin');
 	}
 };
 
@@ -132,7 +157,7 @@ exports.user_delete_get = function(req, res) {
 		}
 	}
 	else{
-		res.status(401).render("errors/401");
+		res.redirect('/users/signin');
 	}
 };
 
@@ -147,7 +172,7 @@ exports.user_delete_post = function(req, res) {
 		}
 	}
   else{
-  	res.status(401).render("errors/401");
+  	res.redirect('/users/signin');
   }
 };
 
@@ -167,7 +192,9 @@ exports.user_update_get = function(req, res) {
 						user: data,
 						imgFilePath: imageSrcPath
 					}); 
-				})				
+				}).catch(function(err){
+					console.log(err);
+				});
 			}).catch(function(err){
 				console.log(err);
 			});
@@ -177,7 +204,7 @@ exports.user_update_get = function(req, res) {
 		}
 	}
 	else{
-		res.status(401).render("errors/401");
+		res.redirect('/users/signin');
 	}
 };
 
@@ -185,17 +212,32 @@ exports.user_update_get = function(req, res) {
 exports.user_update_post = function(req, res) {
 	if(req.user){
 		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
-
-			if(!req.files)
-				res.send("No Files Were Uploaded");
+			let attr = {}
+			attr['id'] = req.user.id;
+			attr['firstname'] = req.body.firstname || null;
+			attr['lastname'] = req.body.lastname || null;
+			attr['residency'] = req.body.residency || null;
+			attr['housing_status'] = req.body.housing_status;
+			attr['building'] = req.body.building;
+			attr['room_number'] = req.body.room_number || null;
+			attr['phone_number'] = req.body.phone_number || null;
+			attr['street'] = req.body.street || null;
+			attr['city'] = req.body.city || null;
+			attr['state'] = req.body.state || null;
+			attr['zip'] = req.body.zip || null;
+			attr['country'] = req.body.country || null;
+			attr['email'] = req.body.email || null;
+			attr['password'] = req.body.password || null;
+			if(isEmpty(req.files))
+				attr['image_id'] = null;
 			else {
 				UserModel.upload(req.files.profile).then(function(result) {
 					let newImageId = result.insertId;
-					UserModel.update(req.params.id, newImageId);
+					attr['image_id'] = newImageId;
 				});				
 			}
-			
-			res.redirect("/users/user/<%= sessionUser.id%>");
+			UserModel.update(attr);
+			res.redirect(`/users/user/${req.user.id}`);
 			
 		}
 		else{
@@ -203,7 +245,7 @@ exports.user_update_post = function(req, res) {
 		}
 	}
   else{
-  	res.status(401).render("errors/401");
+  	res.redirect('/users/signin');
   }
 };
 

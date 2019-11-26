@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<% include ../../partials/head %>
+	</head>
+	<body style="background-color:#BDBDBD">
+		<header> 
+			<div>
+        <% include ../../partials/header %>
+			</div>
+    </header>
+    <% include ../../partials/sidebar %>
+      <div id="main">
+        <div class="container">        
+          <div class="container text-center">
+            <h2 class="mt-5">Issue Information</h2>
+            <table class="table table-dark table-striped mt-5">
+                <thead>
+                    <tr>
+                      <th scope="col">Title</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Location</th>
+                    </tr>
+                  </thead>
+                <tbody>
+                  <tr>
+                    <td><h6><%= issue.title %></h3></td>
+                    <td><h6><%= issue.description %></h6></td>
+                    <td><h6> <%= issue.location %></h6></td>
+                    <% if(sessionUser && (issue.submitted_user == sessionUser.id || sessionUser.faculty || sessionUser.admin)) { %>
+                      <td>
+                        <a href="/issues/issue/<%= issue.id %>/update" class="btn btn-secondary">Edit Issue</a>
+                      </td>
+                    <% } %>
+                  </tr>   
+                  </tbody>
+            </table>  
+            <br/>
+            <% if(!issue.verified){%>
+              <h4>This issue has not been officially verified by a faculty member. <br>Would you like to report it for being inappropriate or innaccurate?</h4>
+
+              <a href="/issues/issue/<%=issue.id%>" class="btn btn-secondary mt-5">Report Issue</a> 
+            <%} %>
+          </div>
+        </div> 
+      </div>
+      <footer> 
+        <div>
+          <% include ../../partials/footer %>
+        </div>
+      </footer>
+    </body>
+</html>
