@@ -83,7 +83,8 @@ exports.issue_create_post = function(req, res) {
 		attr['description'] = req.body.description;
 		attr['location'] = req.body.location;
 		attr['submitted_user'] = req.user.id;
-		IssueModel.create(attr).then(function(){
+		IssueModel.create(attr).then(function(result){
+			req.flash('success', 'Issue Successfully Reported!');
 			res.redirect('/issues/create');
 		});
 	}
