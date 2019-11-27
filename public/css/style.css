@@ -75,7 +75,7 @@ html{
   /*Footer */
   .site-footer
 {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100%;
   height: 175px; /* Set the fixed height of the footer here */
@@ -158,6 +158,12 @@ html{
     text-align:center
   }
 }
+.h8
+{
+  color:#fff;
+  font-size:20px;
+}
+
 
 
 
