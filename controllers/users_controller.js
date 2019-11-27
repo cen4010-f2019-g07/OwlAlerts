@@ -1,5 +1,6 @@
 "use strict";
 const UserModel = require('../models/user');
+const ImageModel = require('../models/image');
 //var upload = require('../config/multer');
 var passport = require('../config/passport');
 const paginate = require('express-paginate');
@@ -70,9 +71,9 @@ exports.user_detail = function(req, res) {
 		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
 			UserModel.get(req.params.id).then(function(data){
 
-				UserModel.getProfileImage(data.image_id).then(function(imgData){
+				ImageModel.get(data.image_id).then(function(imgData){
 
-					var imageSrcPath = (imgData != null) ? UserModel.getUserProfileImagePath(imgData.name) :
+					var imageSrcPath = (imgData != null) ? ImageModel.getPath(imgData.name) :
 					"https://via.placeholder.com/180x180";
 
 					res.render('pages/users/show', {
@@ -185,9 +186,9 @@ exports.user_update_get = function(req, res) {
 		if(req.user.faculty || req.user.admin || req.user.id == req.params.id){
 			UserModel.get(req.params.id).then(function(data){
 
-				UserModel.getProfileImage(data.image_id).then(function(imgData){
+				ImageModel.get(data.image_id).then(function(imgData){
 
-					var imageSrcPath = (imgData != null) ? UserModel.getUserProfileImagePath(imgData.name) :
+					var imageSrcPath = (imgData != null) ? ImageModel.getPath(imgData.name) :
 					"https://via.placeholder.com/180x180";
 					console.log(req.flash());
 					res.render('pages/users/update', {
@@ -241,7 +242,7 @@ exports.user_update_post = function(req, res) {
 				res.redirect(`/users/user/${req.user.id}`);	
 			}				
 			else {
-				UserModel.upload(req.files.profile).then(function(result) {
+				ImageModel.upload(req.files.profile).then(function(result) {
 					let newImageId = result.insertId;
 					attr['image_id'] = newImageId;
 				}).then(function(result){

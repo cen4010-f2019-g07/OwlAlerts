@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<% include ../../partials/head %>
+	</head>
+	<body style="background-color:#BDBDBD">
+		<header> 
+			<div>
+					<% include ../../partials/header %>
+			</div>
+    </header>
+      <% include ../../partials/sidebar %>
+      <div id="main">
+      <div class="container">  
+            <h2 class="mt-5">Update <%= issue.title %>'s Infomation</h2>  
+            <div class="image-wrapper">
+                    <img class="rounded-circle" id="userImageUpload" src=<%= imgFilePath %> width='180' height='180'/>
+            </div>
+            <br />
+        
+        <div class="rounded mx-sm-4" style="background-color:white">
+        
+            <br>
+            <form method="POST" action="/issues/issue/<%= issue.id%>/update" enctype="multipart/form-data" ref="uploadForm" id='issue-update'>
+                <div class="form-group mx-sm-5">
+                  <label for="image">Issue Image</label>                            
+                  <input type="file" class="form-control" id="profileImg" accept="" name="profile" onchange="onImageUpload(this);">                                                      
+                </div>
+                <div class="form-group mx-sm-5">
+                  <label for="title">Title</label>
+                  <input type="text" class="form-control" id="title" name="title" value="<%= issue.title %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                  <label for="description">Description</label>
+                  <input type="text" class="form-control" id="description" name="description" value="<%= issue.description %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                        <label for="location">Location</label>
+                        <input type="text" class="form-control" id="location" name="location" value="<%= issue.location %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                        <label for="verified">Verified</label>
+                        <input type="text" class="form-control" id="verified" name="verified" value="<%= issue.verified %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                  <label for="resolved">Resolved</label>
+                  <input type="text" class="form-control" id="resolved" name="resolved" value="<%= issue.resolved %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                  <label for="submitted_user">Submitted User</label>
+                  <input type="text" class="form-control" id="submitted_user" name="submitted_user" value="<%= issue.submitted_user %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                  <label for="verified_faculty">Verified Faculty</label>
+                  <input type="text" class="form-control" id="verified_faculty" name="verified_faculty" value="<%= issue.verified_faculty %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                  <label for="resolved_faculty">Resolved Faculty</label>
+                  <input type="text" class="form-control" id="resolved_faculty" name="resolved_faculty" value="<%= issue.resolved_faculty %>">
+                </div>
+                <div class="text-center pb-2">
+                    <button type="submit" class="btn btn-dark">Submit</button>
+                </div>                
+            </form>
+            
+        </div>
+
+      </div>    
+      </div>
+
+        <script>
+
+            function onImageUpload(input)        
+            {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#userImageUpload')
+                            .attr('src', e.target.result)
+                            .width(180)
+                            .height(180);
+                    };
+
+                    reader.readAsDataURL(input.files[0]);                                      
+                }
+            }
+
+        </script>
+        <footer> 
+            <div>
+                <% include ../../partials/footer %>
+            </div>
+        </footer>
+    </body>
+</html>

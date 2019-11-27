@@ -1,5 +1,9 @@
 "use strict";
 const pool = require('../lib/pool_db');
+var fs = require('fs');
+
+let imageSaveDir = '/resources/';
+let imageSaveDirectory = __basedir + '/public' + imageSaveDir;
 
 function databaseQuery(query){
 	return new Promise(function(resolve, reject){
@@ -24,6 +28,10 @@ class Image {
 				console.log(err);
 			});
 		});
+	}
+
+	getPath(imgFileName) {
+		return imageSaveDir + imgFileName;
 	}
 
 	update(attr){// Short for Attributes
@@ -81,6 +89,32 @@ class Image {
 			});
 		});
 	}
+
+	upload(imageFile){
+
+		return new Promise(function(resolve, reject){
+			//to append timestamp before the extension
+			let newFileName = imageFile.name.replace(".", "_" + Date.now()+".");
+
+			//create image directory if does not exist
+			if(!fs.existsSync(imageSaveDirectory)){
+				fs.mkdirSync(imageSaveDirectory);
+			}
+
+			//move the imgae file to directory on server
+			imageFile.mv(imageSaveDirectory + newFileName);
+	
+			let query = `INSERT INTO images(name, description, type, size) \
+					VALUE(\'${newFileName}\', \'${"sample image"}\', \'${imageFile.mimetype}\', \'${imageFile.data.length}\')`;
+
+			databaseQuery(query).then(function(result){
+				resolve(result);
+			}).catch(function(err){
+				console.log(err);
+			});
+    });
+  }
+
 }
 
 var ImageModel = new Image();
