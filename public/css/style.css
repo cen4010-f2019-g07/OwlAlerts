@@ -164,10 +164,19 @@ html{
   font-size:20px;
 }
 
+/* Paginate Buttons */
+.next{
+  padding: 0px 5px;
+}
 
+.previous{
+  padding: 0px 5px;
+}
 
+#pagination, #issuelist-filter{
+  display: inline-block;
+}
 
-
-
-
-
+.page-numbers, .issue-filter{
+  padding: 0px 5px;
+}
