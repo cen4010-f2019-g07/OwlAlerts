@@ -1,9 +1,9 @@
 <% if (paginate.hasPreviousPages || paginate.hasNextPages(pageCount) ) { %>
   <div class="navigation well-sm" id="pagination">
-    <ul class="pager">
+    <ul class="pager nav">
       <% if (paginate.hasPreviousPages) { %>
         <li class="previous">
-          <a href="<%= paginate.href(true) %>">
+          <a href="<%= paginate.href(true) %>" class="btn btn-secondary">
             <i class="fa fa-arrow-circle-left"></i>
             Previous
           </a>  
@@ -11,12 +11,14 @@
       <% } %>  
       <% if (pages) { %>
         <% pages.forEach(function(page, i){ %>
-          <a class="btn btn-default" href="<%= page.url %>"><%= page.number %></a>
+          <li class="page-numbers">
+            <a class="btn btn-secondary" href="<%= page.url %>"><%= page.number %></a>
+          </li>
         <% }); %>
       <% } %>  
       <% if (paginate.hasNextPages(pageCount)) { %>
         <li class="next">
-          <a href="<%= paginate.href() %>">
+          <a href="<%= paginate.href() %>" class="btn btn-secondary">
             Next &nbsp;
             <i class="fa fa-arrow-circle-right"></i>
           </a>  
