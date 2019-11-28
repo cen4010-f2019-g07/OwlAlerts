@@ -57,7 +57,7 @@ exports.user_list = function(req, res) {
 			});
 		}
 		else{
-			res.status(401).render("errors/401");
+			res.status(403).render("errors/403");
 		}
 	}
 	else{
@@ -88,7 +88,7 @@ exports.user_detail = function(req, res) {
 			});
 		}
 		else{
-			res.status(401).render("errors/401");
+			res.status(403).render("errors/403");
 		}
 	}
 	else{
@@ -157,7 +157,7 @@ exports.user_delete_get = function(req, res) {
 			});
 		}
 		else{
-			res.status(401).render("errors/401");
+			res.status(403).render("errors/403");
 		}
 	}
 	else{
@@ -172,7 +172,7 @@ exports.user_delete_post = function(req, res) {
 			res.send('NOT IMPLEMENTED: User delete POST');
 		}
 		else{
-			res.status(401).render("errors/401");
+			res.status(403).render("errors/403");
 		}
 	}
   else{
@@ -205,7 +205,7 @@ exports.user_update_get = function(req, res) {
 			});
 		}
 		else{
-			res.status(401).render("errors/401");
+			res.status(403).render("errors/403");
 		}
 	}
 	else{
@@ -257,7 +257,7 @@ exports.user_update_post = function(req, res) {
 			}							
 		}
 		else{
-			res.status(401).render("errors/401");
+			res.status(403).render("errors/403");
 		}
 	}
   else{

@@ -39,7 +39,7 @@ exports.garage_create_get = function(req, res) {
 			res.send('NOT IMPLEMENTED: Garage create GET');
 		}
 		else{
-			res.status(401).render('errors/401');
+			res.status(403).render('errors/403');
 		}
 	}
   else{
@@ -66,7 +66,7 @@ exports.garage_create_post = function(req, res) {
 			
 		}
 		else{
-			res.status(401).render('errors/401');
+			res.status(403).render('errors/403');
 		}
 	}
   else{
@@ -81,7 +81,7 @@ exports.garage_delete_get = function(req, res) {
 			res.send('NOT IMPLEMENTED: Garage delete GET: ' + req.params.id);
 		}
 		else{
-			res.status(401).render('errors/401');
+			res.status(403).render('errors/403');
 		}
 	}
 	else{
@@ -101,7 +101,7 @@ exports.garage_delete_post = function(req, res) {
 			});
   	}
   	else{
-  		res.status(401).render('errors/401');
+  		res.status(403).render('errors/403');
   	}
   }
   else{
@@ -116,7 +116,7 @@ exports.garage_update_get = function(req, res) {
 			res.send('NOT IMPLEMENTED: Garage update GET: ' + req.params.id);
 		}
 		else{
-			res.status(401).render('errors/401');
+			res.status(403).render('errors/403');
 		}
 	}
 	else{
@@ -142,7 +142,7 @@ exports.garage_update_post = function(req, res) {
 			});
   	}
   	else{
-  		res.status(401).render('errors/401');
+  		res.status(403).render('errors/403');
   	}
   }
   else{

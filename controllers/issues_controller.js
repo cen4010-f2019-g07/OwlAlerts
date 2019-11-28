@@ -123,7 +123,7 @@ exports.issue_delete_get = function(req, res) {
 			});
 		}
 		else{
-			res.status(401).render("errors/401");
+			res.status(403).render("errors/403");
 		}
 	}
 	else{
@@ -166,7 +166,7 @@ exports.issue_update_get = function(req, res) {
 				});
 			}
 			else{
-				res.status(401).render("errors/401");
+				res.status(403).render("errors/403");
 			}
 		}).catch(function(err){
 			console.log(err);
@@ -216,7 +216,7 @@ exports.issue_update_post = function(req, res) {
 				}		
 			}
 			else{
-				res.status(401).render("errors/401");
+				res.status(403).render("errors/403");
 			}
 		}).catch(function(err){
 			console.log(err);
