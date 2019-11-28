@@ -4,7 +4,7 @@ var GarageModel = require('../models/garage');
 // Home Page for Garages
 exports.index = function(req, res) {
 	GarageModel.all().then(function(data){
-		res.render('pages/garages/gindex', {
+		res.render('pages/garages/index', {
 			sessionUser: req.user,
 			garages: data
 		});
