@@ -16,8 +16,8 @@ class Issue {
 
 	create(attr){ //Needs to be done
 		return new Promise(function(resolve, reject){
-			let query = `INSERT INTO issues(title, description, location, submitted_user) \
-			VALUE('${attr['title']}', '${attr['description']}', '${attr['location']}', ${attr['submitted_user']})`;
+			let query = `INSERT INTO issues(title, description, location, submitted_user, image_id) \
+			VALUE('${attr['title']}', '${attr['description']}', '${attr['location']}', ${attr['submitted_user']}, ${attr['image_id']})`;
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
@@ -50,7 +50,7 @@ class Issue {
 					});
 				}
 				if(attr['location'] !=  null && attr['location'] != issue.location){
-					let locationQuery = `UPDATE issues SET location=${attr['location']} WHERE id='${attr['id']}'`;
+					let locationQuery = `UPDATE issues SET location='${attr['location']}' WHERE id='${attr['id']}'`;
 					databaseQuery(locationQuery).catch(function(err){
 						console.log(err);
 					});
@@ -74,14 +74,14 @@ class Issue {
 						console.log(err);
 					});
 				}
-				if(attr['verified_faculty'] != null && attr['verified_faculty'] != user.verified_faculty){
+				if(attr['verified_faculty'] != null && attr['verified_faculty'] != issue.verified_faculty){
 					let verifiedFacultyQuery = `UPDATE issues SET verified_faculty='${attr['verified_faculty']}' \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(verifiedFacultyQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr['resolved_faculty'] != null && attr['resolved_faculty'] != user.resolved_faculty){
+				if(attr['resolved_faculty'] != null && attr['resolved_faculty'] != issue.resolved_faculty){
 					let resolvedFacultyQuery = `UPDATE issues SET resolved_faculty='${attr['resolved_faculty']}' \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(resolvedFacultyQuery).catch(function(err){
