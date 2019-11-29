@@ -48,7 +48,13 @@
                                                 <tr>
                                                     <td><%= issues[i].id %></td>
                                                     <td><%= issues[i].title %></td>
-                                                    <td><%= issues[i].description %></td>
+                                                    <td>
+                                                        <% if(issues[i].description.length > 50) { %>
+                                                            <%= issues[i].description.substring(0, 50) + '...' %>
+                                                        <% } else { %>
+                                                            <%= issues[i].description %>
+                                                        <% } %>
+                                                    </td>
                                                     <td><%= issues[i].location %></td>
                                                     <td>
                                                         <% if(issues[i].verified) { %>
