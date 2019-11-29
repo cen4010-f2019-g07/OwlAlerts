@@ -10,6 +10,7 @@ exports.index = function(req, res) {
 		});
 	}).catch(function(err){
 		console.log(err);
+		res.status(500).render('errors/500');
 	});
 };
 
@@ -19,6 +20,7 @@ exports.garage_list = function(req, res) {
 		res.send('NOT IMPLEMENTED: Garage list');
 	}).catch(function(err){
 		console.log(err);
+		res.status(500).render('errors/500');
 	});
 };
 
@@ -29,6 +31,7 @@ exports.garage_detail = function(req, res) {
 		res.send('NOT IMPLEMENTED: Garage detail: ' + req.params.id);
 	}).catch(function(err){
 		console.log(err);
+		res.status(500).render('errors/500');
 	});
 };
 
@@ -62,6 +65,7 @@ exports.garage_create_post = function(req, res) {
 				res.send('NOT IMPLEMENTED: Garage create POST');
 			}).catch(function(err){
 				console.log(err);
+				res.status(500).render('errors/500');
 			});
 			
 		}
@@ -98,6 +102,7 @@ exports.garage_delete_post = function(req, res) {
 				res.send('NOT IMPLEMENTED: Garage delete POST: ' + req.params.id);
 			}).catch(function(err){
 				console.log(err);
+				res.status(500).render('errors/500');
 			});
   	}
   	else{
@@ -139,6 +144,7 @@ exports.garage_update_post = function(req, res) {
 				res.send('NOT IMPLEMENTED: Garage update POST: ' + req.params.id);
 			}).catch(function(err){
 				console.log(err);
+				res.status(500).render('errors/500');
 			});
   	}
   	else{

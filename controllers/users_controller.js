@@ -23,6 +23,7 @@ exports.index = function(req, res){
 		});
 	}).catch(function(err){
 		console.log(err);
+		res.status(500).render('errors/500');
 	});
 };
 
@@ -51,9 +52,11 @@ exports.user_list = function(req, res) {
 			    });
 				}).catch(function(err){
 					console.log(err);
+					res.status(500).render('errors/500');
 				});
 			}).catch(function(err){
 				console.log(err);
+				res.status(500).render('errors/500');
 			});
 		}
 		else{
@@ -85,6 +88,7 @@ exports.user_detail = function(req, res) {
 				})	
 			}).catch(function(err){
 				console.log(err);
+				res.status(500).render('errors/500');
 			});
 		}
 		else{
@@ -128,6 +132,7 @@ exports.user_create_post = function(req, res, next) {
 					})(req, res, next);
 				}).catch(function(err){
 					console.log(err);
+					res.status(500).render('errors/500');
 				});
 			}
 			else{
@@ -141,6 +146,7 @@ exports.user_create_post = function(req, res, next) {
 		}
 	}).catch(function(err){
 		console.log(err);
+		res.status(500).render('errors/500');
 	});
 };
 
@@ -154,6 +160,7 @@ exports.user_delete_get = function(req, res) {
 				res.send('NOT IMPLEMENTED: User delete GET: ' + req.params.id);
 			}).catch(function(err){
 				console.log(err);
+				res.status(500).render('errors/500');
 			});
 		}
 		else{
@@ -199,9 +206,11 @@ exports.user_update_get = function(req, res) {
 					}); 
 				}).catch(function(err){
 					console.log(err);
+					res.status(500).render('errors/500');
 				});
 			}).catch(function(err){
 				console.log(err);
+				res.status(500).render('errors/500');
 			});
 		}
 		else{
@@ -237,22 +246,25 @@ exports.user_update_post = function(req, res) {
 				attr['image_id'] = null;
 				UserModel.update(attr).catch(function(err){
 					console.log(err);
+					res.status(500).render('errors/500');
 				});
 				req.flash('success', 'Your Profile Has Been Updated!');
 				res.redirect(`/users/user/${req.user.id}`);	
 			}				
 			else {
-				ImageModel.upload(req.files.profile).then(function(result) {
+				ImageModel.upload(req.files.profile).then(function(result){
 					let newImageId = result.insertId;
 					attr['image_id'] = newImageId;
 				}).then(function(result){
 					UserModel.update(attr).catch(function(err){
 						console.log(err);
+						res.status(500).render('errors/500');
 					});
 					req.flash('success', 'Your Profile Has Been Updated!');
 					res.redirect(`/users/user/${req.user.id}`);	
 				}).catch(function(err){
 					console.log(err);
+					res.status(500).render('errors/500');
 				});				
 			}							
 		}

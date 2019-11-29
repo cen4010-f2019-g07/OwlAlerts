@@ -22,6 +22,7 @@ exports.index = function(req, res) {
     });
 	}).catch(function(err){
 		console.log(err);
+		res.status(500).render('errors/500');
 	});
 };
 
@@ -48,9 +49,11 @@ exports.issue_list = function(req, res) {
 	    });
 		}).catch(function(err){
 			console.log(err);
+			res.status(500).render('errors/500');
 		});
 	}).catch(function(err){
 		console.log(err);
+		res.status(500).render('errors/500');
 	});
 };
 
@@ -74,6 +77,7 @@ exports.issue_detail = function(req, res) {
 		})	
 	}).catch(function(err){
 		console.log(err);
+		res.status(500).render('errors/500');
 	});
 };
 
@@ -181,9 +185,11 @@ exports.issue_update_get = function(req, res) {
 						}); 
 					}).catch(function(err){
 						console.log(err);
+						res.status(500).render('errors/500');
 					});
 				}).catch(function(err){
 					console.log(err);
+					res.status(500).render('errors/500');
 				});
 			}
 			else{
@@ -191,6 +197,7 @@ exports.issue_update_get = function(req, res) {
 			}
 		}).catch(function(err){
 			console.log(err);
+			res.status(500).render('errors/500');
 		});
 	}
 	else{
@@ -251,6 +258,7 @@ exports.issue_update_post = function(req, res) {
 			}
 		}).catch(function(err){
 			console.log(err);
+			res.status(500).render('errors/500');
 		});
 	}
   else{
