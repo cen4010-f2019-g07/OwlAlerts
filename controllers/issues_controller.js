@@ -83,7 +83,9 @@ exports.issue_create_get = function(req, res) {
 		res.render('pages/issues/create',
 	  {
 		  sessionUser: req.user,
-		  message: req.flash()
+		  message: req.flash(),
+		  imgFilePath: "https://via.placeholder.com/180x180"
+
 	  });
 	}
   else{
@@ -100,10 +102,27 @@ exports.issue_create_post = function(req, res) {
 		attr['description'] = req.body.description;
 		attr['location'] = req.body.location;
 		attr['submitted_user'] = req.user.id;
-		IssueModel.create(attr).then(function(result){
-			req.flash('success', 'Issue Successfully Reported!');
-			res.redirect('/issues/create');
-		});
+
+		if(isEmpty(req.files)) {
+			attr['image_id'] = null;
+			IssueModel.create(attr).then(function(result){
+				req.flash('success', 'Issue Successfully Reported!');
+				res.redirect('/issues/create');	
+			});
+		}				
+		else {
+			ImageModel.upload(req.files.profile).then(function(result) {
+				let newImageId = result.insertId;
+				attr['image_id'] = newImageId;
+			}).then(function(result){
+				IssueModel.create(attr).then(function(result){
+					req.flash('success', 'Issue Successfully Reported!');
+					res.redirect('/issues/create');
+				});		
+			}).catch(function(err){
+				console.log(err);
+			});				
+		}	
 	}
 	else{
 		req.flash('info', 'Please Sign In to Report An Issue!');
