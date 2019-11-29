@@ -151,7 +151,9 @@ exports.issue_update_get = function(req, res) {
 						var imageSrcPath = (imgData != null) ? ImageModel.getPath(imgData.name) :
 						"https://via.placeholder.com/180x180";
 
-						console.log(data);
+						//format to set the checkbox in the form
+						data.verified = data.verified == 1 ? "checked" : "";
+						data.resolved = data.resolved == 1 ? "checked" : "";
 	
 						res.render('pages/issues/update', {
 							sessionUser: req.user,
@@ -184,15 +186,25 @@ exports.issue_update_post = function(req, res) {
 		IssueModel.get(req.params.id).then(function(issue){
 			if(req.user.id == issue.submitted_user || req.user.faculty || req.user.admin){
 				let attr = {};
+
+				//converting the values to the appropriate way it is stored in database
+				//and to be compatible with checkbox selection
+				req.body.verified = req.body.verified == 'on' ? 1 : 0;
+				req.body.resolved = req.body.resolved == 'on' ? 1 : 0;
+
 				attr['id'] = req.params.id;
 				attr['title'] = req.body.title || null;
 				attr['description'] = req.body.description || null;
 				attr['location'] = req.body.location || null;
+				attr['submitted_user'] = req.user.id || null;
 				attr['verified'] = req.body.verified;
 				attr['resolved'] = req.body.resolved;
-				attr['submitted_user'] = req.body.submitted_user || null;
-				attr['verified_faculty'] = req.body.verified_faculty || null;
-				attr['resolved_faculty'] = req.body.resolved_faculty || null;
+
+				if(attr['verified'])
+					attr['verified_faculty'] = req.user.id || null;
+
+				if(attr['resolved'])
+					attr['resolved_faculty'] = req.user.id || null;
 
 				if(isEmpty(req.files)) {
 					attr['image_id'] = null;
