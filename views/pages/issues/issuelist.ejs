@@ -22,9 +22,6 @@
                                     <th scope="col">Title</th>
                                     <th scope="col">Description</th>
                                     <th scope="col">Location</th>
-                                    <th scope="col">Submitted by User</th>
-                                    <th scope="col">Verified by Faculty</th>
-                                    <th scope="col">Resolved by Faculty</th>
                                     <th scope="col">Verified?</th>
                                     <th scope="col">Resolved?</th>
                                     <th scope="col"></th>
@@ -43,9 +40,6 @@
                                             <% } %>
                                         </td>
                                         <td><%= issues[i].location %></td>
-                                        <td><%= issues[i].submitted_user %></td>
-                                        <td><%= issues[i].verified_faculty %></td>
-                                        <td><%= issues[i].resolved_faculty %></td>
                                         <td>
                                             <% if(issues[i].verified) { %>
                                                 Yes
