@@ -94,11 +94,10 @@ cron.schedule('00 00 00 * * 0-6', function(){
 //Monday - Friday
 cron.schedule('00 00 4-11 * * 1-5', function(){
 	GarageModel.all().then(function(garages){
-		let free_spots = (garages[i].total_spots - ((garages[i].total_spots)/9));
 		for(var i in garages){
 			let attr = {
 				id: garages[i].id,
-				free_spots: free_spots
+				free_spots: (garages[i].free_spots - ((garages[i].total_spots)/9))
 			}
 			GarageModel.update(attr).then(function(result){
 				console.log('All Garages Have Decreased by 1/9');
