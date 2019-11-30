@@ -11,6 +11,50 @@ function databaseQuery(query){
 	});
 }
 
+function getVerifiedFaculty(id){
+	return new Promise(function(resolve, reject){
+		let verifiedQuery = `SELECT * FROM users WHERE id=${id}`;
+		databaseQuery(verifiedQuery).then(function(verifiedResult){
+			resolve(verifiedResult[0]);
+		}).catch(function(err){
+			console.log(err);
+		});
+	});
+}
+
+function conditionalVerified(issue){
+	return new Promise(function(resolve, reject){
+		if(issue.verified){
+			resolve(getVerifiedFaculty(issue.verified_faculty));
+		}
+		else{
+			resolve(null);
+		}
+	});
+}
+
+function getResolvedFaculty(id){
+	return new Promise(function(resolve, reject){
+		let resolvedQuery = `SELECT * FROM users WHERE id=${id}`;
+		databaseQuery(resolvedQuery).then(function(resolvedResult){
+			resolve(resolvedResult[0]);
+		}).catch(function(err){
+			console.log(err);
+		});
+	});
+}
+
+function conditionalResolved(issue){
+	return new Promise(function(resolve, reject){
+		if(issue.resolved){
+			resolve(getResolvedFaculty(issue.resolved_faculty));
+		}
+		else{
+			resolve(null);
+		}
+	});
+}
+
 class Issue {
 	contructor(){}
 
@@ -173,7 +217,29 @@ class Issue {
 		return new Promise(function(resolve, reject){
 			let query = `SELECT * FROM issues WHERE id=\'${id}\'`;
 			databaseQuery(query).then(function(result){
-				resolve(result[0]);
+				return result[0];
+			}).then(function(issue){
+				let subUserQuery = `SELECT * FROM users WHERE id=${issue.submitted_user}`;
+				databaseQuery(subUserQuery).then(function(subUserResult){
+					issue.subUser = subUserResult[0];
+					return issue;
+				}).then(function(issue){
+					conditionalVerified(issue).then(function(vFaculty){
+						issue.vFaculty = vFaculty;
+						return issue;
+					}).then(function(issue){
+						conditionalResolved(issue).then(function(rFaculty){
+							issue.rFaculty = rFaculty;
+							resolve(issue);
+						}).catch(function(err){
+							console.log(err);
+						});
+					}).catch(function(err){
+						console.log(err);
+					});
+				}).catch(function(err){
+					console.log(err);
+				});
 			}).catch(function(err){
 				console.log(err);
 			});
