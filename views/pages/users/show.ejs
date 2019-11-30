@@ -38,6 +38,21 @@
                         <% if(user.admin) { %>
                           <tr><td>Administrator</td></tr>
                         <% } %>
+                        <% if(sessionUser.admin) { %>
+                          <tr>
+                            <td>
+                              <% if(!user.faculty) { %>
+                                <form method="post" action="/users/user/<%= user.id %>">
+                                  <input type="submit" class="btn btn-secondary" value="Make Faculty" name="faculty">
+                                </form>
+                              <% } else { %>
+                                <form method="post" action="/users/user/<%= user.id %>">
+                                  <input type="submit" class="btn btn-secondary" value="Make Regular User" name="faculty">
+                                </form>
+                              <% } %>
+                            </td>
+                          </tr>
+                        <% } %>
                         <tr><td>Email: <%= user.email %></td></tr>
                         <tr><td>Phone Number: <%= user.phone_number %></td></tr>
                         <tr><td>Residency: <%= user.residency %></td></tr>
