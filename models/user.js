@@ -113,16 +113,18 @@ class User {
 						console.log(err);
 					});
 				}
-				bcrypt.compare(attr['password'], user.password).then(function(res){
-					if(attr['password'] != null && !res){
+				if(attr.password != null && !res){
+					bcrypt.compare(attr['password'], user.password).then(function(res){
 						bcypt.hash(attr['password'], saltRounds).then(function(hash){
 							let passwordQuery = `UPDATE users SET password='${hash}' WHERE id='${attr['id']}'`;
 							databaseQuery(passwordQuery).catch(function(err){
 								console.log(err);
 							});
 						});
-					}
-				})
+					}).catch(function(err){
+						console.log(err);
+					});
+				}
 				if(attr['firstname'] != null && attr['firstname'] != user.firstname){
 					let firstnameQuery = `UPDATE users SET firstname='${attr['firstname']}' WHERE id='${attr['id']}'`;
 					databaseQuery(firstnameQuery).catch(function(err){
@@ -141,6 +143,10 @@ class User {
 						console.log(err);
 					});
 				}
+			}).then(function(){
+				resolve(1);
+			}).catch(function(err){
+				console.log(err);
 			});
 		});
 	}
