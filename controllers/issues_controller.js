@@ -1,6 +1,5 @@
 "use strict";
 var IssueModel = require('../models/issue');
-var UserModel = require('../models/user');
 const paginate = require('express-paginate');
 const ImageModel = require('../models/image');
 
@@ -19,7 +18,6 @@ exports.index = function(req, res) {
     {
       sessionUser: req.user,
       issues: data,
-      userQuery: UserModel,
       message: req.flash()
     });
 	}).catch(function(err){
