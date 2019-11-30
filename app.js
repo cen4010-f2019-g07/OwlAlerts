@@ -133,7 +133,7 @@ cron.schedule('00 00 12 * * 0-6', function(){
 //Monday - Friday
 cron.schedule('00 00 16-23 * * 1-5', function(){
 	GarageModel.all().then(function(garages){
-		let free_spots = (garages[i].total_spots - ((garages[i].total_spots)/9))
+		let free_spots = (garages[i].free_spots + ((garages[i].total_spots)/9))
 		for(var i in garages){
 			let attr = {
 				id: garages[i].id,
