@@ -17,6 +17,9 @@
               <div class="mt-4 text-center">
       <div class="container">        
           <div class="container text-center mx-sm-3">
+            <div class="mt-2 text-center">
+              <% include ../../partials/flash %>
+            </div>
               <h2 class="mt-5">Profile Information</h2>
                   <table class="table text-center">
                       <h3 class="mt-2"><%= user.firstname %> <%= user.lastname %></h3>
@@ -25,13 +28,43 @@
                           <td>
                               <img class="rounded-circle" id="userImageUpload" src=<%= imgFilePath %> width='180' height='180'/>
                           </td>
-                        </tr>                        
+                        </tr>
+                        <% if(user.faculty && !user.admin) { %>
+                          <tr><td>Faculty Member</td></tr>
+                        <% } %>
+                        <% if(user.admin) { %>
+                          <tr><td>Administrator</td></tr>
+                        <% } %>
+                        <% if(sessionUser.admin && !user.admin) { %>
+                          <tr>
+                            <td>
+                              <% if(!user.faculty) { %>
+                                <form method="post" action="/users/user/<%= user.id %>">
+                                  <input type="hidden" value="Make Faculty" name="faculty_true">
+                                  <button type="submit" name="faculty" value="true" class="btn btn-secondary">Make Faculty</button>
+                                </form>
+                              <% } else { %>
+                                <form method="post" action="/users/user/<%= user.id %>">
+                                  <input type="hidden" value="Make Regular User" name="faculty_false">
+                                  <button type="submit" name="faculty" value="false" class="btn btn-secondary">Make Regular User</button>
+                                </form>
+                              <% } %>
+                            </td>
+                          </tr>
+                        <% } %>
                         <tr><td>Email: <%= user.email %></td></tr>
                         <tr><td>Phone Number: <%= user.phone_number %></td></tr>
                         <tr><td>Residency: <%= user.residency %></td></tr>
-                        <% if(user.dormer) { %>
-                          <tr><td>FAU Building: <%= user.building %></td></tr>
+                        <% if(user.housing_status == 'Dormer') { %>
+                          <tr><td>Building: <%= user.building %>, Room: <%=user.room_number %></td></tr>
                         <% } %>
+                        <tr>
+                          <td>
+                            Address:
+                            <%= user.street %>, <%= user.city %>, <%= user.state %> <%= user.zip %>,
+                            <%= user.country %>
+                          </td>
+                        </tr>
                       </tbody>
                   </table>        
           </div>

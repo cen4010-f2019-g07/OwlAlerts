@@ -1,6 +1,8 @@
 "use strict";
 const mysql = require('mysql');
 const faker = require('faker');
+const bcrypt = require('bcryptjs');
+const saltRounds = 10;
 const production = process.env.production || false;
 const issuesCount = process.env.issues || 0;
 const eventsCount = process.env.events || 0;
@@ -73,10 +75,12 @@ function seedUsers(i){
 	return new Promise(function(resolve, reject){
 		let residency_values = ['Out-State', 'In-State'];
 		let residency = residency_values[Math.round(Math.random())];
-		let bool_selection_values = ['commuter', 'dormer', 'faculty']
-		let bool_selection = bool_selection_values[Math.round(Math.random()*2)];
-		if(bool_selection == 'faculty'){
+		let housing_status_values = ['Commuter', 'Dormer', null]
+		let housing_status = housing_status_values[Math.round(Math.random()*2)];
+		let faculty = false;
+		if(housing_status == null){
 			residency = null;
+			faculty = true;
 		}
 		let building_values = ['IVAS', 'IVAN', 'UVA 57', 'UVA 58', 'UVA 59', 'UVA 60', 
 		'UVA 61', 'PAR', 'HPT', 'GPT', 'IRT'];
@@ -137,7 +141,7 @@ function seedUsers(i){
 			}
 		}
 		let room_number = '';
-		if(bool_selection == 'dormer'){
+		if(housing_status == 'Dormer'){
 			building = building_values[Math.round(Math.random()*10)];
 			switch(building){
 				case 'PAR':
@@ -180,7 +184,7 @@ function seedUsers(i){
 		let street = faker.address.streetAddress();
 		let city = faker.address.city();
 		let state = faker.address.state();
-		if(residency == 'In-State' || bool_selection == 'faculty'){
+		if(residency == 'In-State' || housing_status == null){
 			state = 'Florida';
 		}
 		let zip = faker.address.zipCode();
@@ -198,32 +202,39 @@ function seedUsers(i){
 		let password = faker.internet.password();
 		let firstname = faker.name.firstName();
 		let lastname = faker.name.lastName();
-		let user = `INSERT INTO users(residency, ${bool_selection}, building, room_number, street, city, state, \
-		zip, country, phone_number, email, password, firstname, lastname) VALUE(\"${residency}\", true, \"${building}\", \
-		\"${room_number}\", \"${street}\", \"${city}\", \"${state}\", \"${zip}\", \"${country}\", \
-		\"${phone_number}\", \"${email}\", \"${password}\", \"${firstname}\", \"${lastname}\")`;
-		pool.getConnection(function(error, connection){
-			if(error)
-				return reject(error);
-			connection.query(user, function(err, rows, fields){
-				connection.release();
-				if(err)
-					return reject(err);
-				console.log('---------------------------------------------------');
-				console.log(`User Residency for Record ${i+1}: ${residency}`);
-				console.log(`User ${bool_selection} for Record ${i+1}: ${true}`);
-				if(bool_selection == 'dormer'){
-					console.log(`User Building for Record ${i+1}: ${building}`);
-					console.log(`User Room Number for Record ${i+1}: ${room_number}`);
-				}
-				console.log(`User Address for Record ${i+1}: ${street}, ${city}, ${state}, ${zip}, ${country}`);
-				console.log(`User Phone Number for Record ${i+1}: ${phone_number}`);
-				console.log(`User Email for Record ${i+1}: ${email}`);
-				console.log(`User Password for Record ${i+1}: ${password}`);
-				console.log(`User First Name for Record ${i+1}: ${firstname}`);
-				console.log(`User Last Name for Record ${i+1}: ${lastname}`);
-				resolve(rows);
+		bcrypt.hash(password, saltRounds).then(function(hash){
+			let user = `INSERT INTO users(residency, housing_status, faculty, building, room_number, street, city, state, \
+			zip, country, phone_number, email, password, firstname, lastname) VALUE(\"${residency}\", '${housing_status}', \
+			${faculty}, \"${building}\", \"${room_number}\", \"${street}\", \"${city}\", \"${state}\", \"${zip}\", \
+			\"${country}\", \"${phone_number}\", \"${email}\", \"${hash}\", \"${firstname}\", \"${lastname}\")`;
+			pool.getConnection(function(error, connection){
+				if(error)
+					return reject(error);
+				connection.query(user, function(err, rows, fields){
+					connection.release();
+					if(err)
+						return reject(err);
+					console.log('---------------------------------------------------');
+					console.log(`User Residency for Record ${i+1}: ${residency}`);
+					console.log(`User Housing Status for Record ${i+1}: ${housing_status}`);
+					if(housing_status == 'Dormer'){
+						console.log(`User Building for Record ${i+1}: ${building}`);
+						console.log(`User Room Number for Record ${i+1}: ${room_number}`);
+					}
+					if(housing_status == null){
+						console.log(`User Faculty for Record ${i+1}: ${true}`);
+					}
+					console.log(`User Address for Record ${i+1}: ${street}, ${city}, ${state}, ${zip}, ${country}`);
+					console.log(`User Phone Number for Record ${i+1}: ${phone_number}`);
+					console.log(`User Email for Record ${i+1}: ${email}`);
+					console.log(`User Password for Record ${i+1}: ${password}`);
+					console.log(`User First Name for Record ${i+1}: ${firstname}`);
+					console.log(`User Last Name for Record ${i+1}: ${lastname}`);
+					resolve(rows);
+				});
 			});
+		}).catch(function(err){
+			console.log(err);
 		});
 	});
 }

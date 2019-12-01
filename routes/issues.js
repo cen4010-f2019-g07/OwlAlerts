@@ -1,3 +1,4 @@
+"use strict";
 var express = require('express');
 var router = express.Router();
 
@@ -26,6 +27,9 @@ router.post('/issue/:id/update', issues_controller.issue_update_post);
 
 // GET request for one Issue.
 router.get('/issue/:id', issues_controller.issue_detail);
+
+// POST request for one Issue.
+router.post('/issue/:id', issues_controller.issue_detail_post);
 
 // GET request for list of all Issue items.
 router.get('/issues', issues_controller.issue_list);

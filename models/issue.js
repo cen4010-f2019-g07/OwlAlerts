@@ -1,3 +1,4 @@
+"use strict";
 const pool = require('../lib/pool_db');
 
 function databaseQuery(query){
@@ -10,12 +11,57 @@ function databaseQuery(query){
 	});
 }
 
+function getVerifiedFaculty(id){
+	return new Promise(function(resolve, reject){
+		let verifiedQuery = `SELECT * FROM users WHERE id=${id}`;
+		databaseQuery(verifiedQuery).then(function(verifiedResult){
+			resolve(verifiedResult[0]);
+		}).catch(function(err){
+			console.log(err);
+		});
+	});
+}
+
+function conditionalVerified(issue){
+	return new Promise(function(resolve, reject){
+		if(issue.verified){
+			resolve(getVerifiedFaculty(issue.verified_faculty));
+		}
+		else{
+			resolve(null);
+		}
+	});
+}
+
+function getResolvedFaculty(id){
+	return new Promise(function(resolve, reject){
+		let resolvedQuery = `SELECT * FROM users WHERE id=${id}`;
+		databaseQuery(resolvedQuery).then(function(resolvedResult){
+			resolve(resolvedResult[0]);
+		}).catch(function(err){
+			console.log(err);
+		});
+	});
+}
+
+function conditionalResolved(issue){
+	return new Promise(function(resolve, reject){
+		if(issue.resolved){
+			resolve(getResolvedFaculty(issue.resolved_faculty));
+		}
+		else{
+			resolve(null);
+		}
+	});
+}
+
 class Issue {
 	contructor(){}
 
-	create(){ //Needs to be done
+	create(attr){ //Needs to be done
 		return new Promise(function(resolve, reject){
-			let query = '';
+			let query = `INSERT INTO issues(title, description, location, submitted_user, image_id) \
+			VALUE('${attr['title']}', '${attr['description']}', '${attr['location']}', ${attr['submitted_user']}, ${attr['image_id']})`;
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
@@ -26,67 +72,77 @@ class Issue {
 
 	update(attr){// For Attribute
 		return new Promise(function(resolve, reject){
-			let getIssueQuery = `SELECT * FROM issues WHERE id='${attr[id]}'`
+			let getIssueQuery = `SELECT * FROM issues WHERE id='${attr['id']}'`
 			databaseQuery(getIssueQuery).then(function(result){
 				let issue = result[0];
-				if(attr[image_id] != issue.image_id){
-					let imageQuery = `UPDATE issues SET image_id='${attr[image_id]}'' WHERE id='${attr[id]}'`;
+				if(attr['image_id'] != null && attr['image_id'] != issue.image_id){
+					let imageQuery = `UPDATE issues SET image_id='${attr['image_id']}' WHERE id='${attr['id']}'`;
 					databaseQuery(imageQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[title] != issue.title){
-					let titleQuery = `UPDATE issues SET title='${attr[title]}' WHERE id='${attr[id]}'`;
+				if(attr['title'] != null && attr['title'] != issue.title){
+					let titleQuery = `UPDATE issues SET title='${attr['title']}' WHERE id='${attr['id']}'`;
 					databaseQuery(titleQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[description] != issue.description){
-					let descriptionQuery = `UPDATE issues SET description=${attr[description]} WHERE id='${attr[id]}'`;
+				if(attr['description'] !=  null && attr['description'] != issue.description){
+					let descriptionQuery = `UPDATE issues SET description='${attr['description']}' WHERE id='${attr['id']}'`;
 					databaseQuery(descriptionQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[location] != issue.location){
-					let locationQuery = `UPDATE issues SET location=${attr[location]} WHERE id='${attr[id]}'`;
+				if(attr['location'] !=  null && attr['location'] != issue.location){
+					let locationQuery = `UPDATE issues SET location='${attr['location']}' WHERE id='${attr['id']}'`;
 					databaseQuery(locationQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[verified] != issue.verified){
-					let verifiedQuery = `UPDATE issues SET verified=${attr[verified]} WHERE id='${attr[id]}'`;
+				if(attr['verified'] != null && attr['verified'] != issue.verified){
+					let verifiedQuery = `UPDATE issues SET verified=${attr['verified']} WHERE id='${attr['id']}'`;
 					databaseQuery(verifiedQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[resolved] != issue.resolved){
-					let resolvedQuery = `UPDATE issues SET resolved='${attr[resolved]}' WHERE id='${attr[id]}'`;
+				if(attr['resolved'] != null && attr['resolved'] != issue.resolved){
+					let resolvedQuery = `UPDATE issues SET resolved='${attr['resolved']}' WHERE id='${attr['id']}'`;
 					databaseQuery(resolvedQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[submitted_user] != user.submitted_user){
-					let submittedUserQuery = `UPDATE issues SET submitted_user='${attr[submitted_user]}' \
-					WHERE id='${attr[id]}'`;
+				if(attr.reported != null && attr.reported != issue.reported){
+					let reportedQuery = `UPDATE issues SET reported=${attr.reported} WHERE id=${attr['id']}`;
+					databaseQuery(reportedQuery).catch(function(err){
+						console.log(err);
+					});
+				}
+				if(attr['submitted_user'] != null && attr['submitted_user'] != issue.submitted_user){
+					let submittedUserQuery = `UPDATE issues SET submitted_user='${attr['submitted_user']}' \
+					WHERE id='${attr['id']}'`;
 					databaseQuery(submittedUserQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[verified_faculty] != user.verified_faculty){
-					let verifiedFacultyQuery = `UPDATE issues SET verified_faculty='${attr[verified_faculty]}' \
-					WHERE id='${attr[id]}'`;
+				if(attr['verified_faculty'] != null && attr['verified_faculty'] != issue.verified_faculty){
+					let verifiedFacultyQuery = `UPDATE issues SET verified_faculty='${attr['verified_faculty']}' \
+					WHERE id='${attr['id']}'`;
 					databaseQuery(verifiedFacultyQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[resolved_faculty] != user.resolved_faculty){
-					let resolvedFacultyQuery = `UPDATE issues SET resolved_faculty='${attr[resolved_faculty]}' \
-					WHERE id='${attr[id]}'`;
+				if(attr['resolved_faculty'] != null && attr['resolved_faculty'] != issue.resolved_faculty){
+					let resolvedFacultyQuery = `UPDATE issues SET resolved_faculty='${attr['resolved_faculty']}' \
+					WHERE id='${attr['id']}'`;
 					databaseQuery(resolvedFacultyQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-			})
+			}).then(function(){
+				resolve(1);
+			}).catch(function(err){
+				console.log(err);
+			});
 		});
 	}
 
@@ -112,11 +168,99 @@ class Issue {
 		});
 	}
 
+	allPaginate(limit){
+		return new Promise(function(resolve, reject){
+			let query = `SELECT * FROM issues ORDER BY ID DESC LIMIT ${limit}`;
+			databaseQuery(query).then(function(result){
+				resolve(result);
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
+	}
+
+	allUnverified(limit){
+		return new Promise(function(resolve, reject){
+			let query = `SELECT * FROM issues WHERE verified=false ORDER BY created_at ASC LIMIT ${limit}`;
+			databaseQuery(query).then(function(result){
+				resolve(result);
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
+	}
+
+	allVerified(limit){
+		return new Promise(function(resolve, reject){
+			let query = `SELECT * FROM issues WHERE verified=true ORDER BY created_at ASC LIMIT ${limit}`;
+			databaseQuery(query).then(function(result){
+				resolve(result);
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
+	}
+
+	allResolved(limit){
+		return new Promise(function(resolve, reject){
+			let query = `SELECT * FROM issues WHERE resolved=true ORDER BY created_at ASC LIMIT ${limit}`;
+			databaseQuery(query).then(function(result){
+				resolve(result);
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
+	}
+
+	allCount(){
+		return new Promise(function(resolve, reject){
+			let query = 'SELECT count(*) as numRows FROM issues';
+			databaseQuery(query).then(function(results){
+				resolve(results[0].numRows);
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
+	}
+
 	get(id){
 		return new Promise(function(resolve, reject){
 			let query = `SELECT * FROM issues WHERE id=\'${id}\'`;
 			databaseQuery(query).then(function(result){
-				resolve(result[0]);
+				return result[0];
+			}).then(function(issue){
+				let subUserQuery = `SELECT * FROM users WHERE id=${issue.submitted_user}`;
+				databaseQuery(subUserQuery).then(function(subUserResult){
+					issue.subUser = subUserResult[0];
+					return issue;
+				}).then(function(issue){
+					conditionalVerified(issue).then(function(vFaculty){
+						issue.vFaculty = vFaculty;
+						return issue;
+					}).then(function(issue){
+						conditionalResolved(issue).then(function(rFaculty){
+							issue.rFaculty = rFaculty;
+							resolve(issue);
+						}).catch(function(err){
+							console.log(err);
+						});
+					}).catch(function(err){
+						console.log(err);
+					});
+				}).catch(function(err){
+					console.log(err);
+				});
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
+	}
+
+	getRecent(limit){
+		return new Promise(function(resolve, reject){
+			let query = `SELECT * FROM issues ORDER BY created_at DESC LIMIT ${limit}`;
+			databaseQuery(query).then(function(result){
+				resolve(result);
 			}).catch(function(err){
 				console.log(err);
 			});

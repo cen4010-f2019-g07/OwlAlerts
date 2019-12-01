@@ -19,20 +19,123 @@
             <br />
         
         <div class="rounded mx-sm-4" style="background-color:white">
-        
             <br>
-            <form method="POST" action="/users/user/<%= sessionUser.id%>/update" enctype="multipart/form-data" ref="uploadForm">
+            <% if(message.error) { %>
+                <div class="alert alert-danger text-center rounded mx-sm-5" role="alert">
+                    <% for(var i in message.error){ %>
+                        <%= message.error[i] %>
+                    <% } %>
+                </div>
+            <% } %>
+            <br>
+            <form method="POST" action="/users/user/<%= user.id%>/update" enctype="multipart/form-data" ref="uploadForm" id='user-update'>
+                <div class="form-group mx-sm-5">
+                        <label for="image">Profile Image</label>                            
+                        <input type="file" class="form-control" id="profileImg" accept="" name="profile" onchange="onImageUpload(this);">                                                      
+                </div>
+                <div class="form-group mx-sm-5">
+                        <label for="firstName">First Name</label>
+                        <input type="text" class="form-control" id="firstName" name="firstname" value="<%= user.firstname %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" name="lastname" value="<%= user.lastname %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                    <label for="residency">Residency:</label>
+                    <select name="residency" form="user-update">
+                        <% 
+                        var options = ["null", "In-State", "Out-State"];
+                        for(var i in options){
+                        var selected = (options[i] == user.residency) ? "selected" : "";
+                        %>
+                        <option value="<%= options[i] %>" <%= selected %>>
+                            <% if(options[i] == "null") { %>
+                                N/A
+                            <% } else { %>
+                                <%= options[i] %>
+                            <% } %>
+                        </option>
+                        <% } %>
+                    </select>
+                </div>
+                <div class="form-group mx-sm-5">
+                    <label for="housingStatus">Housing Status</label>
+                    <select name="housing_status" form="user-update">
+                        <% 
+                        var options = ["null", "Dormer", "Commuter"];
+                        for(var i in options){
+                        var selected = (options[i] == user.housing_status) ? "selected" : "";
+                        %>
+                        <option value="<%= options[i] %>" <%= selected %>>
+                            <% if(options[i] == "null") { %>
+                                N/A
+                            <% } else { %>
+                                <%= options[i] %>
+                            <% } %>
+                        </option>
+                        <% } %>
+                    </select>
+                </div>
+                <div class="form-group mx-sm-5">
+                    <p>If you are a dormer:</p>
+                    <label for="building">Building</label>
+                    <select name="building" form="user-update">
+                        <% 
+                        var options = ["null", 'IVAS', 'IVAN', 'UVA 57', 'UVA 58', 'UVA 59', 'UVA 60', 
+                        'UVA 61', 'PAR', 'HPT', 'GPT', 'IRT'];
+                        for(var i in options){
+                        var selected = (options[i] == user.building) ? "selected" : "";
+                        %>
+                        <option value="<%= options[i] %>" <%= selected %>>
+                            <% if(options[i] == "null") { %>
+                                N/A
+                            <% } else { %>
+                                <%= options[i] %>
+                            <% } %>
+                        </option>
+                        <% } %>
+                    </select>
+                </div>
+                <div class="form-group mx-sm-5">
+                        <label for="roomNumber">Room Number</label>
+                        <input type="text" class="form-control" id="roomNumber" name="room_number" value="<%= user.room_number %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="tel" class="form-control" id="phoneNumber" placeholder="123-456-9870" name="phone_number" value="<%= user.phone_number %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                        <label for="streetAddress">Street Address:</label>
+                        <input type="text" class="form-control" id="streetAddress" name="street" value="<%= user.street %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                        <label for="city">City:</label>
+                        <input type="text" class="form-control" id="city" name="city" value="<%= user.city %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                        <label for="state">State:</label>
+                        <input type="text" class="form-control" id="state" name="state" value="<%= user.state %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                        <label for="zip">Zip:</label>
+                        <input type="text" class="form-control" id="zip" name="zip" value="<%= user.zip %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                        <label for="country">Country:</label>
+                        <input type="text" class="form-control" id="country" name="country" value="<%= user.country %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                        <label for="emailInput">Email:</label>
+                        <input type="email" class="form-control" id="emailInput" name="email" value="<%= user.email %>">
+                </div>
                 <div class="form-group mx-sm-5">
                         <label for="passInput">Password</label>
                         <input type="password" class="form-control" id="passInput" placeholder="Password" name="password">
                 </div>
                 <div class="form-group mx-sm-5">
                         <label for="confirmPass">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirmPass" placeholder="Password">
-                </div>
-                <div class="form-group mx-sm-5">
-                        <label for="image">Profile Image</label>                            
-                        <input type="file" class="form-control" id="profileImg" accept="" name="profile" onchange="onImageUpload(this);"/>                                                      
+                        <input type="password" class="form-control" id="confirmPass" placeholder="Password" name="confirm">
                 </div>
                 <div class="text-center pb-2">
                     <button type="submit" class="btn btn-dark">Submit</button>

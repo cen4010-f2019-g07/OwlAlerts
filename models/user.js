@@ -1,8 +1,8 @@
+"use strict";
 const pool = require('../lib/pool_db');
+const bcrypt = require('bcryptjs');
+const saltRounds = 10;
 var fs = require('fs');
-
-let userImageSaveDir = '/resources/user_images/';
-let userProfileImageDirectory = __basedir + '/public' + userImageSaveDir;
 
 
 function databaseQuery(query){
@@ -20,166 +20,137 @@ class User {
 
 	create(firstname, lastname, email, password){
 		return new Promise(function(resolve, reject){
-			let query = `INSERT INTO users(firstname, lastname, email, password) \
-					VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${password}\')`;
-			databaseQuery(query).then(function(result){
-				resolve(result);
+			bcrypt.hash(password, saltRounds).then(function(hash){
+				let query = `INSERT INTO users(firstname, lastname, email, password) \
+				VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${hash}\')`;
+				databaseQuery(query).then(function(result){
+					resolve(result);
+				}).catch(function(err){
+					console.log(err);
+				});
 			}).catch(function(err){
 				console.log(err);
 			});
 		});
-	}
-  
-	update(userId, profileImageId){
-		return new Promise(function(resolve, reject){
-			let query = `UPDATE users \
-					SET image_id = \'${profileImageId}'\
-					WHERE id= \'${userId}\'`;
-			databaseQuery(query).then(function(result){
-				resolve(result);
-			}).catch(function(err){
-				console.log(err);
-			});
-		});
-	}
+	}	
 
-	upload(image){
-		return new Promise(function(resolve, reject){
-
-			//to append timestamp before the extension
-			let newFileName = image.name.replace(".", "_" + Date.now()+".");
-
-			//create image directory if does not exist
-			if(!fs.existsSync(userProfileImageDirectory)){
-				fs.mkdirSync(userProfileImageDirectory);
-			}
-
-			//move the imgae file to directory on server
-			image.mv(userProfileImageDirectory + newFileName);
-	
-			let query = `INSERT INTO images(name, description, type, size) \
-					VALUE(\'${newFileName}\', \'${"sample image"}\', \'${image.mimetype}\', \'${image.data.length}\')`;
-
-			databaseQuery(query).then(function(result){
-				resolve(result);
-			}).catch(function(err){
-				console.log(err);
-			});
-    });
-  }
-/*
 	update(attr){ //Short for attributes
 		return new Promise(function(resolve, reject){
-			let getUserQuery = `SELECT * FROM users WHERE id='${attr[id]}'`
+			let getUserQuery = `SELECT * FROM users WHERE id='${attr['id']}'`;
 			databaseQuery(getUserQuery).then(function(result){
 				let user = result[0];
-				if(attr[residency] != user.residency){
-					let residencyQuery = `UPDATE users SET residency='${attr[residency]}' WHERE id='${attr[id]}'`;
+				if(attr['residency'] != null && attr['residency'] != user.residency){
+					let residencyQuery = `UPDATE users SET residency='${attr['residency']}' WHERE id='${attr['id']}'`;
 					databaseQuery(residencyQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[faculty] != user.faculty){
-					let facultyQuery = `UPDATE users SET faculty=${attr[faculty]} WHERE id='${attr[id]}'`;
+				if(attr['faculty'] != null && attr['faculty'] != user.faculty){
+					let facultyQuery = `UPDATE users SET faculty=${attr['faculty']} WHERE id='${attr['id']}'`;
 					databaseQuery(facultyQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[commuter] != user.commuter){
+				if(attr['housing_status'] != null && attr['housing_status'] != user.housing_status){
 					//Make sure that both dormer and commuter can't be true
-					let commuterQuery = `UPDATE users SET commuter=${attr[commuter]} WHERE id='${attr[id]}'`;
-					databaseQuery(commuterQuery).catch(function(err){
+					let housingStatusQuery = `UPDATE users SET housing_status='${attr['housing_status']}' \
+					WHERE id='${attr['id']}'`;
+					databaseQuery(housingStatusQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[dormer] != user.dormer){
-					let dormerQuery = `UPDATE users SET dormer=${attr[dormer]} WHERE id='${attr[id]}'`;
-					databaseQuery(dormerQuery).catch(function(err){
-						console.log(err);
-					});
-				}
-				if(attr[building] != user.building){
-					let buildingQuery = `UPDATE users SET building='${attr[building]}' WHERE id='${attr[id]}'`;
+				if(attr['building'] != null && attr['building'] != user.building){
+					let buildingQuery = `UPDATE users SET building='${attr['building']}' WHERE id='${attr['id']}'`;
 					databaseQuery(buildingQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[room_number] != user.room_number){
-					let roomQuery = `UPDATE users SET room_number='${attr[room_number]}' WHERE id='${attr[id]}'`;
+				if(attr['room_number'] != null && attr['room_number'] != user.room_number){
+					let roomQuery = `UPDATE users SET room_number='${attr['room_number']}' WHERE id='${attr['id']}'`;
 					databaseQuery(roomQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[phone_number] != user.phone_number){
-					let phoneQuery = `UPDATE users SET phone_number='${attr[phone_number]}' WHERE id='${attr[id]}'`;
+				if(attr['phone_number'] != null && attr['phone_number'] != user.phone_number){
+					let phoneQuery = `UPDATE users SET phone_number='${attr['phone_number']}' WHERE id='${attr['id']}'`;
 					databaseQuery(phoneQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[street] != user.street){
-					let streetQuery = `UPDATE users SET street='${attr[street]}' WHERE id='${attr[id]}'`;
+				if(attr['street'] != null && attr['street'] != user.street){
+					let streetQuery = `UPDATE users SET street='${attr['street']}' WHERE id='${attr['id']}'`;
 					databaseQuery(streetQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[city] != user.city){
-					let cityQuery = `UPDATE users SET city='${attr[city]}' WHERE id='${attr[id]}'`;
+				if(attr['city'] != null && attr['city'] != user.city){
+					let cityQuery = `UPDATE users SET city='${attr['city']}' WHERE id='${attr['id']}'`;
 					databaseQuery(cityQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[state] != user.state){
-					let stateQuery = `UPDATE users SET state='${attr[state]}' WHERE id='${attr[id]}'`;
+				if(attr['state'] != null && attr['state'] != user.state){
+					let stateQuery = `UPDATE users SET state='${attr['state']}' WHERE id='${attr['id']}'`;
 					databaseQuery(stateQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[zip] != user.zip){
-					let zipQuery = `UPDATE users SET zip='${attr[zip]}' WHERE id='${attr[id]}'`;
+				if(attr['zip'] != null && attr['zip'] != user.zip){
+					let zipQuery = `UPDATE users SET zip='${attr['zip']}' WHERE id='${attr['id']}'`;
 					databaseQuery(zipQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[country] != user.country){
-					let countryQuery = `UPDATE users SET country='${attr[country]}' WHERE id='${attr[id]}'`;
+				if(attr['country'] != null && attr['country'] != user.country){
+					let countryQuery = `UPDATE users SET country='${attr['country']}' WHERE id='${attr['id']}'`;
 					databaseQuery(countryQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[email] != user.email){
-					let emailQuery = `UPDATE users SET email='${attr[email]}' WHERE id='${attr[id]}'`;
+				if(attr['email'] != null && attr['email'] != user.email){
+					let emailQuery = `UPDATE users SET email='${attr['email']}' WHERE id='${attr['id']}'`;
 					databaseQuery(emailQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[password] != user.password){
-					let passwordQuery = `UPDATE users SET password='${attr[password]}' WHERE id='${attr[id]}'`;
-					databaseQuery(passwordQuery).catch(function(err){
+				if(attr.password != null && !res){
+					bcrypt.compare(attr['password'], user.password).then(function(res){
+						bcypt.hash(attr['password'], saltRounds).then(function(hash){
+							let passwordQuery = `UPDATE users SET password='${hash}' WHERE id='${attr['id']}'`;
+							databaseQuery(passwordQuery).catch(function(err){
+								console.log(err);
+							});
+						});
+					}).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[firstname] != user.firstname){
-					let firstnameQuery = `UPDATE users SET firstname='${attr[firstname]}' WHERE id='${attr[id]}'`;
+				if(attr['firstname'] != null && attr['firstname'] != user.firstname){
+					let firstnameQuery = `UPDATE users SET firstname='${attr['firstname']}' WHERE id='${attr['id']}'`;
 					databaseQuery(firstnameQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[lastname] != user.lastname){
-					let lastnameQuery = `UPDATE users SET lastname='${attr[lastname]}' WHERE id='${attr[id]}'`;
+				if(attr['lastname'] != null && attr['lastname'] != user.lastname){
+					let lastnameQuery = `UPDATE users SET lastname='${attr['lastname']}' WHERE id='${attr['id']}'`;
 					databaseQuery(lastnameQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr[image_id] != user.image_id){
-					let imageQuery = `UPDATE users SET image_id='${attr[image_id]}' WHERE id='${attr[id]}'`;
+				if(attr['image_id'] != null && attr['image_id'] != user.image_id){
+					let imageQuery = `UPDATE users SET image_id='${attr['image_id']}' WHERE id='${attr['id']}'`;
 					databaseQuery(imageQuery).catch(function(err){
 						console.log(err);
 					});
 				}
+			}).then(function(){
+				resolve(1);
+			}).catch(function(err){
+				console.log(err);
 			});
 		});
 	}
-*/
+
 	delete(id){
 		return new Promise(function(resolve, reject){
 			let query = `DELETE FROM users WHERE id='${id}'`;
@@ -202,20 +173,31 @@ class User {
 		});
 	}
 
-	get(id){
+	allPaginate(limit){
 		return new Promise(function(resolve, reject){
-			let query = `SELECT * FROM users WHERE id='${id}'`;
+			let query = `SELECT * FROM users ORDER BY ID DESC LIMIT ${limit}`;
 			databaseQuery(query).then(function(result){
-				resolve(result[0]);
+				resolve(result);
 			}).catch(function(err){
 				console.log(err);
 			});
 		});
 	}
 
-	getProfileImage(id) {
+	allCount(){
 		return new Promise(function(resolve, reject){
-			let query = `SELECT * FROM images WHERE id=\'${id}\'`;
+			let query = 'SELECT count(*) as numRows FROM users';
+			databaseQuery(query).then(function(results){
+				resolve(results[0].numRows);
+			}).catch(function(err){
+				console.log(err);
+			});
+		});
+	}
+
+	get(id){
+		return new Promise(function(resolve, reject){
+			let query = `SELECT * FROM users WHERE id='${id}'`;
 			databaseQuery(query).then(function(result){
 				resolve(result[0]);
 			}).catch(function(err){
@@ -240,8 +222,30 @@ class User {
 		});
 	}
 
-	getUserProfileImagePath(imgFileName) {
-		return userImageSaveDir + imgFileName;
+	checkLogin(email, password){
+		return new Promise(function(resolve, reject){
+			let query = `SELECT * FROM users WHERE email='${email}'`;
+			databaseQuery(query).then(function(result){
+				let user = result[0];
+				if(!user){
+					resolve(false);
+				}
+				return user;
+			}).then(function(user){
+				bcrypt.compare(password, user.password).then(function(res){
+					if(res){
+						resolve(user);
+					}
+					else{
+						resolve(false);
+					}
+				});
+			}).catch(function(err){
+				console.log(err);
+			});
+		}).catch(function(err){
+			console.log(err);
+		});
 	}
 }
 

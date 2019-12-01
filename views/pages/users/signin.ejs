@@ -6,7 +6,7 @@
 	<body class="backgroundImage">
 		<header> 
 			<div>
-					<% include ../../partials/header %>
+				<% include ../../partials/header %>
 			</div>
         </header>
         <% include ../../partials/sidebar %>
@@ -24,7 +24,7 @@
             </h4>
             <br>
             <div class="rounded mx-sm-4" style="background-color:white">
-                <br>
+                <% include ../../partials/flash %>
                 <form action="/users/signin" method="post">
                     <div class="form-group mx-sm-5">
                         <label style="float:left"for="emailInput">Email address</label>
