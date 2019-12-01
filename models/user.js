@@ -21,8 +21,8 @@ class User {
 	create(firstname, lastname, email, password){
 		return new Promise(function(resolve, reject){
 			bcrypt.hash(password, saltRounds).then(function(hash){
-				let query = `INSERT INTO users(firstname, lastname, email, password) \
-				VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${hash}\')`;
+				let query = `INSERT INTO users(firstname, lastname, email, password, created_at) \
+				VALUE(\'${firstname}\', \'${lastname}\', \'${email}\', \'${hash}\', null)`;
 				databaseQuery(query).then(function(result){
 					resolve(result);
 				}).catch(function(err){

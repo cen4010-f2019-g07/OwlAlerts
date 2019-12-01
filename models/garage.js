@@ -16,9 +16,9 @@ class Garage {
 
 	create(attr){
 		return new Promise(function(resolve, reject){
-			let query = `INSERT INTO garages(location, name, full, free_spots, total_spots) \
+			let query = `INSERT INTO garages(location, name, full, free_spots, total_spots, created_at) \
 			VALUE('${attr['location']}', '${attr['name']}', ${attr['full']}, ${attr['free_spots']}, \
-			${attr['total_spots']})`;
+			${attr['total_spots']}, null)`;
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){

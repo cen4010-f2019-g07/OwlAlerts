@@ -17,9 +17,9 @@ class Event {
 	create(attr){
 		return new Promise(function(resolve, reject){
 			let query = `INSERT INTO events(title, location, start_date, end_date, description, \
-			submitted_user, host) VALUE('${attr.title}', '${attr['location']}', '${attr['start_date']}', \
+			submitted_user, host, created_at) VALUE('${attr.title}', '${attr['location']}', '${attr['start_date']}', \
 			'${attr['end_date']}', '${attr['description']}', ${attr['submitted_user']}, \
-			'${attr['host']}')`;
+			'${attr['host']}', null)`;
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
