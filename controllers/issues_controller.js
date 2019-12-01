@@ -157,6 +157,7 @@ exports.issue_create_post = function(req, res) {
 				});		
 			}).catch(function(err){
 				console.log(err);
+				res.status(500).render('errors/500');
 			});				
 		}	
 	}
@@ -175,6 +176,7 @@ exports.issue_delete_get = function(req, res) {
 				res.send('NOT IMPLEMENTED: Issue delete GET: ' + req.params.id);
 			}).catch(function(err){
 				console.log(err);
+				res.status(500).render('errors/500');
 			});
 		}
 		else{
@@ -268,6 +270,7 @@ exports.issue_update_post = function(req, res) {
 					attr['image_id'] = null;
 					IssueModel.update(attr).catch(function(err){
 						console.log(err);
+						res.status(500).render('errors/500');
 					});
 					res.redirect(`/issues/issue/${req.params.id}`);	
 				}				
@@ -278,10 +281,12 @@ exports.issue_update_post = function(req, res) {
 					}).then(function(result){
 						IssueModel.update(attr).catch(function(err){
 							console.log(err);
+							res.status(500).render('errors/500');
 						});		
 						res.redirect(`/issues/issue/${req.params.id}`);	
 					}).catch(function(err){
 						console.log(err);
+						res.status(500).render('errors/500');
 					});				
 				}		
 			}

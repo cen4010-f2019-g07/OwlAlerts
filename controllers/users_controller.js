@@ -123,6 +123,7 @@ exports.user_detail_post = function(req, res){
 				}
 			}).catch(function(err){
 				console.log(err);
+				res.status(500).render('errors/500');
 			});
 		}
 		else{
