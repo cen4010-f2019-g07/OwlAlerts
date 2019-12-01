@@ -14,13 +14,7 @@
         <div class="container">        
           <div class="container text-center">
             <div class="mt-4 text-center">
-              <% if(message.success) { %>
-                  <div class="alert alert-success text-center rounded mx-sm-5" role="alert">
-                      <% for(var i in message.success) { %>
-                          <%= message.success[i] %>
-                      <% } %>
-                  </div>
-              <% } %>
+              <% include ../../partials/flash %>
             </div>
             <h2 class="mt-5">Issue Information</h2>
             <table class="table table-dark table-striped mt-5">
@@ -73,8 +67,10 @@
             <br/>
             <% if(!issue.verified){%>
               <h4>This issue has not been officially verified by a faculty member. <br>Would you like to report it for being inappropriate or innaccurate?</h4>
-
-              <a href="/issues/issue/<%=issue.id%>" class="btn btn-secondary mt-5">Report Issue</a> 
+              <form method="post" action="/issues/issue/<%= issue.id %>">
+                <input type="hidden" value="Make Faculty" name="reported_true">
+                <button type="submit" name="reported" value="true" class="btn btn-secondary mt-5">Report Issue</button>
+              </form>
             <%} %>
           </div>
         </div> 
