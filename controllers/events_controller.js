@@ -4,7 +4,10 @@ var EventModel = require('../models/event');
 // Home page for Events
 exports.index = function(req, res) {
 	EventModel.all().then(function(data){
-		res.send('NOT IMPLEMENTED: Event index');
+		res.render('pages/events/eventshome',{
+			sessionUser: req.user,
+			events:data
+		});
 	}).catch(function(err){
 		console.log(err);
 	});
@@ -13,7 +16,10 @@ exports.index = function(req, res) {
 // Display list of all Events.
 exports.event_list = function(req, res) {
 	EventModel.all().then(function(data){
-		res.send('NOT IMPLEMENTED: Event list');
+		res.render('pages/events/eventslist',{
+			sessionUser: req.user,
+			events:data
+		});
 	}).catch(function(err){
 		console.log(err);
 	});
@@ -23,7 +29,10 @@ exports.event_list = function(req, res) {
 exports.event_detail = function(req, res) {
 	EventModel.get(req.params.id).then(function(result){
 		//Data holds the information for the issue with the id param
-		res.send('NOT IMPLEMENTED: Event detail: ' + req.params.id);
+		res.render('pages/events/show',{
+			sessionUser: req.user,
+			event: result
+		});
 	}).catch(function(err){
 		console.log(err);
 	});
@@ -32,11 +41,14 @@ exports.event_detail = function(req, res) {
 // Display Event create form on GET.
 exports.event_create_get = function(req, res) {
 	if(req.user){
-		res.send('NOT IMPLEMENTED: Event create GET');
+		res.render('pages/events/eventspost',{
+			sessionUser: req.user,
+		});
 	}
-  else{
-  	res.redirect('/users/signin');
-  }
+	else{
+		req.flash('info', 'Please Sign-In to Access This Feature');
+		res.redirect('/users/signin');
+	}
 };
 
 // Handle Event create on POST.
