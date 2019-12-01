@@ -28,6 +28,7 @@ exports.index = function(req, res) {
 
 // Display list of all Issues.
 exports.issue_list = function(req, res) {
+	let filter = req.query.filter || 0;
 	let numPerPage = parseInt(req.query.npp, 10) || 10;
 	let page = parseInt(req.query.page, 10) || 0;
 	let skip = (page-1) * numPerPage;

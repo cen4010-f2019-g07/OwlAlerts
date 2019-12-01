@@ -4,13 +4,16 @@ const paginate = require('express-paginate');
 
 // Home page for Events
 exports.index = function(req, res) {
-	EventModel.all().then(function(data){
-		res.render('pages/events/index',{
-			sessionUser: req.user,
-			events:data
-		});
+	EventModel.getUpcoming(5).then(function(data){
+		res.render('pages/events/index',
+    {
+      sessionUser: req.user,
+      events: data,
+      message: req.flash()
+    });
 	}).catch(function(err){
 		console.log(err);
+		res.status(500).render('errors/500');
 	});
 };
 
@@ -51,7 +54,8 @@ exports.event_detail = function(req, res) {
 		//Data holds the information for the issue with the id param
 		res.render('pages/events/show',{
 			sessionUser: req.user,
-			event: result
+			event: result,
+			message: req.flash()
 		});
 	}).catch(function(err){
 		console.log(err);
@@ -63,6 +67,7 @@ exports.event_create_get = function(req, res) {
 	if(req.user){
 		res.render('pages/events/create',{
 			sessionUser: req.user,
+			message: req.flash()
 		});
 	}
 	else{

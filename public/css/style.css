@@ -168,10 +168,25 @@ html{
   font-size:20px;
 }
 
+/* Paginate Buttons */
+.next{
+  padding: 0px 5px;
+}
 
+.previous{
+  padding: 0px 5px;
+}
 
+#pagination{
+  display: inline-block;
+}
 
+.filters{
+  display: inline-block;
+  float: none;
+  padding: 0px 0px;
+}
 
-
-
-
+.page-numbers, .issue-filter{
+  padding: 0px 5px;
+}
