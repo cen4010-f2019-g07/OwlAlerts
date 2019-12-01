@@ -17,26 +17,30 @@
                         <div class="mt-4">
         <div class="container">
             <div class="mt-4 display-3 text-center">
-                Post an Issue
+                Post an Event
             </div>
             <h4 class="text-center mt-2 ">
-                Please enter the correct issue information below!
+                Please enter the correct event information below!
             </h4>
             <br>
             <div class="rounded mx-sm-4" style="background-color:white">
                 <br>
                 <form action="/issues/create" method="post">
                     <div class="form-group mx-sm-5">
-                        <label for="issueTitle">Issue Title</label>
-                        <input type="text" class="form-control" id="issueTitle" placeholder="Title" name="Title of the Issue">
+                        <label for="eventLocation">Event Location</label>
+                        <input type="text" class="form-control" id="eventLocation" placeholder="Location" name="Location of the Event">
                     </div>
                     <div class="form-group mx-sm-5">
-                            <label for="issueDescript">Description</label>
-                            <input type="text" class="form-control" id="issueDescript" placeholder="Description" name="Description of the Issue">
+                            <label for="eventDescript">Description</label>
+                            <input type="text" class="form-control" id="eventDescript" placeholder="Description" name="Description of the Event">
                     </div>
                     <div class="form-group mx-sm-5">
-                            <label for="issueLocation">Location</label>
-                            <input type="text" class="form-control" id="issueLocation" placeholder="Location" name="Location of the Issue">
+                            <label for="startDate">Start Date</label>
+                            <input type="text" class="form-control" id="startDate" placeholder="Start Date" name="Start Date of the Event">
+                    </div>
+                    <div class="form-group mx-sm-5">
+                            <label for="endDate">End Date</label>
+                            <input type="text" class="form-control" id="endDate" placeholder="End Time" name="End Date of the Event">
                     </div>
                     <div class="text-center pb-2">
                         <button type="submit" class="btn btn-dark">Submit</button>

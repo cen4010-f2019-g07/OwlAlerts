@@ -6,7 +6,6 @@ exports.index = function(req, res) {
 		res.render('pages/issues/issuehome',
 		{
 			sessionUser: req.user,
-
 			issues:data
 		});
 	}).catch(function(err){
