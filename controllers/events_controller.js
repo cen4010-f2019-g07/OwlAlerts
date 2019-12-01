@@ -54,7 +54,8 @@ exports.event_detail = function(req, res) {
 		//Data holds the information for the issue with the id param
 		res.render('pages/events/show',{
 			sessionUser: req.user,
-			event: result
+			event: result.
+			message: req.flash()
 		});
 	}).catch(function(err){
 		console.log(err);
@@ -66,6 +67,7 @@ exports.event_create_get = function(req, res) {
 	if(req.user){
 		res.render('pages/events/create',{
 			sessionUser: req.user,
+			message: req.flash()
 		});
 	}
 	else{
