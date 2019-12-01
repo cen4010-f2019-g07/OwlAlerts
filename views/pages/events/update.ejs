@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<% include ../../partials/head %>
+	</head>
+	<body style="background-color:#BDBDBD">
+		<header> 
+			<div>
+					<% include ../../partials/header %>
+			</div>
+    </header>
+      <% include ../../partials/sidebar %>
+      <div id="main">
+      <div class="container">  
+            <h2 class="mt-5">Update <%= event.title %>'s Infomation</h2>  
+            <br />
+        
+        <div class="rounded mx-sm-4" style="background-color:white">
+        
+            <br>
+            <form action="/events/event/<%= event.id%>/update" method="post">
+                <div class="form-group mx-sm-5">
+                    <label for="eventTitle">Event Title</label>
+                    <input type="text" class="form-control" id="eventTitle" placeholder="Title" name="title" value="<%= event.title %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                    <label for="eventLocation">Event Location</label>
+                    <input type="text" class="form-control" id="eventLocation" placeholder="Location" name="location" value="<%= event.location %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                        <label for="eventDescript">Description</label>
+                        <input type="text" class="form-control" id="eventDescript" placeholder="Description" name="description" value="<%= event.description %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                        <label for="startDate">Start Date</label>
+                        <input type="datetime-local" class="form-control" id="startDate" placeholder="Start Date" name="start_date" value="<%= event.start_date %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                        <label for="endDate">End Date</label>
+                        <input type="datetime-local" class="form-control" id="endDate" placeholder="End Time" name="end_date" value="<%= event.end_date %>">
+                </div>
+                <div class="form-group mx-sm-5">
+                        <label for="endDate">Hosted By</label>
+                        <input type="text" class="form-control" id="host" placeholder="FAU" name="host" value="<%= event.host %>">
+                </div>
+                <div class="text-center pb-2">
+                    <button type="submit" class="btn btn-dark">Submit</button>
+                </div>
+            </form>
+            
+        </div>
+
+      </div>    
+      </div>
+
+        
+        <footer> 
+            <div>
+                <% include ../../partials/footer %>
+            </div>
+        </footer>
+    </body>
+</html>

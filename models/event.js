@@ -16,8 +16,8 @@ class Event {
 
 	create(attr){
 		return new Promise(function(resolve, reject){
-			let query = `INSERT INTO events(location, start_date, end_date, description, \
-			submitted_user, host) VALUE('${attr['location']}', '${attr['start_date']}', \
+			let query = `INSERT INTO events(title, location, start_date, end_date, description, \
+			submitted_user, host) VALUE('${attr.title}', '${attr['location']}', '${attr['start_date']}', \
 			'${attr['end_date']}', '${attr['description']}', ${attr['submitted_user']}, \
 			'${attr['host']}')`;
 			databaseQuery(query).then(function(result){
@@ -33,6 +33,13 @@ class Event {
 			let getEventQuery = `SELECT * FROM events WHERE id='${attr['id']}'`;
 			databaseQuery(getEventQuery).then(function(result){
 				let event = result[0];
+				if(attr['title'] != null && attr['title'] != event.title){
+					let titleQuery = `UPDATE events SET title='${attr['title']}' \
+					WHERE id='${attr['id']}'`;
+					databaseQuery(titleQuery).catch(function(err){
+						console.log(err);
+					});
+				}
 				if(attr['location'] != null && attr['location'] != event.location){
 					let locationQuery = `UPDATE events SET location='${attr['location']}' \
 					WHERE id='${attr['id']}'`;

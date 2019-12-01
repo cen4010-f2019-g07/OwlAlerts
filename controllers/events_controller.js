@@ -80,6 +80,7 @@ exports.event_create_get = function(req, res) {
 exports.event_create_post = function(req, res) {
 	if(req.user){
 		let attr = {};
+		attr.title = req.body.title;
 		attr['location'] = req.body.location;
 		attr['start_date'] = req.body.start_date;
 		attr['end_date'] = req.body.end_date;
@@ -147,7 +148,11 @@ exports.event_update_get = function(req, res) {
 	if(req.user){
 		EventModel.get(req.params.id).then(function(event){
 			if(event.submitted_user == req.user.id || req.user.faculty || req.user.admin){
-				res.send('NOT IMPLEMENTED: Event update GET: ' + req.params.id);
+				res.render('pages/events/update', {
+					sessionUser: req.user,
+					event: event,
+					message: req.flash()
+				});
 			}
 			else{
 				res.status(401).render('errors/401');
@@ -168,6 +173,7 @@ exports.event_update_post = function(req, res) {
   		if(event.submitted_user == req.user.id || req.user.faculty || req.user.admin){
   			let attr = {};
   			attr['id'] = req.params.id;
+  			attr.title = req.body.title || null;
   			attr['location'] = req.body.location || null;
   			attr['start_date'] = req.body.start_date || null;
   			attr['end_date'] = req.body.end_date || null;
