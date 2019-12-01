@@ -147,7 +147,11 @@ exports.event_update_get = function(req, res) {
 	if(req.user){
 		EventModel.get(req.params.id).then(function(event){
 			if(event.submitted_user == req.user.id || req.user.faculty || req.user.admin){
-				res.send('NOT IMPLEMENTED: Event update GET: ' + req.params.id);
+				res.render('pages/events/update', {
+					sessionUser: req.user,
+					event: event,
+					message: req.flash()
+				});
 			}
 			else{
 				res.status(401).render('errors/401');
