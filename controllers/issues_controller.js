@@ -66,7 +66,7 @@ exports.issue_detail = function(req, res) {
 
 			var imageSrcPath = (imgData != null) ? ImageModel.getPath(imgData.name) :
 			"https://via.placeholder.com/180x180";
-			console.log(data);
+
 			res.render('pages/issues/show',
 			{
 				sessionUser: req.user,
