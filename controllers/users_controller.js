@@ -105,15 +105,24 @@ exports.user_detail = function(req, res) {
 exports.user_detail_post = function(req, res){
 	if(req.user){
 		if(req.user.admin){
-			let attr = {
-				id: req.params.id,
-				faculty: req.body.faculty
-			};
-			UserModel.update(attr).then(function(result){
-				res.redirect(`/users/user/${req.params.id}`);
-			}).catch(function(){
+			UserModel.get(req.params.id).then(function(user){
+				if(!user.admin){
+					let attr = {
+						id: req.params.id,
+						faculty: req.body.faculty
+					};
+					UserModel.update(attr).then(function(result){
+						res.redirect(`/users/user/${req.params.id}`);
+					}).catch(function(){
+						console.log(err);
+						res.status(500).render('errors/500');
+					});
+				}
+				else{
+					res.render(403).render('errors/403');
+				}
+			}).catch(function(err){
 				console.log(err);
-				res.status(500).render('errors/500');
 			});
 		}
 		else{
