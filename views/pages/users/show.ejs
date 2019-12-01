@@ -3,7 +3,7 @@
 	<head>
 		<% include ../../partials/head %>
 	</head>
-	<body style="background-color:#BDBDBD">
+	<body class="backgroundImage">
 		<header> 
 			<div>
                 <% include ../../partials/header %>
@@ -11,17 +11,14 @@
     </header>
       <% include ../../partials/sidebar %>
       <div id="main">
+          <div class="container">
+              <div class="card border-0 shadow my-5">
+                <div class="card-body p-5">
+              <div class="mt-4 text-center">
       <div class="container">        
           <div class="container text-center mx-sm-3">
             <div class="mt-2 text-center">
-              <br>
-              <% if(message.success) { %>
-                  <div class="alert alert-success text-center rounded mx-sm-5" role="alert">
-                      <% for(var i in message.success) { %>
-                          <%= message.success[i] %>
-                      <% } %>
-                  </div>
-              <% } %>
+              <% include ../../partials/flash %>
             </div>
               <h2 class="mt-5">Profile Information</h2>
                   <table class="table text-center">
@@ -32,11 +29,28 @@
                               <img class="rounded-circle" id="userImageUpload" src=<%= imgFilePath %> width='180' height='180'/>
                           </td>
                         </tr>
-                        <% if(user.faculty) { %>
+                        <% if(user.faculty && !user.admin) { %>
                           <tr><td>Faculty Member</td></tr>
                         <% } %>
                         <% if(user.admin) { %>
                           <tr><td>Administrator</td></tr>
+                        <% } %>
+                        <% if(sessionUser.admin && !user.admin) { %>
+                          <tr>
+                            <td>
+                              <% if(!user.faculty) { %>
+                                <form method="post" action="/users/user/<%= user.id %>">
+                                  <input type="hidden" value="Make Faculty" name="faculty_true">
+                                  <button type="submit" name="faculty" value="true" class="btn btn-secondary">Make Faculty</button>
+                                </form>
+                              <% } else { %>
+                                <form method="post" action="/users/user/<%= user.id %>">
+                                  <input type="hidden" value="Make Regular User" name="faculty_false">
+                                  <button type="submit" name="faculty" value="false" class="btn btn-secondary">Make Regular User</button>
+                                </form>
+                              <% } %>
+                            </td>
+                          </tr>
                         <% } %>
                         <tr><td>Email: <%= user.email %></td></tr>
                         <tr><td>Phone Number: <%= user.phone_number %></td></tr>
@@ -58,6 +72,9 @@
           <button type="button" class="btn btn-dark" onclick="window.location.href='/users/user/<%= user.id %>/update'">Edit Profile</button>
 
       </div>    
+      </div>
+      </div>
+      </div>
       </div>
       <footer> 
         <div>

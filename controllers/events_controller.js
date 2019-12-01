@@ -1,21 +1,50 @@
 "use strict";
 var EventModel = require('../models/event');
+const paginate = require('express-paginate');
 
 // Home page for Events
 exports.index = function(req, res) {
-	EventModel.all().then(function(data){
-		res.send('NOT IMPLEMENTED: Event index');
+	EventModel.getUpcoming(5).then(function(data){
+		res.render('pages/events/index',
+    {
+      sessionUser: req.user,
+      events: data,
+      message: req.flash()
+    });
 	}).catch(function(err){
 		console.log(err);
+		res.status(500).render('errors/500');
 	});
 };
 
 // Display list of all Events.
 exports.event_list = function(req, res) {
-	EventModel.all().then(function(data){
-		res.send('NOT IMPLEMENTED: Event list');
+	let numPerPage = parseInt(req.query.npp, 10) || 10;
+	let page = parseInt(req.query.page, 10) || 0;
+	let skip = (page-1) * numPerPage;
+	let limit = skip + ',' + numPerPage;
+	var itemCount;
+	var pageCount;
+	EventModel.allCount().then(function(eventCount){
+		itemCount = eventCount;
+		pageCount = Math.ceil(itemCount/req.query.limit);
+	}).then(function(){
+		EventModel.allPaginate(limit).then(function(data){
+			res.render('pages/events/list',
+	    {
+        sessionUser: req.user,
+	      events: data,
+	      pageCount,
+	      itemCount,
+	      pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
+	    });
+		}).catch(function(err){
+			console.log(err);
+			res.status(500).render('errors/500');
+		});
 	}).catch(function(err){
 		console.log(err);
+		res.status(500).render('errors/500');
 	});
 };
 
@@ -23,7 +52,10 @@ exports.event_list = function(req, res) {
 exports.event_detail = function(req, res) {
 	EventModel.get(req.params.id).then(function(result){
 		//Data holds the information for the issue with the id param
-		res.send('NOT IMPLEMENTED: Event detail: ' + req.params.id);
+		res.render('pages/events/show',{
+			sessionUser: req.user,
+			event: result
+		});
 	}).catch(function(err){
 		console.log(err);
 	});
@@ -32,11 +64,14 @@ exports.event_detail = function(req, res) {
 // Display Event create form on GET.
 exports.event_create_get = function(req, res) {
 	if(req.user){
-		res.send('NOT IMPLEMENTED: Event create GET');
+		res.render('pages/events/create',{
+			sessionUser: req.user,
+		});
 	}
-  else{
-  	res.redirect('/users/signin');
-  }
+	else{
+		req.flash('info', 'Please Sign-In to Access This Feature');
+		res.redirect('/users/signin');
+	}
 };
 
 // Handle Event create on POST.

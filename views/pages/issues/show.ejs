@@ -3,7 +3,7 @@
 	<head>
 		<% include ../../partials/head %>
 	</head>
-	<body style="background-color:#BDBDBD">
+	<body class="backgroundImage">
 		<header> 
 			<div>
         <% include ../../partials/header %>
@@ -11,16 +11,15 @@
     </header>
     <% include ../../partials/sidebar %>
       <div id="main">
-        <div class="container">        
+          <div class="container">
+              <div class="card border-0 shadow my-5">
+                  <div class="card-body p-5">
+              <div class="mt-4 text-center">
+      <div class="container">
+        <div class="container">
           <div class="container text-center">
             <div class="mt-4 text-center">
-              <% if(message.success) { %>
-                  <div class="alert alert-success text-center rounded mx-sm-5" role="alert">
-                      <% for(var i in message.success) { %>
-                          <%= message.success[i] %>
-                      <% } %>
-                  </div>
-              <% } %>
+              <% include ../../partials/flash %>
             </div>
             <h2 class="mt-5">Issue Information</h2>
             <table class="table table-dark table-striped mt-5">
@@ -30,6 +29,15 @@
                       <th scope="col">Title</th>
                       <th scope="col">Description</th>
                       <th scope="col">Location</th>
+                      <% if(sessionUser && (sessionUser.faculty || sessionUser.admin)) { %>
+                        <th scope="col">Submitted User</th>
+                      <% } %>
+                      <% if(issue.verified) { %>
+                        <th scope="col">Verified Faculty</th>
+                      <% } %>
+                      <% if(issue.resolved) { %>
+                        <th scope="col">Resolved Faculty</th>
+                      <% } %>
                     </tr>
                   </thead>
                 <tbody>
@@ -38,6 +46,21 @@
                       <td><h6><%= issue.title %></h3></td>
                     <td><h6><%= issue.description %></h6></td>
                     <td><h6> <%= issue.location %></h6></td>
+                    <% if(sessionUser && (sessionUser.faculty || sessionUser.admin)) { %>
+                      <td>
+                        <%= issue.subUser.firstname + ' ' + issue.subUser.lastname %>
+                      </td>
+                    <% } %>
+                    <% if(issue.verified) { %>
+                      <td>
+                        <%= issue.vFaculty.firstname + ' ' + issue.vFaculty.lastname %>
+                      </td>
+                    <% } %>
+                    <% if(issue.resolved) { %>
+                      <td>
+                        <%= issue.rFaculty.firstname + ' ' + issue.rFaculty.lastname %>
+                      </td>
+                    <% } %>
                     <% if(sessionUser && (issue.submitted_user == sessionUser.id || sessionUser.faculty || sessionUser.admin)) { %>
                       <td>
                         <a href="/issues/issue/<%= issue.id %>/update" class="btn btn-secondary">Edit Issue</a>
@@ -49,11 +72,16 @@
             <br/>
             <% if(!issue.verified){%>
               <h4>This issue has not been officially verified by a faculty member. <br>Would you like to report it for being inappropriate or innaccurate?</h4>
-
-              <a href="/issues/issue/<%=issue.id%>" class="btn btn-secondary mt-5">Report Issue</a> 
+              <form method="post" action="/issues/issue/<%= issue.id %>">
+                <input type="hidden" value="report" name="reported_true">
+                <button type="submit" name="reported" value="true" class="btn btn-secondary mt-5">Report Issue</button>
+              </form>
             <%} %>
           </div>
         </div> 
+      </div>
+      </div>
+      </div>
       </div>
       <footer> 
         <div>

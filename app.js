@@ -10,6 +10,7 @@ const flash = require('connect-flash');
 const fileUpload = require('express-fileupload');
 const paginate = require('express-paginate');
 const bcrypt = require('bcryptjs');
+const cron = require('node-cron');
 
 const dashboardRouter = require('./routes/dashboard'); //Our New Default Page
 const userRouter = require('./routes/users');
@@ -17,6 +18,8 @@ const eventRouter = require('./routes/events');
 const garageRouter = require('./routes/garages');
 const issueRouter = require('./routes/issues');
 const passport = require('./config/passport');
+
+const GarageModel = require('./models/garage');
 
 const app = express();
 
@@ -65,4 +68,81 @@ passport.deserializeUser(function(id, done){
 			done(err, rows[0]);
 		});
 	});
+});
+
+//At Midnight Update All Garages to Be Empty
+cron.schedule('00 00 00 * * 0-6', function(){
+	GarageModel.all().then(function(garages){
+		for(var i in garages){
+			let attr = {
+				id: garages[i].id,
+				free_spots: garages[i].total_spots,
+				full: false
+			};
+			GarageModel.update(attr).then(function(result){
+				console.log('All Garages Are Empty at Midnight!');
+			}).catch(function(err){
+				console.log(err);
+			});
+		}
+	}).catch(function(err){
+		console.log(err);
+	});
+});
+
+//At Every Hour From 4 am to 11 am Decrease Free Spots by 1/9 of Total Spots
+//Monday - Friday
+cron.schedule('00 00 4-11 * * 1-5', function(){
+	GarageModel.all().then(function(garages){
+		for(var i in garages){
+			let attr = {
+				id: garages[i].id,
+				free_spots: (garages[i].free_spots - ((garages[i].total_spots)/9))
+			}
+			GarageModel.update(attr).then(function(result){
+				console.log('All Garages Have Decreased by 1/9');
+			}).catch(function(err){
+				console.log(err);
+			});
+		}
+	})
+});
+
+//At Noon Update All Garages to Be Full During Weekdays
+cron.schedule('00 00 12 * * 0-6', function(){
+	GarageModel.all().then(function(garages){
+		for(var i in garages){
+			let attr = {
+				id: garages[i].id,
+				free_spots: 0,
+				full: true
+			};
+			GarageModel.update(attr).then(function(result){
+				console.log('All Garages Are Empty at Midnight!');
+			}).catch(function(err){
+				console.log(err);
+			});
+		}
+	}).catch(function(err){
+		console.log(err);
+	});
+});
+
+//At Every Hour From 4 pm to 11 pm Free Spots Increase by 1/9 of Total Spots
+//Monday - Friday
+cron.schedule('00 00 16-23 * * 1-5', function(){
+	GarageModel.all().then(function(garages){
+		let free_spots = (garages[i].free_spots + ((garages[i].total_spots)/9));
+		for(var i in garages){
+			let attr = {
+				id: garages[i].id,
+				free_spots: free_spots
+			}
+			GarageModel.update(attr).then(function(result){
+				console.log('All Garages Have Decreased by 1/9');
+			}).catch(function(err){
+				console.log(err);
+			});
+		}
+	})
 });

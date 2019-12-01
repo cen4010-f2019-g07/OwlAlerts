@@ -11,13 +11,57 @@ function databaseQuery(query){
 	});
 }
 
+function getVerifiedFaculty(id){
+	return new Promise(function(resolve, reject){
+		let verifiedQuery = `SELECT * FROM users WHERE id=${id}`;
+		databaseQuery(verifiedQuery).then(function(verifiedResult){
+			resolve(verifiedResult[0]);
+		}).catch(function(err){
+			console.log(err);
+		});
+	});
+}
+
+function conditionalVerified(issue){
+	return new Promise(function(resolve, reject){
+		if(issue.verified){
+			resolve(getVerifiedFaculty(issue.verified_faculty));
+		}
+		else{
+			resolve(null);
+		}
+	});
+}
+
+function getResolvedFaculty(id){
+	return new Promise(function(resolve, reject){
+		let resolvedQuery = `SELECT * FROM users WHERE id=${id}`;
+		databaseQuery(resolvedQuery).then(function(resolvedResult){
+			resolve(resolvedResult[0]);
+		}).catch(function(err){
+			console.log(err);
+		});
+	});
+}
+
+function conditionalResolved(issue){
+	return new Promise(function(resolve, reject){
+		if(issue.resolved){
+			resolve(getResolvedFaculty(issue.resolved_faculty));
+		}
+		else{
+			resolve(null);
+		}
+	});
+}
+
 class Issue {
 	contructor(){}
 
 	create(attr){ //Needs to be done
 		return new Promise(function(resolve, reject){
-			let query = `INSERT INTO issues(title, description, location, submitted_user) \
-			VALUE('${attr['title']}', '${attr['description']}', '${attr['location']}', ${attr['submitted_user']})`;
+			let query = `INSERT INTO issues(title, description, location, submitted_user, image_id) \
+			VALUE('${attr['title']}', '${attr['description']}', '${attr['location']}', ${attr['submitted_user']}, ${attr['image_id']})`;
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
@@ -50,7 +94,7 @@ class Issue {
 					});
 				}
 				if(attr['location'] !=  null && attr['location'] != issue.location){
-					let locationQuery = `UPDATE issues SET location=${attr['location']} WHERE id='${attr['id']}'`;
+					let locationQuery = `UPDATE issues SET location='${attr['location']}' WHERE id='${attr['id']}'`;
 					databaseQuery(locationQuery).catch(function(err){
 						console.log(err);
 					});
@@ -67,6 +111,12 @@ class Issue {
 						console.log(err);
 					});
 				}
+				if(attr.reported != null && attr.reported != issue.reported){
+					let reportedQuery = `UPDATE issues SET reported=${attr.reported} WHERE id=${attr['id']}`;
+					databaseQuery(reportedQuery).catch(function(err){
+						console.log(err);
+					});
+				}
 				if(attr['submitted_user'] != null && attr['submitted_user'] != issue.submitted_user){
 					let submittedUserQuery = `UPDATE issues SET submitted_user='${attr['submitted_user']}' \
 					WHERE id='${attr['id']}'`;
@@ -74,21 +124,25 @@ class Issue {
 						console.log(err);
 					});
 				}
-				if(attr['verified_faculty'] != null && attr['verified_faculty'] != user.verified_faculty){
+				if(attr['verified_faculty'] != null && attr['verified_faculty'] != issue.verified_faculty){
 					let verifiedFacultyQuery = `UPDATE issues SET verified_faculty='${attr['verified_faculty']}' \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(verifiedFacultyQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-				if(attr['resolved_faculty'] != null && attr['resolved_faculty'] != user.resolved_faculty){
+				if(attr['resolved_faculty'] != null && attr['resolved_faculty'] != issue.resolved_faculty){
 					let resolvedFacultyQuery = `UPDATE issues SET resolved_faculty='${attr['resolved_faculty']}' \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(resolvedFacultyQuery).catch(function(err){
 						console.log(err);
 					});
 				}
-			})
+			}).then(function(){
+				resolve(1);
+			}).catch(function(err){
+				console.log(err);
+			});
 		});
 	}
 
@@ -173,7 +227,29 @@ class Issue {
 		return new Promise(function(resolve, reject){
 			let query = `SELECT * FROM issues WHERE id=\'${id}\'`;
 			databaseQuery(query).then(function(result){
-				resolve(result[0]);
+				return result[0];
+			}).then(function(issue){
+				let subUserQuery = `SELECT * FROM users WHERE id=${issue.submitted_user}`;
+				databaseQuery(subUserQuery).then(function(subUserResult){
+					issue.subUser = subUserResult[0];
+					return issue;
+				}).then(function(issue){
+					conditionalVerified(issue).then(function(vFaculty){
+						issue.vFaculty = vFaculty;
+						return issue;
+					}).then(function(issue){
+						conditionalResolved(issue).then(function(rFaculty){
+							issue.rFaculty = rFaculty;
+							resolve(issue);
+						}).catch(function(err){
+							console.log(err);
+						});
+					}).catch(function(err){
+						console.log(err);
+					});
+				}).catch(function(err){
+					console.log(err);
+				});
 			}).catch(function(err){
 				console.log(err);
 			});

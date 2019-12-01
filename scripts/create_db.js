@@ -32,7 +32,8 @@ FOREIGN KEY (submitted_user) REFERENCES users(id))';
 const create_issues = 'CREATE TABLE issues( id INT NOT NULL AUTO_INCREMENT, title VARCHAR(255) NOT NULL, \
 description TEXT NOT NULL, location VARCHAR(255) NOT NULL, verified BOOL NOT NULL DEFAULT false, \
 resolved BOOL NOT NULL DEFAULT false, submitted_user INT NOT NULL, verified_faculty INT, \
-resolved_faculty INT, image_id INT, created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
+resolved_faculty INT, image_id INT, reported INT NOT NULL DEFAULT 0, \
+created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, \
 updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, \
 PRIMARY KEY (id), FOREIGN KEY (submitted_user) REFERENCES users(id), \
 FOREIGN KEY (verified_faculty) REFERENCES users(id), FOREIGN KEY (resolved_faculty) REFERENCES users(id), \

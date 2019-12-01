@@ -46,25 +46,27 @@ class Garage {
 					});
 				}
 				if(attr['full'] != null && attr['full'] != garage.full){
-					let fullQuery = `UPDATE garages SET full='${attr['full']}' WHERE id='${attr['id']}'`;
+					let fullQuery = `UPDATE garages SET full=${attr['full']} WHERE id='${attr['id']}'`;
 					databaseQuery(fullQuery).catch(function(err){
 						console.log(err);
 					});
 				}
 				if(attr['free_spots'] != null && attr['free_spots'] != garage.free_spots){
-					let freeSpotsQuery = `UPDATE garages SET free_spots='${attr['free_spots']}' \
+					let freeSpotsQuery = `UPDATE garages SET free_spots=${attr['free_spots']} \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(freeSpotsQuery).catch(function(err){
 						console.log(err);
 					});
 				}
 				if(attr['total_spots'] != null && attr['total_spots'] != garage.total_spots){
-					let totalSpotsQuery = `UPDATE garages SET total_spots='${attr['total_spots']}' \
+					let totalSpotsQuery = `UPDATE garages SET total_spots=${attr['total_spots']} \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(totalSpotsQuery).catch(function(err){
 						console.log(err);
 					});
 				}
+			}).then(function(){
+				resolve(1);
 			}).catch(function(err){
 				console.log(err);
 			});

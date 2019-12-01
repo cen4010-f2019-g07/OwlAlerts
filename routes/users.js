@@ -28,6 +28,9 @@ router.post('/user/:id/update', users_controller.user_update_post);
 // GET request for one User.
 router.get('/user/:id', users_controller.user_detail);
 
+// POST request for one User.
+router.post('/user/:id', users_controller.user_detail_post);
+
 // GET request for list of all User items.
 router.get('/users', users_controller.user_list);
 
