@@ -3,7 +3,7 @@
 	<head>
 		<% include ../../partials/head %>
 	</head>
-	<body style="background-color:#BDBDBD">
+	<body class="backgroundImage">
 		<header> 
 			<div>
                 <% include ../../partials/header %>
@@ -11,6 +11,10 @@
     </header>
       <% include ../../partials/sidebar %>
       <div id="main">
+          <div class="container">
+              <div class="card border-0 shadow my-5">
+                <div class="card-body p-5">
+              <div class="mt-4 text-center">
       <div class="container">        
           <div class="container text-center mx-sm-3">
               <h2 class="mt-5">Profile Information</h2>
@@ -35,6 +39,9 @@
           <button type="button" class="btn btn-dark" onclick="window.location.href='/users/user/<%= user.id %>/update'">Edit Profile</button>
 
       </div>    
+      </div>
+      </div>
+      </div>
       </div>
       <footer> 
         <div>

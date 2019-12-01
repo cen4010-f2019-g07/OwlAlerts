@@ -3,7 +3,7 @@
 	<head>
 		<% include ../partials/head %>
 	</head>
-	<body style="background-color:#BDBDBD">
+	<body class="backgroundImage">
 		<header> 
 			<div>
 					<% include ../partials/header %>
@@ -11,18 +11,22 @@
         </header>
         <% include ../partials/sidebar %>
         <div id="main">
+            
             <div class="container">
-                <div class="mt-4 display-3 text-center">
-                    Welcome to OWL Alerts
+                <div class="card border-0 shadow my-5">
+                  <div class="card-body p-5">
+                <div class="mt-4 text-center">
+                    <div class="display-3">Welcome to OWL Alerts</div>
+                    <h3 class="mt-4">With this website application, you can remain up to date on 
+                            issues, events, and garage information at FAU!</h3>
                 </div>
-                <div class="h3 mt-4 text-center">With this website, you can remain up to date on 
-                        issues, events, and garage information at FAU!</div>
-                </div>
+                
+                
                 <div class="container">
                     <div class="row">
                         <div class="col"></div>
-                        <div class="col-md-6">
-                                <div class="bg-secondary text-center mt-4">
+                        <div class="col col-md-6 col">
+                                <div class="bg-secondary text-center pt-4 mb-4">
                                     <div class="h5 text-light pt-4">
                                         Sign in or Sign up to begin 
                                         using OWL Alerts!
@@ -38,10 +42,13 @@
                     </div>   
                 </div>
         </div>
+        </div>
+        </div>
+        </div>
         <footer> 
-            <div>
-                <% include ../partials/footer %>
-            </div>
-        </footer>
+                <div>
+                    <% include ../partials/footer %>
+                </div>
+            </footer>
     </body>
 </html>
