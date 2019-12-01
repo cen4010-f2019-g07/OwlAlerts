@@ -1,5 +1,6 @@
 "use strict";
 var EventModel = require('../models/event');
+const paginate = require('express-paginate');
 
 // Home page for Events
 exports.index = function(req, res) {
@@ -26,7 +27,7 @@ exports.event_list = function(req, res) {
 		pageCount = Math.ceil(itemCount/req.query.limit);
 	}).then(function(){
 		EventModel.allPaginate(limit).then(function(data){
-			res.render('pages/issues/eventlist',
+			res.render('pages/events/eventslist',
 	    {
         sessionUser: req.user,
 	      events: data,
