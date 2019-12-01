@@ -17,7 +17,7 @@ function getVerifiedFaculty(id){
 		databaseQuery(verifiedQuery).then(function(verifiedResult){
 			resolve(verifiedResult[0]);
 		}).catch(function(err){
-			console.log(err);
+			reject(err);
 		});
 	});
 }
@@ -39,7 +39,7 @@ function getResolvedFaculty(id){
 		databaseQuery(resolvedQuery).then(function(resolvedResult){
 			resolve(resolvedResult[0]);
 		}).catch(function(err){
-			console.log(err);
+			reject(err);
 		});
 	});
 }
@@ -65,7 +65,7 @@ class Issue {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -78,70 +78,70 @@ class Issue {
 				if(attr['image_id'] != null && attr['image_id'] != issue.image_id){
 					let imageQuery = `UPDATE issues SET image_id='${attr['image_id']}' WHERE id='${attr['id']}'`;
 					databaseQuery(imageQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr['title'] != null && attr['title'] != issue.title){
 					let titleQuery = `UPDATE issues SET title='${attr['title']}' WHERE id='${attr['id']}'`;
 					databaseQuery(titleQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr['description'] !=  null && attr['description'] != issue.description){
 					let descriptionQuery = `UPDATE issues SET description='${attr['description']}' WHERE id='${attr['id']}'`;
 					databaseQuery(descriptionQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr['location'] !=  null && attr['location'] != issue.location){
 					let locationQuery = `UPDATE issues SET location='${attr['location']}' WHERE id='${attr['id']}'`;
 					databaseQuery(locationQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr['verified'] != null && attr['verified'] != issue.verified){
 					let verifiedQuery = `UPDATE issues SET verified=${attr['verified']} WHERE id='${attr['id']}'`;
 					databaseQuery(verifiedQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr['resolved'] != null && attr['resolved'] != issue.resolved){
 					let resolvedQuery = `UPDATE issues SET resolved='${attr['resolved']}' WHERE id='${attr['id']}'`;
 					databaseQuery(resolvedQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr.reported != null && attr.reported != issue.reported){
 					let reportedQuery = `UPDATE issues SET reported=${attr.reported} WHERE id=${attr['id']}`;
 					databaseQuery(reportedQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr['submitted_user'] != null && attr['submitted_user'] != issue.submitted_user){
 					let submittedUserQuery = `UPDATE issues SET submitted_user='${attr['submitted_user']}' \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(submittedUserQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr['verified_faculty'] != null && attr['verified_faculty'] != issue.verified_faculty){
 					let verifiedFacultyQuery = `UPDATE issues SET verified_faculty='${attr['verified_faculty']}' \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(verifiedFacultyQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr['resolved_faculty'] != null && attr['resolved_faculty'] != issue.resolved_faculty){
 					let resolvedFacultyQuery = `UPDATE issues SET resolved_faculty='${attr['resolved_faculty']}' \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(resolvedFacultyQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 			}).then(function(){
 				resolve(1);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -152,7 +152,7 @@ class Issue {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -163,7 +163,7 @@ class Issue {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -174,7 +174,7 @@ class Issue {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -185,7 +185,7 @@ class Issue {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -196,7 +196,7 @@ class Issue {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -207,7 +207,7 @@ class Issue {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -218,7 +218,7 @@ class Issue {
 			databaseQuery(query).then(function(results){
 				resolve(results[0].numRows);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -242,16 +242,16 @@ class Issue {
 							issue.rFaculty = rFaculty;
 							resolve(issue);
 						}).catch(function(err){
-							console.log(err);
+							reject(err);
 						});
 					}).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}).catch(function(err){
-					console.log(err);
+					reject(err);
 				});
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -262,7 +262,7 @@ class Issue {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
