@@ -66,7 +66,7 @@ exports.issue_detail = function(req, res) {
 
 			var imageSrcPath = (imgData != null) ? ImageModel.getPath(imgData.name) :
 			"https://via.placeholder.com/180x180";
-
+			console.log(data);
 			res.render('pages/issues/show',
 			{
 				sessionUser: req.user,
@@ -74,12 +74,43 @@ exports.issue_detail = function(req, res) {
 				imgFilePath: imageSrcPath,
 				message: req.flash()
 			});
+		}).catch(function(err){
+			console.log(err);
+			res.status(500).render('errors/500');
 		})	
 	}).catch(function(err){
 		console.log(err);
 		res.status(500).render('errors/500');
 	});
 };
+
+// Update Reported, Verified and Reolved Fields
+exports.issue_detail_post = function(req, res){
+	if(req.user){
+		if(req.body.reported){
+			IssueModel.get(req.params.id).then(function(issue){
+				let attr = {
+					id: req.params.id,
+					reported: (issue.reported+1)
+				}
+				IssueModel.update(attr).then(function(){
+					req.flash('success', 'This Issue Has Been Successfully Reported!');
+					res.redirect(`/issues/issue/${req.params.id}`);
+				}).catch(function(err){
+					console.log(err);
+					res.status(500).render('errors/500');
+				});
+			}).catch(function(err){
+				console.log(err);
+				res.status(500).render('errors/500');
+			});
+		}
+	}
+	else{
+		req.flash('info', 'Please Sign-In To Access This Feature!');
+		res.redirect('/users/signin');
+	}
+}
 
 // Display Issue create form on GET.
 exports.issue_create_get = function(req, res) {
