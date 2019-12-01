@@ -204,9 +204,9 @@ function seedUsers(i){
 		let lastname = faker.name.lastName();
 		bcrypt.hash(password, saltRounds).then(function(hash){
 			let user = `INSERT INTO users(residency, housing_status, faculty, building, room_number, street, city, state, \
-			zip, country, phone_number, email, password, firstname, lastname) VALUE(\"${residency}\", '${housing_status}', \
+			zip, country, phone_number, email, password, firstname, lastname, created_at) VALUE(\"${residency}\", '${housing_status}', \
 			${faculty}, \"${building}\", \"${room_number}\", \"${street}\", \"${city}\", \"${state}\", \"${zip}\", \
-			\"${country}\", \"${phone_number}\", \"${email}\", \"${hash}\", \"${firstname}\", \"${lastname}\")`;
+			\"${country}\", \"${phone_number}\", \"${email}\", \"${hash}\", \"${firstname}\", \"${lastname}\", null)`;
 			pool.getConnection(function(error, connection){
 				if(error)
 					return reject(error);
@@ -250,8 +250,8 @@ function seedGarages(i){
 		let total_spots_values = [400, 500, 600];
 		let total_spots = total_spots_values[Math.round(Math.random()*2)];
 
-		let garage = `INSERT INTO garages(location, name, full, free_spots, total_spots) \
-		VALUE(\"${location}\", \"${name}\", ${full}, ${free_spots}, ${total_spots})`;
+		let garage = `INSERT INTO garages(location, name, full, free_spots, total_spots, created_at) \
+		VALUE(\"${location}\", \"${name}\", ${full}, ${free_spots}, ${total_spots}, null)`;
 
 		pool.getConnection(function(error, connection){
 			if(error)
@@ -292,9 +292,9 @@ function seedEvents(i){
 				user_ids[i] = results[i].id;
 			}
 			submitted_user = user_ids[Math.round(Math.random()*(user_ids.length-1))];
-			events = `INSERT INTO events(title, location, start_date, end_date, description, host, submitted_user) \
+			events = `INSERT INTO events(title, location, start_date, end_date, description, host, submitted_user, created_at) \
 			VALUE('${title}', \"${location}\", \"${start_date}\", \"${end_date}\", \"${description}\", \"${host}\", \
-			${submitted_user})`;
+			${submitted_user}, null)`;
 			return events;
 		}).then(function(query){
 			pool.getConnection(function(error, connection){
@@ -348,9 +348,9 @@ function seedIssues(i){
 				submitted_user_values[i] = users_list[i].id;
 			}
 			submitted_user = submitted_user_values[Math.round(Math.random()*(submitted_user_values.length-1))];
-			issues = `INSERT INTO issues(title, description, location, verified, resolved, submitted_user, \
+			issues = `INSERT INTO issues(title, description, location, verified, resolved, created_at, submitted_user, \
 			verified_faculty, resolved_faculty)	VALUE(\"${title}\", \"${description}\", \"${location}\", \
-			${verified}, ${resolved}, ${submitted_user},`;
+			${verified}, ${resolved}, null, ${submitted_user},`;
 			return;
 		}).then(function(){
 			return getFaculty();

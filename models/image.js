@@ -20,8 +20,8 @@ class Image {
 
 	create(name, description, type, size){
 		return new Promise(function(resolve, reject){
-			let query = `INSERT INTO images(name, description, type, size) \
-					VALUE(\'${name}\', \'${description}\', \'${type}\', \'${size}\')`;
+			let query = `INSERT INTO images(name, description, type, size, created_at) \
+					VALUE(\'${name}\', \'${description}\', \'${type}\', \'${size}\'), null`;
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
