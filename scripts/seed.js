@@ -305,6 +305,7 @@ function seedEvents(i){
 					if(err)
 						return reject(err);
 					console.log('---------------------------------------------------');
+					console.log(`Event Title for Record ${i+1}: ${title}`);
 					console.log(`Event Location for Record ${i+1}: ${location}`);
 					console.log(`Event Start Date for Record ${i+1}: ${start_date}`);
 					console.log(`Event End Date for Record ${i+1}: ${end_date}`);
