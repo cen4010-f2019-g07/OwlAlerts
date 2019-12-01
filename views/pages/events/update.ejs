@@ -20,24 +20,28 @@
             <br>
             <form action="/events/event/<%= event.id%>/update" method="post">
                 <div class="form-group mx-sm-5">
+                    <label for="eventTitle">Event Title</label>
+                    <input type="text" class="form-control" id="eventTitle" placeholder="Title" name="title" value="<%= event.title %>">
+                </div>
+                <div class="form-group mx-sm-5">
                     <label for="eventLocation">Event Location</label>
-                    <input type="text" class="form-control" id="eventLocation" placeholder="Location" name="location">
+                    <input type="text" class="form-control" id="eventLocation" placeholder="Location" name="location" value="<%= event.location %>">
                 </div>
                 <div class="form-group mx-sm-5">
                         <label for="eventDescript">Description</label>
-                        <input type="text" class="form-control" id="eventDescript" placeholder="Description" name="description">
+                        <input type="text" class="form-control" id="eventDescript" placeholder="Description" name="description" value="<%= event.description %>">
                 </div>
                 <div class="form-group mx-sm-5">
                         <label for="startDate">Start Date</label>
-                        <input type="datetime-local" class="form-control" id="startDate" placeholder="Start Date" name="start_date">
+                        <input type="datetime-local" class="form-control" id="startDate" placeholder="Start Date" name="start_date" value="<%= event.start_date %>">
                 </div>
                 <div class="form-group mx-sm-5">
                         <label for="endDate">End Date</label>
-                        <input type="datetime-local" class="form-control" id="endDate" placeholder="End Time" name="end_date">
+                        <input type="datetime-local" class="form-control" id="endDate" placeholder="End Time" name="end_date" value="<%= event.end_date %>">
                 </div>
                 <div class="form-group mx-sm-5">
                         <label for="endDate">Hosted By</label>
-                        <input type="text" class="form-control" id="host" placeholder="FAU" name="host">
+                        <input type="text" class="form-control" id="host" placeholder="FAU" name="host" value="<%= event.host %>">
                 </div>
                 <div class="text-center pb-2">
                     <button type="submit" class="btn btn-dark">Submit</button>
