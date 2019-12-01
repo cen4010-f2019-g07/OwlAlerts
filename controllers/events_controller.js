@@ -87,12 +87,14 @@ exports.event_create_post = function(req, res) {
 		attr['submitted_user'] = req.user.id;
 		attr['host'] = req.body.host;
 		EventModel.create(attr).then(function(result){
-			res.send('NOT IMPLEMENTED: Event create POST');
+			req.flash('success', 'Event Has Been Successfully Created!');
+			res.redirect('/events/create');
 		}).catch(function(err){
 			console.log(err);
 		});
 	}
   else{
+  	req.flash('info', 'Please Sign-In to Access This Feature');
   	res.redirect('/users/signin');
   }
 };
