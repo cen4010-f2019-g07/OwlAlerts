@@ -22,7 +22,7 @@ class Garage {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -36,39 +36,39 @@ class Garage {
 					let locationQuery = `UPDATE garages SET location='${attr['location']}' \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(locationQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr['name'] != null && attr['name'] != garage.name){
 					let nameQuery = `UPDATE garages SET name='${attr['name']}' WHERE id='${attr['id']}'`;
 					databaseQuery(nameQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr['full'] != null && attr['full'] != garage.full){
 					let fullQuery = `UPDATE garages SET full=${attr['full']} WHERE id='${attr['id']}'`;
 					databaseQuery(fullQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr['free_spots'] != null && attr['free_spots'] != garage.free_spots){
 					let freeSpotsQuery = `UPDATE garages SET free_spots=${attr['free_spots']} \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(freeSpotsQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr['total_spots'] != null && attr['total_spots'] != garage.total_spots){
 					let totalSpotsQuery = `UPDATE garages SET total_spots=${attr['total_spots']} \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(totalSpotsQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 			}).then(function(){
 				resolve(1);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -79,7 +79,7 @@ class Garage {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -90,7 +90,7 @@ class Garage {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -101,7 +101,7 @@ class Garage {
 			databaseQuery(query).then(function(result){
 				resolve(result[0]);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
