@@ -1,10 +1,11 @@
 "use strict";
 var EventModel = require('../models/event');
+const paginate = require('express-paginate');
 
 // Home page for Events
 exports.index = function(req, res) {
 	EventModel.all().then(function(data){
-		res.render('pages/events/eventshome',{
+		res.render('pages/events/index',{
 			sessionUser: req.user,
 			events:data
 		});
@@ -15,13 +16,32 @@ exports.index = function(req, res) {
 
 // Display list of all Events.
 exports.event_list = function(req, res) {
-	EventModel.all().then(function(data){
-		res.render('pages/events/eventslist',{
-			sessionUser: req.user,
-			events:data
+	let numPerPage = parseInt(req.query.npp, 10) || 10;
+	let page = parseInt(req.query.page, 10) || 0;
+	let skip = (page-1) * numPerPage;
+	let limit = skip + ',' + numPerPage;
+	var itemCount;
+	var pageCount;
+	EventModel.allCount().then(function(eventCount){
+		itemCount = eventCount;
+		pageCount = Math.ceil(itemCount/req.query.limit);
+	}).then(function(){
+		EventModel.allPaginate(limit).then(function(data){
+			res.render('pages/events/list',
+	    {
+        sessionUser: req.user,
+	      events: data,
+	      pageCount,
+	      itemCount,
+	      pages: paginate.getArrayPages(req)(3, pageCount, req.query.page)
+	    });
+		}).catch(function(err){
+			console.log(err);
+			res.status(500).render('errors/500');
 		});
 	}).catch(function(err){
 		console.log(err);
+		res.status(500).render('errors/500');
 	});
 };
 
@@ -41,7 +61,7 @@ exports.event_detail = function(req, res) {
 // Display Event create form on GET.
 exports.event_create_get = function(req, res) {
 	if(req.user){
-		res.render('pages/events/eventspost',{
+		res.render('pages/events/create',{
 			sessionUser: req.user,
 		});
 	}
