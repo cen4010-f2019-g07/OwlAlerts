@@ -114,7 +114,7 @@ cron.schedule('00 00 12 * * 0-6', function(){
 		for(var i in garages){
 			let attr = {
 				id: garages[i].id,
-				free_spots: garages[i].total_spots,
+				free_spots: 0,
 				full: true
 			};
 			GarageModel.update(attr).then(function(result){

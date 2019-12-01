@@ -64,6 +64,7 @@ exports.user_list = function(req, res) {
 		}
 	}
 	else{
+		req.flash('info', 'Please Sign-In to Access This Feature');
 		res.redirect('/users/signin');
 	}
 };
@@ -96,9 +97,43 @@ exports.user_detail = function(req, res) {
 		}
 	}
 	else{
+		req.flash('info', 'Please Sign-In to Access This Feature');
 		res.redirect('/users/signin');
 	}
 };
+
+exports.user_detail_post = function(req, res){
+	if(req.user){
+		if(req.user.admin){
+			UserModel.get(req.params.id).then(function(user){
+				if(!user.admin){
+					let attr = {
+						id: req.params.id,
+						faculty: req.body.faculty
+					};
+					UserModel.update(attr).then(function(result){
+						res.redirect(`/users/user/${req.params.id}`);
+					}).catch(function(){
+						console.log(err);
+						res.status(500).render('errors/500');
+					});
+				}
+				else{
+					res.render(403).render('errors/403');
+				}
+			}).catch(function(err){
+				console.log(err);
+			});
+		}
+		else{
+			res.status(403).render('errors/403');
+		}
+	}
+	else{
+		req.flash('info', 'Please Sign-In to Access This Feature');
+		res.redirect('/users/signin');
+	}
+}
 
 // Display User create form on GET.
 exports.user_create_get = function(req, res) {
@@ -168,6 +203,7 @@ exports.user_delete_get = function(req, res) {
 		}
 	}
 	else{
+		req.flash('info', 'Please Sign-In to Access This Feature');
 		res.redirect('/users/signin');
 	}
 };
@@ -183,6 +219,7 @@ exports.user_delete_post = function(req, res) {
 		}
 	}
   else{
+  	req.flash('info', 'Please Sign-In to Access This Feature');
   	res.redirect('/users/signin');
   }
 };
@@ -218,6 +255,7 @@ exports.user_update_get = function(req, res) {
 		}
 	}
 	else{
+		req.flash('info', 'Please Sign-In to Access This Feature');
 		res.redirect('/users/signin');
 	}
 };
@@ -273,6 +311,7 @@ exports.user_update_post = function(req, res) {
 		}
 	}
   else{
+  	req.flash('info', 'Please Sign-In to Access This Feature');
   	res.redirect('/users/signin');
   }
 };

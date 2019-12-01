@@ -76,6 +76,8 @@ class Event {
 						console.log(err);
 					});
 				}
+			}).then(function(){
+				resolve(1);
 			}).catch(function(err){
 				console.log(err);
 			});
