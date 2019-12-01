@@ -26,7 +26,7 @@
             <br>
             <div class="rounded mx-sm-4" style="background-color:white">
                 <br>
-                <form action="/issues/create" method="post">
+                <form action="/events/create" method="post">
                     <div class="form-group mx-sm-5">
                         <label for="eventLocation">Event Location</label>
                         <input type="text" class="form-control" id="eventLocation" placeholder="Location" name="Location of the Event">
@@ -37,11 +37,11 @@
                     </div>
                     <div class="form-group mx-sm-5">
                             <label for="startDate">Start Date</label>
-                            <input type="text" class="form-control" id="startDate" placeholder="Start Date" name="Start Date of the Event">
+                            <input type="datetime-local" class="form-control" id="startDate" placeholder="Start Date" name="Start Date of the Event">
                     </div>
                     <div class="form-group mx-sm-5">
                             <label for="endDate">End Date</label>
-                            <input type="text" class="form-control" id="endDate" placeholder="End Time" name="End Date of the Event">
+                            <input type="datetime-local" class="form-control" id="endDate" placeholder="End Time" name="End Date of the Event">
                     </div>
                     <div class="text-center pb-2">
                         <button type="submit" class="btn btn-dark">Submit</button>
