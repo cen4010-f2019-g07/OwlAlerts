@@ -274,6 +274,7 @@ function seedGarages(i){
 //Seed the Database with Event Records
 function seedEvents(i){
 	return new Promise(function(resolve, reject){
+		let title = faker.lorem.words();
 		let location = `${faker.lorem.words()} Hall, Boca Campus`;
 		let dates_values = [faker.date.past(), faker.date.recent(), faker.date.future()];
 		let date = dates_values[Math.round(Math.random()*2)];
@@ -291,8 +292,9 @@ function seedEvents(i){
 				user_ids[i] = results[i].id;
 			}
 			submitted_user = user_ids[Math.round(Math.random()*(user_ids.length-1))];
-			events = `INSERT INTO events(location, start_date, end_date, description, host, submitted_user) \
-			VALUE(\"${location}\", \"${start_date}\", \"${end_date}\", \"${description}\", \"${host}\", ${submitted_user})`;
+			events = `INSERT INTO events(title, location, start_date, end_date, description, host, submitted_user) \
+			VALUE('${title}', \"${location}\", \"${start_date}\", \"${end_date}\", \"${description}\", \"${host}\", \
+			${submitted_user})`;
 			return events;
 		}).then(function(query){
 			pool.getConnection(function(error, connection){
