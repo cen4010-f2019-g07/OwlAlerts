@@ -38,7 +38,13 @@
                                         <tr>
                                             <td><%= events[i].id %></td>
                                             <td><%= events[i].location %></td>
-                                            <td><%= events[i].description %></td>
+                                            <td>
+                                                <% if(events[i].description.length > 50) { %>
+                                                    <%= events[i].description.substring(0, 50) + '...' %>
+                                                <% } else { %>
+                                                    <%= events[i].description %>
+                                                <% } %>
+                                            </td>
                                             <td><%= events[i].start_date %></td>
                                             <td><%= events[i].end_date %></td>
                                             <td><%= events[i].submitted_user %></td>
