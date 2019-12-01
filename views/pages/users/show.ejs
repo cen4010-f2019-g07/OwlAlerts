@@ -32,13 +32,13 @@
                               <img class="rounded-circle" id="userImageUpload" src=<%= imgFilePath %> width='180' height='180'/>
                           </td>
                         </tr>
-                        <% if(user.faculty) { %>
+                        <% if(user.faculty && !user.admin) { %>
                           <tr><td>Faculty Member</td></tr>
                         <% } %>
                         <% if(user.admin) { %>
                           <tr><td>Administrator</td></tr>
                         <% } %>
-                        <% if(sessionUser.admin) { %>
+                        <% if(sessionUser.admin && !user.admin) { %>
                           <tr>
                             <td>
                               <% if(!user.faculty) { %>
