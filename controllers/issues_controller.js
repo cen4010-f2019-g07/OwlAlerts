@@ -39,7 +39,7 @@ exports.issue_list = function(req, res) {
 		pageCount = Math.ceil(itemCount/req.query.limit);
 	}).then(function(){
 		IssueModel.allPaginate(limit).then(function(data){
-			res.render('pages/issues/issuelist',
+			res.render('pages/issues/list',
 	    {
         sessionUser: req.user,
 	      issues: data,

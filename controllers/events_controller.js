@@ -5,7 +5,7 @@ const paginate = require('express-paginate');
 // Home page for Events
 exports.index = function(req, res) {
 	EventModel.all().then(function(data){
-		res.render('pages/events/eventshome',{
+		res.render('pages/events/index',{
 			sessionUser: req.user,
 			events:data
 		});
@@ -27,7 +27,7 @@ exports.event_list = function(req, res) {
 		pageCount = Math.ceil(itemCount/req.query.limit);
 	}).then(function(){
 		EventModel.allPaginate(limit).then(function(data){
-			res.render('pages/events/eventslist',
+			res.render('pages/events/list',
 	    {
         sessionUser: req.user,
 	      events: data,
@@ -61,7 +61,7 @@ exports.event_detail = function(req, res) {
 // Display Event create form on GET.
 exports.event_create_get = function(req, res) {
 	if(req.user){
-		res.render('pages/events/eventspost',{
+		res.render('pages/events/create',{
 			sessionUser: req.user,
 		});
 	}
