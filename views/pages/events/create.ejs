@@ -29,19 +29,23 @@
                 <form action="/events/create" method="post">
                     <div class="form-group mx-sm-5">
                         <label for="eventLocation">Event Location</label>
-                        <input type="text" class="form-control" id="eventLocation" placeholder="Location" name="Location of the Event">
+                        <input type="text" class="form-control" id="eventLocation" placeholder="Location" name="location">
                     </div>
                     <div class="form-group mx-sm-5">
                             <label for="eventDescript">Description</label>
-                            <input type="text" class="form-control" id="eventDescript" placeholder="Description" name="Description of the Event">
+                            <input type="text" class="form-control" id="eventDescript" placeholder="Description" name="description">
                     </div>
                     <div class="form-group mx-sm-5">
                             <label for="startDate">Start Date</label>
-                            <input type="datetime-local" class="form-control" id="startDate" placeholder="Start Date" name="Start Date of the Event">
+                            <input type="datetime-local" class="form-control" id="startDate" placeholder="Start Date" name="start_date">
                     </div>
                     <div class="form-group mx-sm-5">
                             <label for="endDate">End Date</label>
-                            <input type="datetime-local" class="form-control" id="endDate" placeholder="End Time" name="End Date of the Event">
+                            <input type="datetime-local" class="form-control" id="endDate" placeholder="End Time" name="end_date">
+                    </div>
+                    <div class="form-group mx-sm-5">
+                            <label for="endDate">Hosted By</label>
+                            <input type="text" class="form-control" id="host" placeholder="FAU" name="host">
                     </div>
                     <div class="text-center pb-2">
                         <button type="submit" class="btn btn-dark">Submit</button>
