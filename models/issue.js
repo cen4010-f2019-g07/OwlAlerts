@@ -111,6 +111,12 @@ class Issue {
 						console.log(err);
 					});
 				}
+				if(attr.reported != null && attr.reported != issue.reported){
+					let reportedQuery = `UPDATE issues SET reported=${attr.reported} WHERE id=${attr['id']}`;
+					databaseQuery(reportedQuery).catch(function(err){
+						console.log(err);
+					});
+				}
 				if(attr['submitted_user'] != null && attr['submitted_user'] != issue.submitted_user){
 					let submittedUserQuery = `UPDATE issues SET submitted_user='${attr['submitted_user']}' \
 					WHERE id='${attr['id']}'`;

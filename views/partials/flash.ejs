@@ -1,0 +1,23 @@
+<br>
+<% if(message.error) { %>
+    <div class="alert alert-danger text-center rounded mx-sm-5" role="alert">
+        <% for(var i in message.error) { %>
+            <%= message.error[i] %>
+        <% } %>
+    </div>
+<% } %>
+<% if(message.info) { %>
+    <div class="alert alert-info text-center rounded mx-sm-5" role="alert">
+        <% for(var i in message.info) { %>
+            <%= message.info[i] %>
+        <% } %>
+    </div>
+<% } %>
+<% if(message.success) { %>
+  <div class="alert alert-success text-center rounded mx-sm-5" role="alert">
+      <% for(var i in message.success) { %>
+          <%= message.success[i] %>
+      <% } %>
+  </div>
+<% } %>
+<br>
