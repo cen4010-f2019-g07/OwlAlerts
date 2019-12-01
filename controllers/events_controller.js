@@ -4,13 +4,16 @@ const paginate = require('express-paginate');
 
 // Home page for Events
 exports.index = function(req, res) {
-	EventModel.all().then(function(data){
-		res.render('pages/events/index',{
-			sessionUser: req.user,
-			events:data
-		});
+	EventModel.getUpcoming(5).then(function(data){
+		res.render('pages/events/index',
+    {
+      sessionUser: req.user,
+      events: data,
+      message: req.flash()
+    });
 	}).catch(function(err){
 		console.log(err);
+		res.status(500).render('errors/500');
 	});
 };
 
