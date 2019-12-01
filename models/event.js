@@ -23,7 +23,7 @@ class Event {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -37,14 +37,14 @@ class Event {
 					let titleQuery = `UPDATE events SET title='${attr['title']}' \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(titleQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr['location'] != null && attr['location'] != event.location){
 					let locationQuery = `UPDATE events SET location='${attr['location']}' \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(locationQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				//May Need to Adjust
@@ -52,7 +52,7 @@ class Event {
 					let startDateQuery = `UPDATE events SET start_date='${attr['start_date']}' \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(startDateQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				//May Need to Adjust
@@ -60,27 +60,27 @@ class Event {
 					let endDateQuery = `UPDATE events SET end_date='${attr['end_date']}' \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(endDateQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr['description'] != null && attr['description'] != event.description){
 					let descriptionQuery = `UPDATE events SET description='${attr['description']}' \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(descriptionQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr['host'] != null && attr['host'] != event.host){
 					let hostQuery = `UPDATE events SET host='${attr['host']}' \
 					WHERE id='${attr['id']}'`;
 					databaseQuery(hostQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 			}).then(function(){
 				resolve(1);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -91,7 +91,7 @@ class Event {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -102,7 +102,7 @@ class Event {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -113,7 +113,7 @@ class Event {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -124,7 +124,7 @@ class Event {
 			databaseQuery(query).then(function(results){
 				resolve(results[0].numRows);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -135,7 +135,7 @@ class Event {
 			databaseQuery(query).then(function(result){
 				resolve(result[0]);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -146,7 +146,7 @@ class Event {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}

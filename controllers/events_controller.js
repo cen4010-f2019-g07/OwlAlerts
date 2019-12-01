@@ -59,6 +59,7 @@ exports.event_detail = function(req, res) {
 		});
 	}).catch(function(err){
 		console.log(err);
+		res.status(500).render('errors/500');
 	});
 };
 
@@ -92,6 +93,7 @@ exports.event_create_post = function(req, res) {
 			res.redirect('/events/create');
 		}).catch(function(err){
 			console.log(err);
+			res.status(500).render('errors/500');
 		});
 	}
   else{
@@ -112,6 +114,7 @@ exports.event_delete_get = function(req, res) {
 			}
 		}).catch(function(err){
 			console.log(err);
+			res.status(500).render('errors/500');
 		});
 	}
 	else{
@@ -129,6 +132,7 @@ exports.event_delete_post = function(req, res) {
 					res.send('NOT IMPLEMENTED: Event delete POST: ' + req.params.id);
 				}).catch(function(err){
 					console.log(err);
+					res.status(500).render('errors/500');
 				});
 			}
 			else{
@@ -136,6 +140,7 @@ exports.event_delete_post = function(req, res) {
 			}
 		}).catch(function(err){
 			console.log(err);
+			res.status(500).render('errors/500');
 		});
 	}
 	else{
@@ -159,6 +164,7 @@ exports.event_update_get = function(req, res) {
 			}
 		}).catch(function(err){
 			console.log(err);
+			res.status(500).render('errors/500');
 		});
 	}
 	else{
@@ -184,6 +190,7 @@ exports.event_update_post = function(req, res) {
 					res.send('NOT IMPLEMENTED: Evnet update POST: ' + req.params.id);
 				}).catch(function(err){
 					console.log(err);
+					res.status(500).render('errors/500');
 				});
   		}
   		else{
@@ -191,6 +198,7 @@ exports.event_update_post = function(req, res) {
   		}
   	}).catch(function(err){
   		console.log(err);
+  		res.status(500).render('errors/500');
   	});
   }
   else{
