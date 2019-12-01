@@ -139,9 +139,9 @@ class Event {
 		});
 	}
 
-	getRecent(limit){
+	getUpcoming(limit){
 		return new Promise(function(resolve, reject){
-			let query = `SELECT * FROM events ORDER BY created_at DESC LIMIT ${limit}`;
+			let query = `SELECT * FROM events WHERE start_date >= CURDATE() ORDER BY start_date ASC LIMIT ${limit}`;
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
