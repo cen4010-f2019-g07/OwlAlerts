@@ -28,7 +28,7 @@ app.use(express.static('public'));
 app.use(express.static('node_modules'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(session({secret: 'secret', cookie: { maxAge: 60000 }, resave: false, 
+app.use(session({secret: 'secret', cookie: { maxAge: 3600000 }, resave: false, 
 saveUninitialized: false, }));
 app.use(passport.initialize());
 app.use(passport.session());
