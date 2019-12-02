@@ -168,7 +168,7 @@ exports.issue_create_post = function(req, res) {
 };
 
 // Display Issue delete form on GET.
-exports.event_delete_get = function(req, res) {
+exports.issue_delete_get = function(req, res) {
 	if(req.user){
 		IssueModel.get(req.params.id).then(function(result){
 
@@ -185,7 +185,7 @@ exports.event_delete_get = function(req, res) {
 };
 
 // Handle Issue delete on POST.
-exports.event_delete_post = function(req, res) {
+exports.issue_delete_post = function(req, res) {
 	if(req.user){
 		  IssueModel.get(req.params.id).then(function(issue){
 			  if(req.user.faculty || req.user.admin || event.submitted_user == req.user.id){
