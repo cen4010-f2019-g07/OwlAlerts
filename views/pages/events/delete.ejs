@@ -36,23 +36,16 @@
                             <td><h6><%= event.description %></h6></td>
                             <td><h6> <%= event.start_date %></h6></td>
                             <td><h6> <%= event.end_date %></h6></td>
-
-                        
-                          <% if(sessionUser && (event.submitted_user == sessionUser.id || sessionUser.faculty || sessionUser.admin)) { %>
-                            <td>
-                              <a href="/events/event/<%= event.id %>/update" class="btn btn-secondary">Edit Issue</a>
-                            </td>
-                          <% } %>
-                          <% if(sessionUser && (event.submitted_user == sessionUser.id || sessionUser.faculty || sessionUser.admin)) { %>
-                            <td>
-                              <a href="/events/event/<%= event.id %>/delete" class="btn btn-secondary">Delete Event?</a>
-                            </td>
-                          <% } %>
                         </tr>
                         </tbody>
                   </table>  
                   <br/>
-                      
+                  <h4>
+                        Are you sure you would like to delete this event?
+                  </h4>
+                    <form action="/events/event/<%= event.id%>/delete" method="POST">
+                        <button class="btn text-white btn-danger">Yes, delete it.</button>
+                    </form>
           </div>
 
 

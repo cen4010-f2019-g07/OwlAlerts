@@ -170,30 +170,45 @@ exports.issue_create_post = function(req, res) {
 // Display Issue delete form on GET.
 exports.issue_delete_get = function(req, res) {
 	if(req.user){
-		if(req.user.faculty || req.user.admin){
-			IssueModel.delete(req.params.id).then(function(result){
-				//Data holds the information for the issue with the id param
-				res.send('NOT IMPLEMENTED: Issue delete GET: ' + req.params.id);
-			}).catch(function(err){
-				console.log(err);
-				res.status(500).render('errors/500');
-			});
-		}
-		else{
-			res.status(403).render("errors/403");
-		}
-	}
+		IssueModel.get(req.params.id).then(function(result){
+
+		res.render('pages/issues/delete',{
+			sessionUser: req.user,
+			issue: result,
+			message: req.flash()
+		});
+	});
+}
 	else{
-		req.flash('info', 'Please Sign In to Delete An Issue!');
 		res.redirect('/users/signin');
 	}
 };
 
 // Handle Issue delete on POST.
 exports.issue_delete_post = function(req, res) {
-	req.flash('info', 'Please Sign In to Delete An Issue!');
-  res.send('NOT IMPLEMENTED: Issue delete POST');
-};
+	if(req.user){
+		  IssueModel.get(req.params.id).then(function(issue){
+			  if(req.user.faculty || req.user.admin || event.submitted_user == req.user.id){
+				  IssueModel.delete(issue.id).then(function(result){
+					  req.flash('success', 'Issue Has Been Successfully Deleted!');
+					  res.redirect('/issues');
+				  }).catch(function(err){
+					  console.log(err);
+					  res.status(500).render('errors/500');
+				  });
+			  }
+			  else{
+				  res.status(401).render('errors/401');
+			  }
+		  }).catch(function(err){
+			  console.log(err);
+			  res.status(500).render('errors/500');
+		  });
+	  }
+	  else{
+		  res.redirect('/users/signin');
+	  }
+  };
 
 // Display Issue update form on GET.
 exports.issue_update_get = function(req, res) {
