@@ -105,18 +105,15 @@ exports.event_create_post = function(req, res) {
 // Display Event delete form on GET.
 exports.event_delete_get = function(req, res) {
 	if(req.user){
-		EventModel.get(req.params.id).then(function(event){
-			if(event.submitted_user == req.user.id || req.user.faculty || req.user.admin){
-				res.send('NOT IMPLEMENTED: Event delete GET: ' + req.params.id);
-			}
-			else{
-				res.status(401).render('errors/401');
-			}
-		}).catch(function(err){
-			console.log(err);
-			res.status(500).render('errors/500');
+		EventModel.get(req.params.id).then(function(result){
+
+		res.render('pages/events/delete',{
+			sessionUser: req.user,
+			event: result,
+			message: req.flash()
 		});
-	}
+	});
+}
 	else{
 		res.redirect('/users/signin');
 	}
@@ -127,9 +124,9 @@ exports.event_delete_post = function(req, res) {
   if(req.user){
 		EventModel.get(req.params.id).then(function(event){
 			if(req.user.faculty || req.user.admin || event.submitted_user == req.user.id){
-				EventModel.delete(req.params.id).then(function(result){
-					//Data holds the information for the issue with the id param
-					res.send('NOT IMPLEMENTED: Event delete POST: ' + req.params.id);
+				EventModel.delete(event.id).then(function(result){
+					req.flash('success', 'Event Has Been Successfully Deleted!');
+					res.redirect('/events');
 				}).catch(function(err){
 					console.log(err);
 					res.status(500).render('errors/500');
@@ -151,11 +148,11 @@ exports.event_delete_post = function(req, res) {
 // Display Event update form on GET.
 exports.event_update_get = function(req, res) {
 	if(req.user){
-		EventModel.get(req.params.id).then(function(event){
-			if(event.submitted_user == req.user.id || req.user.faculty || req.user.admin){
+		EventModel.get(req.params.id).then(function(data){
+			if(data.submitted_user == req.user.id || req.user.faculty || req.user.admin){
 				res.render('pages/events/update', {
 					sessionUser: req.user,
-					event: event,
+					event: data,
 					message: req.flash()
 				});
 			}
@@ -175,8 +172,9 @@ exports.event_update_get = function(req, res) {
 // Handle Event update on POST.
 exports.event_update_post = function(req, res) {
   if(req.user){
-  	EventModel.get(req.params.id).then(function(event){
-  		if(event.submitted_user == req.user.id || req.user.faculty || req.user.admin){
+	EventModel.get(req.params.id).then(function(data){
+
+  		if(data.submitted_user == req.user.id || req.user.faculty || req.user.admin){
   			let attr = {};
   			attr['id'] = req.params.id;
   			attr.title = req.body.title || null;
@@ -185,23 +183,43 @@ exports.event_update_post = function(req, res) {
   			attr['end_date'] = req.body.end_date || null;
   			attr['description'] = req.body.description || null;
   			attr['host'] = req.body.host || null;
-  			EventModel.update(attr).then(function(result){
-					//Data holds the information for the issue with the id param
-					res.send('NOT IMPLEMENTED: Evnet update POST: ' + req.params.id);
-				}).catch(function(err){
+  			if(isEmpty(req.files)) {
+				EventModel.update(attr).catch(function(err){
 					console.log(err);
 					res.status(500).render('errors/500');
 				});
-  		}
-  		else{
-  			res.status(401).render('errors/401');
-  		}
-  	}).catch(function(err){
-  		console.log(err);
-  		res.status(500).render('errors/500');
-  	});
+				req.flash('success', 'The Event Has Been Updated!');
+				res.redirect(`/events/event/${data.id}`);	
+			}				
+			else {
+				(function(result){
+					EventModel.update(attr).catch(function(err){
+						console.log(err);
+						res.status(500).render('errors/500');
+					});
+					req.flash('success', 'The Event Has Been Updated!');
+					res.redirect(`/events/event/${data.id}`);	
+				}).catch(function(err){
+					console.log(err);
+					res.status(500).render('errors/500');
+				});				
+			}							
+		}
+		else{
+			res.status(403).render("errors/403");
+		}
+	});
   }
   else{
+  	req.flash('info', 'Please Sign-In to Access This Feature');
   	res.redirect('/users/signin');
   }
 };
+
+function isEmpty(obj) {
+	for(var key in obj) {
+	  if(obj.hasOwnProperty(key))
+		return false;
+	}
+	return true;
+  }

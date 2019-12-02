@@ -44,7 +44,9 @@
                                                         <td><%= events[i].end_date %></td>
                                                         <td><%= events[i].submitted_user %></td>
                                                         <td><%= events[i].host %></td>
-                
+                                                        <td>
+                                                            <a href="/events/event/<%=events[i].id%>" class="btn btn-secondary">View Event</a>
+                                                        </td>
                                                     </tr>
                                                 <% } %>
                                             </tbody>
