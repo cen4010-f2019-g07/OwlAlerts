@@ -59,14 +59,10 @@ passport.serializeUser(function(user, done){
 
 passport.deserializeUser(function(id, done){
 	let userQuery = `SELECT * FROM users WHERE id=\'${id}\'`;
-	pool.getConnection(function(error, connection){
-		if(error)
-			console.log(error);
-		connection.query(userQuery, function(err, rows, fields){
-			if(err)
-				console.log(err);
-			done(err, rows[0]);
-		});
+	pool.query(userQuery, function(err, rows, fields){
+		if(err)
+			console.log(err);
+		done(err, rows[0]);
 	});
 });
 

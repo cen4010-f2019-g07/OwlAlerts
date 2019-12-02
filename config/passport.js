@@ -11,6 +11,8 @@ passport.use(new LocalStrategy(function(username, password, done){
 		return done(null, user);
 	}).catch(function(err){
 		return done(err);
+	}).catch(function(err){
+		console.log(err);
 	});
 }));
 
