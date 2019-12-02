@@ -172,13 +172,13 @@ exports.user_create_post = function(req, res, next) {
 				});
 			}
 			else{
-				console.log('Confirm Password is not the same as Password!');
+				req.flash('Confirm Password Does Not Match Password');
 				res.redirect('/users/signup');
 			}
 		}
 		else{
-			console.log('User Account Already Exists!')
-			res.redirect('/users/signup');
+			req.flash('error', 'User Account Already Exists!');
+			res.redirect('/users/signin');
 		}
 	}).catch(function(err){
 		console.log(err);

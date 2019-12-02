@@ -210,7 +210,7 @@ class User {
 		return new Promise(function(resolve, reject){
 			let query = `SELECT * FROM users WHERE email='${email}'`;
 			databaseQuery(query).then(function(result){
-				if(result > 0){
+				if(result.length > 0){
 					resolve(false);
 				}
 				else{
