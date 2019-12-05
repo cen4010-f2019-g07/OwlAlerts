@@ -170,16 +170,33 @@ exports.issue_create_post = function(req, res) {
 // Display Issue delete form on GET.
 exports.issue_delete_get = function(req, res) {
 	if(req.user){
-		IssueModel.get(req.params.id).then(function(result){
+		IssueModel.get(req.params.id).then(function(data){
+			//Data holds the information for the issue with the id param
+			if(req.user.faculty || req.user.admin || req.user.id == data.submitted_user){
+				ImageModel.get(data.image_id).then(function(imgData){
 
-		res.render('pages/issues/delete',{
-			sessionUser: req.user,
-			issue: result,
-			message: req.flash()
+					var imageSrcPath = (imgData != null) ? ImageModel.getPath(imgData.name) :
+					"https://via.placeholder.com/180x180";
+
+					res.render('pages/issues/delete',
+					{
+						sessionUser: req.user,
+						issue: data,
+						imgFilePath: imageSrcPath,
+						message: req.flash()
+					});
+				}).catch(function(err){
+					console.log(err);
+					res.status(500).render('errors/500');
+				});
+			}
+		}).catch(function(err){
+			console.log(err);
+			res.status(500).render('errors/500');
 		});
-	});
-}
+	}
 	else{
+		req.flash('info', 'Please Sign In to Delete An Issue!');
 		res.redirect('/users/signin');
 	}
 };
@@ -188,7 +205,13 @@ exports.issue_delete_get = function(req, res) {
 exports.issue_delete_post = function(req, res) {
 	if(req.user){
 		  IssueModel.get(req.params.id).then(function(issue){
-			  if(req.user.faculty || req.user.admin || event.submitted_user == req.user.id){
+			  if(req.user.faculty || req.user.admin || issue.submitted_user == req.user.id){
+			  	if(issue.image_id){
+			  		ImageModel.delete(issue.image_id).catch(function(err){
+			  			console.log(err);
+			  			res.status(500).render('errors/500');
+			  		});
+			  	}
 				  IssueModel.delete(issue.id).then(function(result){
 					  req.flash('success', 'Issue Has Been Successfully Deleted!');
 					  res.redirect('/issues');
@@ -198,7 +221,7 @@ exports.issue_delete_post = function(req, res) {
 				  });
 			  }
 			  else{
-				  res.status(401).render('errors/401');
+				  res.status(403).render('errors/403');
 			  }
 		  }).catch(function(err){
 			  console.log(err);
