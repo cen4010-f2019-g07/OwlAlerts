@@ -1,5 +1,6 @@
 "use strict";
 const production = process.env.production || false;
+const PORT = process.env.PORT || 5000;
 global.__basedir = __dirname;
 const express = require('express');
 const pool = require('./lib/pool_db');
@@ -50,7 +51,7 @@ if(production){
 	}).listen(14250), () => console.log('Listening on port 14250...');
 }
 else{
-	app.listen(3000, () => console.log('Listening on port 3000...'));
+	app.listen(PORT, () => console.log(`Listening on port ${PORT}...`));
 }
 
 passport.serializeUser(function(user, done){
