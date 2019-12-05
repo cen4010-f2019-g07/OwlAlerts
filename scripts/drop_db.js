@@ -14,6 +14,16 @@ if(production){
 		multipleStatements: true
 	});
 }
+else if(heroku){
+	connection = mysql.createConnection({
+		connectionLimit: 10,
+		host: 'us-cdbr-iron-east-05.cleardb.net',
+		user: 'be3b4cd98a2bb8',
+		password: '7983bb95',
+		database: 'heroku_3037d87a43348dd',
+		multipleStatements: true
+	});
+}
 else{
 	connection = mysql.createConnection({
 		host: 'localhost',
@@ -33,7 +43,7 @@ function databaseQuery(queryString){
 	});
 }
 
-if(production){
+if(production || heroku){
 	let drop_events = 'DROP TABLE events';
 	let drop_garages = 'DROP TABLE garages';
 	let drop_issues = 'DROP TABLE issues';
