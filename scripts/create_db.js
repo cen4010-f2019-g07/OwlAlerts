@@ -51,8 +51,8 @@ if(production){
 	});
 }
 else if(heroku){
-	pool = mysql.createPool({
-		connectionLimit: 100,
+	connection = mysql.createConnection({
+		connectionLimit: 10,
 		host: 'us-cdbr-iron-east-05.cleardb.net',
 		user: 'be3b4cd98a2bb8',
 		password: '7983bb95',
