@@ -1,6 +1,7 @@
 "use strict";
 const mysql = require('mysql');
 const production = process.env.production || false;
+const heroku = process.env.heroku || false;
 var connection;
 const create_db = 'CREATE DATABASE owl_alerts';
 const use_db = 'USE owl_alerts';
@@ -49,6 +50,16 @@ if(production){
 		multipleStatements: true
 	});
 }
+else if(heroku){
+	pool = mysql.createPool({
+		connectionLimit: 100,
+		host: 'us-cdbr-iron-east-05.cleardb.net',
+		user: 'be3b4cd98a2bb8',
+		password: '7983bb95',
+		database: 'heroku_3037d87a43348dd',
+		multipleStatements: true
+	});
+}
 else{
 	connection = mysql.createConnection({
 		host: 'localhost',
@@ -67,7 +78,7 @@ function databaseQuery(queryString){
 	});
 }
 
-if(production){
+if(production || heroku){
 	console.log('---------------------------------------------------');
 	databaseQuery(create_images).then(function(){
 		console.log('Images Table Created!');
