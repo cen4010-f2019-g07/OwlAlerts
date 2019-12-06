@@ -40,12 +40,12 @@
                         
                           <% if(sessionUser && (event.submitted_user == sessionUser.id || sessionUser.faculty || sessionUser.admin)) { %>
                             <td>
-                              <a href="/events/event/<%= event.id %>/update" class="btn btn-secondary">Edit Issue</a>
+                              <a href="/events/event/<%= event.id %>/update" class="btn btn-secondary">Edit</a>
                             </td>
                           <% } %>
                           <% if(sessionUser && (event.submitted_user == sessionUser.id || sessionUser.faculty || sessionUser.admin)) { %>
                             <td>
-                              <a href="/events/event/<%= event.id %>/delete" class="btn btn-secondary">Delete Event?</a>
+                              <a href="/events/event/<%= event.id %>/delete" class="btn btn-secondary">Delete</a>
                             </td>
                           <% } %>
                         </tr>

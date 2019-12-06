@@ -63,12 +63,12 @@
                     <% } %>
                     <% if(sessionUser && (issue.submitted_user == sessionUser.id || sessionUser.faculty || sessionUser.admin)) { %>
                       <td>
-                        <a href="/issues/issue/<%= issue.id %>/update" class="btn btn-secondary">Edit Issue</a>
+                        <a href="/issues/issue/<%= issue.id %>/update" class="btn btn-secondary">Edit</a>
                       </td>
                     <% } %>
                     <% if(sessionUser && (issue.submitted_user == sessionUser.id || sessionUser.faculty || sessionUser.admin)) { %>
                       <td>
-                        <a href="/issues/issue/<%= issue.id %>/delete" class="btn btn-secondary">Delete Issue?</a>
+                        <a href="/issues/issue/<%= issue.id %>/delete" class="btn btn-secondary">Delete</a>
                       </td>
                     <% } %>
                   </tr>   
