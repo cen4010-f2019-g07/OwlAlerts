@@ -25,7 +25,7 @@ class Image {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -43,42 +43,51 @@ class Image {
 				if(attr[name] != issue.name){
 					let nameQuery = `UPDATE images SET name='${attr[name]}'' WHERE id='${attr[id]}'`;
 					databaseQuery(nameQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr[description] != issue.description){
 					let descriptionQuery = `UPDATE images SET description='${attr[description]}' WHERE id='${attr[id]}'`;
 					databaseQuery(descriptionQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr[type] != issue.type){
 					let typeQuery = `UPDATE images SET type=${attr[type]} WHERE id='${attr[id]}'`;
 					databaseQuery(typeQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 				if(attr[size] != issue.size){
 					let sizeQuery = `UPDATE images SET size=${attr[size]} WHERE id='${attr[id]}'`;
 					databaseQuery(sizeQuery).catch(function(err){
-						console.log(err);
+						reject(err);
 					});
 				}
 			}).then(function(){
 				resolve(1);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
 
 	delete(id){
 		return new Promise(function(resolve, reject){
-			let query = `DELETE FROM images WHERE id='${id}'`;
-			databaseQuery(query).then(function(result){
-				resolve(result);
+			let getQuery = `SELECT * FROM images WHERE id=${id}`;
+			let deleteQuery = `DELETE FROM images WHERE id='${id}'`;
+			databaseQuery(getQuery).then(function(result){
+				let image = result[0];
+				let filePath = imageSaveDirectory + image.name;
+				fs.unlinkSync(filePath);
+			}).then(function(){
+				databaseQuery(deleteQuery).then(function(result){
+					resolve(result);
+				}).catch(function(err){
+					reject(err);
+				});
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -89,7 +98,7 @@ class Image {
 			databaseQuery(query).then(function(result){
 				resolve(result[0]);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
 		});
 	}
@@ -114,7 +123,7 @@ class Image {
 			databaseQuery(query).then(function(result){
 				resolve(result);
 			}).catch(function(err){
-				console.log(err);
+				reject(err);
 			});
     });
   }
