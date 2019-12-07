@@ -2,6 +2,7 @@
 const mysql = require('mysql');
 const faker = require('faker');
 const bcrypt = require('bcryptjs');
+require('dotenv').config();
 const production = process.env.production || false;
 const heroku = process.env.heroku || false;
 const saltRounds = 10;
@@ -9,27 +10,27 @@ var pool;
 
 if(production){
 	pool = mysql.createPool({
-		connectionLimit: 100,
-		host: 'localhost',
-		user: 'cen4010fal19_g07',
-		password: 'kJDrofNeU6',
-		database: 'cen4010fal19_g07',
+		connectionLimit: 10,
+		host: process.env.LAMP_DB_HOST,
+		user: process.env.LAMP_DB_USER,
+		password: process.env.LAMP_DB_PASSWORD,
+		database: process.env.LAMP_DB_DATABASE,
 		multipleStatements: true
 	});
 }
 else if(heroku){
 	pool = mysql.createPool({
 		connectionLimit: 10,
-		host: 'us-cdbr-iron-east-05.cleardb.net',
-		user: 'be3b4cd98a2bb8',
-		password: '7983bb95',
-		database: 'heroku_3037d87a43348dd',
+		host: process.env.HEROKU_DB_HOST,
+		user: process.env.HEROKU_DB_USER,
+		password: process.env.HEROKU_DB_PASSWORD,
+		database: process.env.HEROKU_DB_DATABASE,
 		multipleStatements: true
 	});
 }
 else{
 	pool = mysql.createPool({
-		connectionLimit: 100,
+		connectionLimit: 10,
 		host: 'localhost',
 		user: 'user',
 		password: 'password',

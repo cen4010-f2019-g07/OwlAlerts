@@ -3,3 +3,4 @@ scripts/test.js
 public/images/*
 public/resources/*
 packages-microsoft-prod.deb
+.env
