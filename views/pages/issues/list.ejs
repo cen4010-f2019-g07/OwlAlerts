@@ -39,7 +39,13 @@
                                     <tr>
                                         <td><%= issues[i].id %></td>
                                         <td><%= issues[i].title %></td>
-                                        <td><%= issues[i].description %></td>
+                                        <td>
+                                            <% if(issues[i].description.length > 50) { %>
+                                                <%= issues[i].description.substring(0, 50) + '...' %>
+                                            <% } else { %>
+                                                <%= issues[i].description %>
+                                            <% } %>
+                                        </td>
                                         <td><%= issues[i].location %></td>
                                         <td><%= issues[i].submitted_user %></td>
                                         <td><%= issues[i].verified_faculty %></td>
@@ -66,12 +72,14 @@
                             </tbody>
                         </table>
                     <% } %>
+                    <% include ../../partials/paginate %>
             </div>
             </div>
             </div>
             </div>
             </div>
             </div>
+</div>
 </div>
 <% include ../../partials/footer %>
 </body>
