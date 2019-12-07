@@ -75,12 +75,12 @@
                                             <a href="/users/user/<%= users[i].id %>" class="btn btn-secondary">View</a>
                                         </td>
                                     </tr>
-                                <% } else { %>
-                                    <p>No Registered Users</p>
                                 <% } %>
                             </tbody>
                         </table>
                     </div>
+                    <% } else { %>
+                        <p>No Registered Users</p>
                     <% } %>
                     <% include ../../partials/paginate %>
             </div>
