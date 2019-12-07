@@ -2,6 +2,7 @@
 const mysql = require('mysql');
 require('dotenv').config();
 const production = process.env.production || false;
+const heroku = process.env.heroku || false;
 var connection;
 
 if(production){
@@ -60,7 +61,7 @@ if(production || heroku){
 		console.log('User Table Dropped!');
 	}).then(databaseQuery(drop_images)).then(function(){
 		console.log('Image Table Dropped!');
-		console.log('Tables Dropped!');
+		console.log('All Tables Dropped!');
 		console.log('---------------------------------------------------');
 		connection.end();
 		return;
@@ -69,10 +70,17 @@ if(production || heroku){
 	});
 }
 else{
-	let drop_db = 'DROP DATABASE owl_alerts';
-	databaseQuery(drop_db).then(function(){
+	let drop_db = {
+		owl_alerts: 'DROP DATABASE owl_alerts',
+		owl_alerts_tests: 'DROP DATABASE owl_alerts_tests'
+	};
+	databaseQuery(drop_db.owl_alerts).then(function(){
+		databaseQuery(drop_db.owl_alerts_tests).catch(function(err){
+			console.log(err);
+		});
+	}).then(function(){
 		console.log('---------------------------------------------------');
-		console.log('Database Deleted!');
+		console.log('Databases Deleted!');
 		console.log('---------------------------------------------------');
 		connection.end();
 		return;
