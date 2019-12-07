@@ -190,3 +190,8 @@ html{
 .page-numbers, .issue-filter{
   padding: 0px 5px;
 }
+
+/* User-List Table */
+.table {
+  overflow-x: scroll;
+}
