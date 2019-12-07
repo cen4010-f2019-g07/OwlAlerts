@@ -88,7 +88,7 @@ function seedUsers(i){
 	return new Promise(function(resolve, reject){
 		let residency_values = ['Out-State', 'In-State'];
 		let residency = residency_values[Math.round(Math.random())];
-		let housing_status_values = ['Commuter', 'Dormer', null]
+		let housing_status_values = ['Commuter', 'Dormer', null];
 		let housing_status = housing_status_values[Math.round(Math.random()*2)];
 		let faculty = false;
 		if(housing_status == null){
