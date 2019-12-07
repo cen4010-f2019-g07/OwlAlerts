@@ -4,3 +4,4 @@ public/images/*
 public/resources/*
 packages-microsoft-prod.deb
 .env
+.nyc_output/*
