@@ -113,13 +113,15 @@ class User {
 						reject(err);
 					});
 				}
-				if(attr.password != null && !res){
+				if(attr.password != null){
 					bcrypt.compare(attr['password'], user.password).then(function(res){
 						bcypt.hash(attr['password'], saltRounds).then(function(hash){
 							let passwordQuery = `UPDATE users SET password='${hash}' WHERE id='${attr['id']}'`;
 							databaseQuery(passwordQuery).catch(function(err){
 								reject(err);
 							});
+						}).catch(function(err){
+							reject(err);
 						});
 					}).catch(function(err){
 						reject(err);
