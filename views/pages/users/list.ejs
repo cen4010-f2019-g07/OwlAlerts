@@ -29,14 +29,9 @@
                                     <th scope="col">ID</th>
                                     <th scope="col">First Name</th>
                                     <th scope="col">Last Name</th>
-                                    <th scope="col">Email</th>
                                     <th scope="col">Phone Number</th>
                                     <th scope="col">Residency</th>
-                                    <th scope="col">Building</th>
-                                    <th scope="col">Room Number</th>
-                                    <th scope="col">Commuter?</th>
-                                    <th scope="col">Dormer?</th>
-                                    <th scope="col">Faculty?</th>
+                                    <th scope="col">Housing Status</th>
                                 </tr>	
                             </thead>
                             <tbody>
@@ -45,30 +40,19 @@
                                         <td><%= users[i].id %></td>
                                         <td><%= users[i].firstname %></td>
                                         <td><%= users[i].lastname %></td>
-                                        <td><%= users[i].email %></td>
                                         <td><%= users[i].phone_number %></td>
-                                        <td><%= users[i].residency %></td>
-                                        <td><%= users[i].building %></td>
-                                        <td><%= users[i].room_number %></td>
                                         <td>
-                                            <% if(users[i].housing_status == 'Commuter') { %>
-                                                Yes
+                                            <% if(users[i].residency) { %>
+                                                <%= users[i].residency %>
                                             <% } else { %>
-                                                No
+                                                N/A
                                             <% } %>
                                         </td>
                                         <td>
-                                            <% if(users[i].housing_status == 'Dormer') { %>
-                                                Yes
+                                            <% if(users[i].housing_status) { %>
+                                                <%= users[i].housing_status %>
                                             <% } else { %>
-                                                No
-                                            <% } %>
-                                        </td>
-                                        <td>
-                                            <% if(users[i].faculty) { %>
-                                                Yes
-                                            <% } else { %>
-                                                No
+                                                N/A
                                             <% } %>
                                         </td>
                                         <td>
