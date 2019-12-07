@@ -1,26 +1,26 @@
 "use strict";
 const mysql = require('mysql');
-
+require('dotenv').config();
 const production = process.env.production || false;
 var connection;
 
 if(production){
 	connection = mysql.createConnection({
 		connectionLimit: 10,
-		host: 'localhost',
-		user: 'cen4010fal19_g07',
-		password: 'kJDrofNeU6',
-		database: 'cen4010fal19_g07',
+		host: process.env.LAMP_DB_HOST,
+		user: process.env.LAMP_DB_USER,
+		password: process.env.LAMP_DB_PASSWORD,
+		database: process.env.LAMP_DB_DATABASE,
 		multipleStatements: true
 	});
 }
 else if(heroku){
 	connection = mysql.createConnection({
 		connectionLimit: 10,
-		host: 'us-cdbr-iron-east-05.cleardb.net',
-		user: 'be3b4cd98a2bb8',
-		password: '7983bb95',
-		database: 'heroku_3037d87a43348dd',
+		host: process.env.HEROKU_DB_HOST,
+		user: process.env.HEROKU_DB_USER,
+		password: process.env.HEROKU_DB_PASSWORD,
+		database: process.env.HEROKU_DB_DATABASE,
 		multipleStatements: true
 	});
 }
