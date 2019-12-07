@@ -4,7 +4,7 @@
   "description": "Owl Alerts app for Principle of Software Engineering (Fall 2019 - Group 7)",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,6 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.3.1",
-    "chai": "^4.2.0",
     "connect-flash": "^0.1.1",
     "dotenv": "^8.2.0",
     "ejs": "^2.7.1",
@@ -32,10 +31,13 @@
     "faker": "^4.1.0",
     "http": "0.0.0",
     "jquery": "^3.4.1",
-    "mocha": "^6.2.2",
     "mysql": "^2.17.1",
     "node-cron": "^2.0.3",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2"
   }
 }
