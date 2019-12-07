@@ -68,7 +68,7 @@
                     <% } %>
                     <% if(sessionUser && (issue.submitted_user == sessionUser.id || sessionUser.faculty || sessionUser.admin)) { %>
                       <td>
-                        <a href="/issues/issue/<%= issue.id %>/delete" class="btn btn-secondary">Delete Issue?</a>
+                        <a href="/issues/issue/<%= issue.id %>/delete" class="btn btn-secondary">Delete</a>
                       </td>
                     <% } %>
                   </tr>   
@@ -79,7 +79,7 @@
               <h4>This issue has not been officially verified by a faculty member. <br>Would you like to report it for being inappropriate or innaccurate?</h4>
               <form method="post" action="/issues/issue/<%= issue.id %>">
                 <input type="hidden" value="report" name="reported_true">
-                <button type="submit" name="reported" value="true" class="btn btn-secondary mt-5">Report Issue</button>
+                <button type="submit" name="reported" value="true" class="btn btn-secondary mt-5">Report</button>
               </form>
             <%} %>
           </div>
