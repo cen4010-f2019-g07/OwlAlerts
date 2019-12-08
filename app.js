@@ -97,7 +97,9 @@ cron.schedule('00 00 4-11 * * 1-5', function(){
 				free_spots: (garages[i].free_spots - ((garages[i].total_spots)/9))
 			}
 			GarageModel.update(attr).then(function(result){
-				console.log('All Garages Have Decreased by 1/9');
+				console.log(`Garage ${i}'s Free Spots Have Decreased by 1/9 of their Total Spots!`);
+			}).then(function(){
+				console.log('All Garages Have Decreased by 1/9 of their Total Spots!');
 			}).catch(function(err){
 				console.log(err);
 			});
@@ -115,11 +117,13 @@ cron.schedule('00 00 12 * * 0-6', function(){
 				full: true
 			};
 			GarageModel.update(attr).then(function(result){
-				console.log('All Garages Are Empty at Midnight!');
+				console.log(`Garage ${i} is Full at Noon!`);
 			}).catch(function(err){
 				console.log(err);
 			});
 		}
+	}).then(function(){
+		console.log('All Garages Are Full at Noon!');
 	}).catch(function(err){
 		console.log(err);
 	});
@@ -136,7 +140,9 @@ cron.schedule('00 00 16-23 * * 1-5', function(){
 				free_spots: free_spots
 			}
 			GarageModel.update(attr).then(function(result){
-				console.log('All Garages Have Decreased by 1/9');
+				console.log(`Garage ${i}'s Free Spots Have Increased by 1/9 of their Total Spots!`);
+			}).then(function(){
+				console.log('All Garages Have Increased by 1/9 of their Total Spots!');
 			}).catch(function(err){
 				console.log(err);
 			});
