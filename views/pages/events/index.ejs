@@ -57,8 +57,10 @@
                                                     <td><%= events[i].id %></td>
                                                     <td><%= events[i].title %></td>
                                                     <td><%= events[i].location %></td>
-                                                    <td><%= events[i].start_date %></td>
-                                                    <td><%= events[i].end_date %></td>
+                                                    <td>
+                                                        <%= events[i].start_date.toLocaleString() %>        
+                                                    </td>
+                                                    <td><%= events[i].end_date.toLocaleString() %></td>
                                                     <td>
                                                         <% if(events[i].description.length > 50) { %>
                                                             <%= events[i].description.substring(0, 50) + '...' %>
