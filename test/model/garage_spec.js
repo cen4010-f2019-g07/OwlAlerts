@@ -4,15 +4,13 @@ const assert = require('chai').assert;
 const expect = require('chai').expect;
 const should = require('chai').should();
 const faker = require('faker');
-//var pool = require('../../lib/pool_db');
 const GarageModel = require('../../models/garage');
 
 describe('Garage Model', function(){
 	let fakeGarage = {};
 
 	after(function(){
-		GarageModel.closeDB();
-		delete require.cache[require.resolve('../../lib/pool_db')];
+		GarageModel.endPool();
 		return;
 	});
 

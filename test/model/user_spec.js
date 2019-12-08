@@ -4,7 +4,6 @@ const assert = require('chai').assert;
 const expect = require('chai').expect;
 const should = require('chai').should();
 const faker = require('faker');
-var pool = require('../../lib/pool_db');
 const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 const UserModel = require('../../models/user');
@@ -72,8 +71,7 @@ describe('User Model', function(){
 	}
 
 	after(function(){
-		UserModel.closeDB();
-		delete require.cache[require.resolve('../../lib/pool_db')];
+		UserModel.endPool();
 		return;
 	});
 

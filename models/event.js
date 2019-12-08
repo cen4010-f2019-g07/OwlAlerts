@@ -154,7 +154,7 @@ class Event {
 		});
 	}
 
-	closeDB(){
+	endPool(){
 		return new Promise(function(resolve, reject){
 			pool.end();
 			resolve(1);
