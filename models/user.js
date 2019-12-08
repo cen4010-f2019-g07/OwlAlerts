@@ -1,4 +1,7 @@
 "use strict";
+if(process.env.test){
+	delete require.cache[require.resolve('../lib/pool_db')];
+}
 const pool = require('../lib/pool_db');
 const bcrypt = require('bcryptjs');
 const saltRounds = 10;
@@ -247,6 +250,13 @@ class User {
 			});
 		}).catch(function(err){
 			reject(err);
+		});
+	}
+
+	closeDB(){
+		return new Promise(function(resolve, reject){
+			pool.end();
+			resolve(1);
 		});
 	}
 }

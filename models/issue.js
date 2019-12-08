@@ -1,4 +1,7 @@
 "use strict";
+if(process.env.test){
+	delete require.cache[require.resolve('../lib/pool_db')];
+}
 const pool = require('../lib/pool_db');
 
 function databaseQuery(query){
@@ -265,6 +268,13 @@ class Issue {
 			}).catch(function(err){
 				reject(err);
 			});
+		});
+	}
+
+	closeDB(){
+		return new Promise(function(resolve, reject){
+			pool.end();
+			resolve(1);
 		});
 	}
 }

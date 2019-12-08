@@ -1,4 +1,7 @@
 "use strict";
+if(process.env.test){
+	delete require.cache[require.resolve('../lib/pool_db')];
+}
 const pool = require('../lib/pool_db');
 var fs = require('fs');
 
@@ -128,6 +131,12 @@ class Image {
     });
   }
 
+  closeDB(){
+		return new Promise(function(resolve, reject){
+			pool.end();
+			resolve(1);
+		});
+	}
 }
 
 var ImageModel = new Image();
